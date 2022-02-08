@@ -5,20 +5,26 @@
 
 Welcome to bioimageloader documentation!
 ========================================
-`bioimageloader` is a python library to provide templates for bioimage datasets
-to develop computer vision deep neural networks.
+`bioimageloader` is a python library to provide templates for bioimage datasets to
+develop computer vision deep neural networks.
 
 
-Project info
-------------
-- Source repository: https://github.com/sbinnee/bioimageloader
+Gettring started
+================
+Check this out. :ref:`installation`
 
+
+Source code
+===========
+Available at https://github.com/sbinnee/bioimageloader
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
 
+   installation/index
+   user_guides/index
    api/index
 
 

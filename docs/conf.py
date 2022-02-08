@@ -36,7 +36,8 @@ from bioimageloader._version import version, version_tuple
 extensions = [
     'sphinx.ext.autodoc',
     # 'sphinx_autodoc_typehints',
-    'numpydoc'
+    'numpydoc',
+    'sphinx_copybutton',
 ]
 
 # numpydoc options
