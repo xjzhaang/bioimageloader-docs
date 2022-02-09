@@ -1,8 +1,10 @@
 API
 ===
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
+   ./bioimageloader
    ./base
    ./common
    ./collections
+   ./batch

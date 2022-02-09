@@ -11,7 +11,7 @@ develop computer vision deep neural networks.
 
 Gettring started
 ================
-Check this out. :ref:`installation`
+Start with :doc:`installation/index` and please follow :doc:`user_guides/index`.
 
 
 Source code
@@ -21,10 +21,12 @@ Available at https://github.com/sbinnee/bioimageloader
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents
    :hidden:
 
    installation/index
    user_guides/index
+   catalogue/index
    api/index
 
 

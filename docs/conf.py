@@ -35,6 +35,7 @@ from bioimageloader._version import version, version_tuple
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosectionlabel',
     # 'sphinx_autodoc_typehints',
     'numpydoc',
     'sphinx_copybutton',
