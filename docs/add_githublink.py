@@ -5,7 +5,11 @@ import sys
 
 PROG = sys.argv[0]
 GITHUB_LINK = "https://github.com/sbinnee/bioimageloader"
-EXCLUDE = ["table_maskdataset.html"]
+EXCLUDE = [
+    'table_maskdataset.html',
+    'hist_mask_collections_div.html',
+    'hist_all_collections_div.html'
+]
 
 
 def put_logo(html):

@@ -5,7 +5,7 @@ Table is generated from .md file through https://www.tablesgenerator.com/
 
 import sys
 import re
-import warnings
+# import warnings
 
 PROG = sys.argv[0]
 F_TABLE = '_static/table_maskdataset.html'
@@ -16,7 +16,7 @@ def main():
         lines = f.readlines()
     for line in lines:
         if re.search(r"position:sticky", line):
-            warnings.warn(f"{F_TABLE}: Already have sticky head")
+            # warnings.warn(f"{F_TABLE}: Already have sticky head")
             return
 
     # #--- Sticky head ---# #
