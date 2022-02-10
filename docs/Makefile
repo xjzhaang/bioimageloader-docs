@@ -19,6 +19,7 @@ help:
 html:
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	python add_githublink.py
+	python sticky_table_head.py
 
 clean:
 	rm -rf _build

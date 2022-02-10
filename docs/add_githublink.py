@@ -3,8 +3,8 @@ import re
 import sys
 import warnings
 
-GITHUB_LINK = "https://github.com/sbinnee/bioimageloader"
 PROG = sys.argv[0]
+GITHUB_LINK = "https://github.com/sbinnee/bioimageloader"
 
 
 def put_logo(html):
