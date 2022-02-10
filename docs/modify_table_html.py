@@ -8,7 +8,7 @@ import re
 import warnings
 
 PROG = sys.argv[0]
-F_TABLE = '../_static/table_maskdataset.html'
+F_TABLE = '_static/table_maskdataset.html'
 
 
 def main():

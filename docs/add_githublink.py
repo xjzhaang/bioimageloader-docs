@@ -1,10 +1,11 @@
+import os.path
 import glob
 import re
 import sys
-import warnings
 
 PROG = sys.argv[0]
 GITHUB_LINK = "https://github.com/sbinnee/bioimageloader"
+EXCLUDE = ["table_maskdataset.html"]
 
 
 def put_logo(html):
@@ -13,7 +14,7 @@ def put_logo(html):
         lines = f.readlines()
     for line in lines:
         if re.search(f"Added by {PROG}", line):
-            warnings.warn(f"{html}: Logo and link already added")
+            # warnings.warn(f"{html}: Logo and link already added")
             return
     # #--- Sidebar ---# #
     # find '<div class="sidebar-logo-container">'
@@ -79,7 +80,9 @@ def main():
     if len(htmls) == 0:
         raise FileNotFoundError("No html found")
     for html in htmls:
-        # print(html)
+        base = os.path.basename(html)
+        if base in EXCLUDE:
+            continue
         put_logo(html)
     print("Put github logo and a link to git repo")
 
