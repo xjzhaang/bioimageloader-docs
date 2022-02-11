@@ -20,9 +20,11 @@ html:
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	python add_githublink.py
 	python modify_table_html.py
+	python add_images_table_html.py
 
 clean:
 	rm -rf _build
+	cp -f _static/table_maskdataset.html.orig _static/table_maskdataset.html
 
 # %: Makefile
 # 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

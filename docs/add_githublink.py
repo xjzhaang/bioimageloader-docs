@@ -77,7 +77,6 @@ def put_logo(html):
 
 
 def main():
-    print(PROG)
     print('Link:', GITHUB_LINK)
 
     htmls = glob.glob('_build/html/**/*.html', recursive=True)

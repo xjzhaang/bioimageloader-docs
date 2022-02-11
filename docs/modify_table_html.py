@@ -37,11 +37,10 @@ def main():
     for i, line in enumerate(lines):
         r = re.search(r'https?://\S+\)', line)
         if r:
-            link = r.group()[:-1]
+            link = r.group()[:-1]  # cut ')' in the end
             _, k = r.span()
-            link = r.group()[:-1]
 
-            td = re.search(r'<td class="tg-0pky">', line)
+            td = re.search(r'<td class="\S+">', line)
             _, j = td.span()
 
             new_line = line[:j] + f'<a href="{link}"><span style="color:#905">' + line[j:k] + '</span></a>' + line[k:]
