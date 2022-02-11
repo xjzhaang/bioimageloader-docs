@@ -12,6 +12,3 @@ Mask datasets
 
 .. raw:: html
    :file: ../_static/hist_mask_collections_div.html
-
-.. raw:: html
-   :file: ../_static/table_maskdataset.html
