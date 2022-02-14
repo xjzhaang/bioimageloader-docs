@@ -39,11 +39,20 @@ extensions = [
     # 'sphinx_autodoc_typehints',
     'numpydoc',
     'sphinx_copybutton',
+    'nbsphinx',
 ]
 
-# numpydoc options
+# extension options
 numpydoc_show_class_members = False
 numpydoc_show_inherited_class_members = False
+# https://github.com/readthedocs/sphinx_rtd_theme/issues/788#issuecomment-585785027
+nbsphinx_prolog = r"""
+.. raw:: html
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js'></script>
+    <script>require=requirejs;</script>
+
+"""
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

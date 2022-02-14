@@ -5,6 +5,7 @@ This guide will show you basic usage of ``bioimageloader``
 
 .. toctree::
    :maxdepth: 1
+   :caption: Guides
 
    ./basic0_prepare_datasets
    ./basic1_basic

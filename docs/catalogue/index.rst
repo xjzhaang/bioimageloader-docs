@@ -1,6 +1,8 @@
 Collection Catalogue
 ====================
-Currently, ``bioimageloader`` only offers datasets that have mask annotation.
+Currently, ``bioimageloader`` offers collections that mainly have mask annotation.
+
+Check out `collection overview <../_static/table_maskdataset.html>`_.
 
 .. raw:: html
    :file: ../_static/hist_all_collections_div.html
@@ -8,7 +10,6 @@ Currently, ``bioimageloader`` only offers datasets that have mask annotation.
 
 Mask datasets
 -------------
-`Maskdataset overview <../_static/table_maskdataset.html>`_
 
 .. raw:: html
    :file: ../_static/hist_mask_collections_div.html

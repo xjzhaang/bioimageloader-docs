@@ -26,6 +26,7 @@ Available at https://github.com/sbinnee/bioimageloader
 
    installation/index
    user_guides/index
+   notebooks/index
    catalogue/index
    api/index
 
