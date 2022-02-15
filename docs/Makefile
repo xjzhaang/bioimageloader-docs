@@ -17,10 +17,10 @@ help:
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 html:
-	python modify_table_html.py
-	python add_images_table_html.py
+	python scripts/modify_table_html.py
+	python scripts/add_images_table_html.py
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	python add_githublink.py
+	python scripts/add_githublink.py
 
 clean:
 	rm -rf _build
