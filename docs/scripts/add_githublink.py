@@ -3,7 +3,7 @@ import glob
 import re
 import sys
 
-PROG = sys.argv[0]
+PROG = os.path.basename(sys.argv[0])
 GITHUB_LINK = "https://github.com/sbinnee/bioimageloader"
 EXCLUDE = [
     'table_maskdataset.html',

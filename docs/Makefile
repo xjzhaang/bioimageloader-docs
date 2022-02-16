@@ -20,7 +20,7 @@ html:
 	python scripts/modify_table_html.py
 	python scripts/add_images_table_html.py
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	python scripts/add_githublink.py
+	@#python scripts/add_githublink.py
 
 clean:
 	rm -rf _build
