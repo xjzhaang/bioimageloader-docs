@@ -2,6 +2,8 @@ Notebooks
 =========
 We all love `jupyter <https://jupyter.org/>`_ notebooks. Here are some notebooks!
 
+All notebooks are available under `notebooks directory
+<https://github.com/sbinnee/bioimageloader/tree/main/notebooks>`_ in the git repository.
 
 .. toctree::
    :maxdepth: 1

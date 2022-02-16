@@ -9,9 +9,15 @@ Welcome to bioimageloader documentation!
 develop computer vision deep neural networks.
 
 
-Gettring started
+Getting started
 ================
 Start with :doc:`installation/index` and please follow :doc:`user_guides/index`.
+
+
+Browse bioimage collections
+===========================
+Browse supported bioimage collections :doc:`catalogue/index`.
+
 
 
 Source code
