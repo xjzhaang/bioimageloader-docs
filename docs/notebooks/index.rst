@@ -10,3 +10,4 @@ All notebooks are available under `notebooks directory
    :caption: Jupyter notebooks
 
    pca
+   bioimage_io
