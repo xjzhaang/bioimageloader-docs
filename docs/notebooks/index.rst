@@ -11,3 +11,4 @@ All notebooks are available under `notebooks directory
 
    pca
    bioimage_io
+   benchmark
