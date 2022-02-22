@@ -19,7 +19,6 @@ Browse bioimage collections
 Browse supported bioimage collections :doc:`catalogue/index`.
 
 
-
 Source code
 ===========
 Available at https://github.com/sbinnee/bioimageloader
