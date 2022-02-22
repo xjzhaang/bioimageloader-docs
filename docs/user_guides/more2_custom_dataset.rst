@@ -1,8 +1,10 @@
 More: Writing a custom Dataset
 ==================================
-Process of making a new custom dataset is similar to that of PyTorch. Relevant
-classes are :py:class:`bioimageloader.base.DatasetInterface`, :py:class:`bioimageloader.base.Dataset`,
-and :py:class:`bioimageloader.base.MaskDataset`. Each class has its own
+Process of making a new custom dataset is similar to `that of PyTorch
+<https://pytorch.org/tutorials/beginner/basics/data_tutorial.html>`_. Relevant
+classes are :py:class:`bioimageloader.base.DatasetInterface`,
+:py:class:`bioimageloader.base.Dataset`, and
+:py:class:`bioimageloader.base.MaskDataset`. Each class has its own
 requirements.
 
 Abstract class ``bioimageloader.base.DatasetInterface`` defines a basic

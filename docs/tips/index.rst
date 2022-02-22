@@ -7,3 +7,4 @@ Miscellaneous
    :maxdepth: 1
 
    tensorflow
+   torch
