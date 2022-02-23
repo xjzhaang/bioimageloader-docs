@@ -35,6 +35,7 @@ Available at https://github.com/sbinnee/bioimageloader
    catalogue/index
    tips/index
    api/index
+   contributing/index
 
 
 
