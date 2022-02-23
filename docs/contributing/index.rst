@@ -32,22 +32,22 @@ Code convention
 You can install minimal dev tools with pip. The choices are opinionated.
 
 I personally do not use automatic code formatter and think that ``bioimageloader`` does
-not need one for the moment considering the repo is small, but I am against it. And I
-would like to have some tools to keep codes in consistent shapes.
+not need one for the moment considering the repo is small, but I am not against it. But
+I would like to have some tools to keep codes in consistent shapes.
 
-- mypy
+- [mypy](https://github.com/python/mypy)
 
    Static type checker. Typing is a good way to find bugs.
 
-- flake8
+- [flake8](https://flake8.pycqa.org/en/latest/)
 
    I don't follow all formats it suggests but I do some.
 
-- isort
+- [isort](https://pycqa.github.io/isort/)
 
    Imports can easily become ugly.
 
-- numpydoc
+- [numpydoc](https://numpydoc.readthedocs.io/en/latest/)
 
    All docs should follow its syntax and formats.
 
