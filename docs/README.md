@@ -2,12 +2,11 @@
 Compile docs using make and sphinx. Find HTML inside `_build/html/index.html`.
 
 ## Notes
-- You cannot compile docs in Windows
 - Allow only HTML compilation
 - Notebooks in `$ROOT/docs/notebooks` are symbolic links from `$ROOT/notebooks`
 - Post compilation
-    - `add_githublink.py`: Put github log and link to repo in every HTML pages
     - `modify_table_html.py`: Add necessary tags to `table_maskdataset.html`
+    - `add_images_table_html.py`: Add samples images to `table_maskdataset.html`
 
 Compile docs
 ``` bash

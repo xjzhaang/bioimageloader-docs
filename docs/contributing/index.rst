@@ -16,7 +16,8 @@ If you find a bug and want to fix it, you can directly make a pull request:
 3. (optional, but recommended) Make a clean virtual environment
 4. Install ``bioimageloader`` in development mode
 5. Make changes, test, and commit them
-6. Create a pull request: https://github.com/sbinnee/bioimageloader/pulls
+6. (if needed) Recompile and update docs. Follow instruction in ``docs/README.md``
+7. Create a pull request: https://github.com/sbinnee/bioimageloader/pulls
 
 
 Test
