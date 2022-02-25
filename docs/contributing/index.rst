@@ -30,11 +30,12 @@ will be well appreciated!
 
 Code convention
 ---------------
-You can install minimal dev tools with pip. The choices are opinionated.
+You can install minimal dev tools with pip. The choices are opinionated. You can totally
+ignore them and use whatever suits you, except automatic code formatters.
 
 I personally do not use automatic code formatter and think that ``bioimageloader`` does
-not need one for the moment considering the repo is small, but I am not against it. But
-I would like to have some tools to keep codes in consistent shapes.
+not need one for the moment considering the repo is small, but I may consider it in the
+future. Currently, I would like to have some tools to keep codes in consistent shapes.
 
 - [mypy](https://github.com/python/mypy)
 

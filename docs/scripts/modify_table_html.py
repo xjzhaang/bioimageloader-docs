@@ -47,15 +47,20 @@ def main():
             lines[i] = new_line
 
     # #--- Footer ---# #
-    footer = """<footer>Annotation
-        * ●: Either sementic or instance
-        * ▲: Partially segmented (either semantic or instance)
+    footer = """<footer>
+    <p>Annotation
+        * ●: Fully segmented
+        * ▲: Partially segmented
+        * I: Instance segmentation
+        * F: Foreground/background
+        * U: Bounding boxes
+        * O: Outlines of objects
         * B: Biological labels
         * C: Counts
-        * F: Foreground/background
-        * O: Outlines of objects
-        * U: Bounding boxes
-        </footer>"""
+    </p>
+    <p>Note that outline annotation may not look continuous due to interpolation when resized
+    </p>
+    </footer>"""
     lines.extend([footer])
 
     with open(F_TABLE, 'w') as f:
