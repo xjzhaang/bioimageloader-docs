@@ -185,7 +185,7 @@
     <td class="tg-0pky">141</td>
     <td class="tg-0pky">uint8</td>
     <td class="tg-0pky">TIF</td>
-    <td class="tg-0pky">▲ (S)</td>
+    <td class="tg-0pky">▲ (F)</td>
     <td class="tg-0pky">H&amp;E; partially annotated</td>
     <td class="tg-0pky">Deep learning for digital pathology image analysis: A comprehensive tutorial with selected use cases</td>
     <td class="tg-0pky">[PubMed Central](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4977982/)</td>
@@ -197,7 +197,7 @@
     <td class="tg-0pky">58</td>
     <td class="tg-0pky">uint8</td>
     <td class="tg-0pky">TIF</td>
-    <td class="tg-0pky">▲ (S)</td>
+    <td class="tg-0pky">▲ (F)</td>
     <td class="tg-0pky">H&amp;E; partially annotated; Two categories (benign, malignant)</td>
     <td class="tg-0pky">A biosegmentation benchmark for evaluation of bioimage analysis methods</td>
     <td class="tg-0pky">[PubMed Central](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2777895/)</td>

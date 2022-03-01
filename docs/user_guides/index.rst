@@ -12,5 +12,6 @@ This guide will show you basic usage of ``bioimageloader``
    ./basic2_load_multi_dsets
    ./basic3_deep_learning_with_pytorch
    ./more0_split
-   ./more1_subclassing
-   ./more2_custom_dataset
+   ./_guide_more1_speedup
+   ./more2_subclassing
+   ./more3_custom_dataset
