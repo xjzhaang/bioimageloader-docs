@@ -8,6 +8,8 @@ Welcome to bioimageloader documentation!
 `bioimageloader` is a python library to provide templates for bioimage datasets to
 develop computer vision deep neural networks.
 
+You can change theme to auto|light|dark at the top right corner.
+
 
 Getting started
 ================
@@ -21,7 +23,7 @@ Browse supported bioimage collections :doc:`catalogue/index`.
 
 Source code
 ===========
-Available at https://github.com/sbinnee/bioimageloader
+Available at https://github.com/LaboratoryOpticsBiosciences/bioimageloader
 
 
 .. toctree::

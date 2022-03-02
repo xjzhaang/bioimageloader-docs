@@ -20,9 +20,9 @@ your dataset you would like to implement has mask annotation, then do
 subclassing from ``MaskDataset``, otherwise do from ``Dataset``.
 
 There is an example template `template.py
-<https://github.com/sbinnee/bioimageloader/tree/main/bioimageloader/template.py>`_
+<https://github.com/LaboratoryOpticsBiosciences/bioimageloader/blob/main/bioimageloader/template.py>`_
 in the git repository. The best practice is to read source codes of existing
 collections and to see how they are implemented.
 
-You are always welcome to file an issue through `Github repository <https://github.com/sbinnee/bioimageloader/issues>`_
+You are always welcome to file an issue through `Github repository <https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues>`_
 if you need any help.

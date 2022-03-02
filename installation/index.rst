@@ -25,7 +25,7 @@ or install it directly from source (need git installed)
 .. code-block:: bash
    :linenos:
 
-   pip install "git+https://github.com/sbinnee/bioimageloader@master"
+   pip install "git+https://github.com/LaboratoryOpticsBiosciences/bioimageloader@main"
 
 
 Option 3
@@ -35,6 +35,6 @@ for dev environment, have a editable local copy
 .. code-block:: bash
    :linenos:
 
-   git clone "https://github.com/sbinnee/bioimageloader"
+   git clone "https://github.com/LaboratoryOpticsBiosciences/bioimageloader"
    cd bioimageloader
    pip install --editable .

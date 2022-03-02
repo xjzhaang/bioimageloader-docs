@@ -149,4 +149,4 @@ a dataset.**
 We hope that decisions above look resonable to you. To be honest, some implementations
 might not have followed the rules above. If you found such cases, try to point
 ``root_dir`` to one directory above or below and so on, and please file an issue through
-github repository https://github.com/sbinnee/bioimageloader/issues.
+github repository https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues.
