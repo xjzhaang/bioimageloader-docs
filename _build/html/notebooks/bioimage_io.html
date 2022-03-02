@@ -1,0 +1,992 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DL: StarDist and Cellpose" href="benchmark.html" /><link rel="prev" title="ML: Data statistics with PCA" href="pca.html" />
+
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+        <title>DL: Deep learning with BioImage.IO - bioimageloader</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  body[data-theme="dark"] {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    body:not([data-theme="light"]) {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+</style></head>
+  <body>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">bioimageloader</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">bioimageloader</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../user_guides/index.html">User Guides</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guides/basic0_prepare_datasets.html">Basic: Prepare datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guides/basic1_basic.html">Basic: Basic usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guides/basic2_load_multi_dsets.html">Basic: Load multiple datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guides/basic3_deep_learning_with_pytorch.html">Basic: Deep learning with PyTorch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guides/more0_split.html">More: Split training/test set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guides/more2_subclassing.html">More: Modifying existing collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guides/more3_custom_dataset.html">More: Writing a custom Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Notebooks</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pca.html">ML: Data statistics with PCA</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">DL: Deep learning with <em>BioImage.IO</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmark.html">DL: StarDist and Cellpose</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../catalogue/index.html">Collection Catalogue</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tips/index.html">Miscellaneous</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tips/tensorflow.html">TensorFlow installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tips/torch.html">PyTorch installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/bioimageloader.html">bioimageloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/base.html">bioimageloader.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/common.html">bioimageloader.common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/collections.html">bioimageloader.collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/batch.html">bioimageloader.batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/utils.html">bioimageloader.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/transforms.html">bioimageloader.transforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<script>require=requirejs;</script><div class="section" id="DL:-Deep-learning-with-BioImage.IO">
+<h1>DL: Deep learning with <em>BioImage.IO</em><a class="headerlink" href="#DL:-Deep-learning-with-BioImage.IO" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://bioimage.io/">BioImageIO</a> is a fantasic project to bring ML/DL to bioimages. It is a hub for datasets and models specific to bioimage applications. We will fetch a deep neural network using its API and test it on our own images.</p>
+<p>This notebook is almost identical to <a class="reference external" href="https://github.com/bioimage-io/core-bioimage-io-python/blob/0385d873b5705779cf205106c022e559d44b8f79/example/bioimageio-core-usage.ipynb">this example</a> provided by from BioImageIO team, except for <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> part.</p>
+<p>Note that it is fine not to have GPU setup to run this notebook, but to process a lot of images it is recommended to use GPU acceleration. This model requires <a class="reference external" href="https://pytorch.org/">PyTorch</a> (<code class="docutils literal notranslate"><span class="pre">torch</span></code>) for that. Once you installed it, this notebook will automatically detect GPU(s) on your machine.</p>
+<div class="section" id="Install-dependencies-and-Imports">
+<h2>Install dependencies and Imports<a class="headerlink" href="#Install-dependencies-and-Imports" title="Permalink to this headline">#</a></h2>
+<p>We are going to use venerable <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> instead of <code class="docutils literal notranslate"><span class="pre">napari</span></code> to embed figures in this notebook, but <code class="docutils literal notranslate"><span class="pre">napari</span></code> (<a class="reference external" href="https://napari.org/">https://napari.org/</a>) is definetly a right choice!</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install bioimageio.core</span>
+<span class="c1"># !pip install matplotlib</span>
+<span class="c1">#   or better yet install napari!</span>
+<span class="c1"># !pip install napari</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+
+<span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
+<span class="kn">import</span> <span class="nn">bioimageio.core</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="c1"># we use napari for visualising images, you can install it via `pip install napari` or`conda install napari`</span>
+<span class="c1">#import napari</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>  <span class="c1"># dependency of bioimageio.core, will be installed automatically</span>
+
+<span class="kn">from</span> <span class="nn">bioimageio.core.prediction_pipeline</span> <span class="kn">import</span> <span class="n">create_prediction_pipeline</span>
+
+<span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="n">datasets_from_config</span><span class="p">,</span> <span class="n">ConcatDataset</span><span class="p">,</span>
+                            <span class="n">BatchDataloader</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">HWCToCHW</span><span class="p">,</span> <span class="n">SqueezeGrayImageCHW</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Load-a-model-through-bioimage.io-API">
+<h2>Load a model through bioimage.io API<a class="headerlink" href="#Load-a-model-through-bioimage.io-API" title="Permalink to this headline">#</a></h2>
+<p>We will use a model that predicts foreground and boundaries in images of nuclei from the kaggle nucles segmentation challenge. Find the model on bioimage.io <a class="reference external" href="https://bioimage.io/#/?id=10.5072%2Fzenodo.881940">here</a> (if it does not work, click <a class="reference external" href="https://deploy-preview-199--bioimage.netlify.app/?tags=dsb&amp;id=10.5072%2Fzenodo.881940#/?tags=dsb&amp;id=10.5072%2Fzenodo.881940">this link</a>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">bioimage.io</span></code> uses what they call RDF (resource description file) which contains all the necessary information of a model. We are going to use it to download the model as well as a sample image.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rdf_doi</span> <span class="o">=</span> <span class="s2">"10.5072/zenodo.881940"</span>
+<span class="n">model_resource</span> <span class="o">=</span> <span class="n">bioimageio</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">load_resource_description</span><span class="p">(</span><span class="n">rdf_doi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/seongbinlim/miniconda3/envs/bioio/lib/python3.9/site-packages/bioimageio/spec/shared/schema.py:45: ValidationWarning: weights:torchscript: missing 'pytorch_version'
+  warnings.warn(msg, category=ValidationWarning)
+zero_mean_unit_variance.ijm: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 845/845 [00:00&lt;00:00, 415kiB/s]
+cover.jpg: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 17.6k/17.6k [00:00&lt;00:00, 6.84MiB/s]
+documentation.md: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 95.0/95.0 [00:00&lt;00:00, 47.0kiB/s]
+sample_input.tif: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 65.8k/65.8k [00:00&lt;00:00, 6.98MiB/s]
+sample_output.tif: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 525k/525k [00:00&lt;00:00, 14.3MiB/s]
+test_input.npy: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 65.7k/65.7k [00:00&lt;00:00, 7.11MiB/s]
+test_output.npy: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 524k/524k [00:00&lt;00:00, 13.7MiB/s]
+weights.pt: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 116M/116M [00:01&lt;00:00, 92.9MiB/s]
+environment.yaml: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 87.0/87.0 [00:00&lt;00:00, 42.0kiB/s]
+unet.py: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 20.8k/20.8k [00:00&lt;00:00, 7.94MiB/s]
+weights-torchscript.pt: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 116M/116M [00:01&lt;00:00, 63.0MiB/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># print info if you want</span>
+<span class="n">model_resource</span><span class="o">.</span><span class="vm">__dict__</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{'format_version': '0.4.3',
+ 'name': 'DSB-Nuclei-BoundaryModel',
+ 'type': 'model',
+ 'version': StrictVersion ('0.1'),
+ 'root_path': PosixPath('/home/seongbinlim/workspace/bioimageloader/notebooks'),
+ 'attachments': Attachments(files=[PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/zero_mean_unit_variance.ijm')], unknown={}),
+ 'authors': [Author(name='Constantin Pape; @constantinpape', affiliation=&lt;marshmallow.missing&gt;, email=&lt;marshmallow.missing&gt;, github_user=&lt;marshmallow.missing&gt;, orcid=&lt;marshmallow.missing&gt;)],
+ 'badges': &lt;marshmallow.missing&gt;,
+ 'cite': [CiteEntry(text='training library', doi=&lt;marshmallow.missing&gt;, url='https://github.com/constantinpape/torch-em.git'),
+  CiteEntry(text='architecture', doi=&lt;marshmallow.missing&gt;, url='https://doi.org/10.1007/978-3-319-24574-4_28'),
+  CiteEntry(text='segmentation algorithm', doi=&lt;marshmallow.missing&gt;, url='https://doi.org/10.1038/nmeth.4151'),
+  CiteEntry(text='data', doi=&lt;marshmallow.missing&gt;, url='https://www.nature.com/articles/s41592-019-0612-7')],
+ 'config': {'deepimagej': {'allow_tiling': True,
+   'model_keys': None,
+   'prediction': {'postprocess': [{'spec': None}],
+    'preprocess': [{'kwargs': 'zero_mean_unit_variance.ijm',
+      'spec': 'ij.IJ::runMacroFile'}]},
+   'pyramidal_model': False,
+   'test_information': {'inputs': [{'name': 'sample_input.tif',
+      'pixel_size': {'x': 1, 'y': 1, 'z': 1},
+      'size': '256 x 256 x 1 x 1'}],
+    'memory_peak': None,
+    'outputs': [{'name': 'sample_output.tif',
+      'size': '256 x 256 x 1 x 2',
+      'type': 'image'}],
+    'runtime': None}}},
+ 'covers': [PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/cover.jpg')],
+ 'description': 'DSB-Nuclei-BoundaryModel',
+ 'documentation': PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/documentation.md'),
+ 'download_url': &lt;marshmallow.missing&gt;,
+ 'git_repo': &lt;marshmallow.missing&gt;,
+ 'id': &lt;marshmallow.missing&gt;,
+ 'icon': &lt;marshmallow.missing&gt;,
+ 'license': 'CC-BY-4.0',
+ 'links': ['10.5072/zenodo.881915',
+  'ilastik/ilastik',
+  'deepimagej/deepimagej',
+  'imjoy/BioImageIO-Packager'],
+ 'maintainers': &lt;marshmallow.missing&gt;,
+ 'rdf_source': &lt;marshmallow.missing&gt;,
+ 'tags': ['u-net',
+  'nucleus-segmentation',
+  'segmentation',
+  'volume-em',
+  'platynereis',
+  'nuclei',
+  'affinity-prediction'],
+ 'inputs': [InputTensor(name='input', data_type='uint8', axes=('b', 'c', 'y', 'x'), shape=ParametrizedInputShape(min=[1, 1, 32, 32], step=[0, 0, 16, 16]), preprocessing=[Preprocessing(name='zero_mean_unit_variance', kwargs={'axes': 'cyx', 'mode': 'per_sample'})], description=&lt;marshmallow.missing&gt;, data_range=(0.0, 255.0))],
+ 'outputs': [OutputTensor(name='output', data_type='float32', axes=('b', 'c', 'y', 'x'), shape=ImplicitOutputShape(reference_tensor='input', scale=[1.0, 2.0, 1.0, 1.0], offset=[0.0, 0.0, 0.0, 0.0]), halo=[0, 0, 16, 16], postprocessing=&lt;marshmallow.missing&gt;, description=&lt;marshmallow.missing&gt;, data_range=(0.0, 1.0))],
+ 'packaged_by': &lt;marshmallow.missing&gt;,
+ 'parent': &lt;marshmallow.missing&gt;,
+ 'run_mode': &lt;marshmallow.missing&gt;,
+ 'sample_inputs': [PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/sample_input.tif')],
+ 'sample_outputs': [PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/sample_output.tif')],
+ 'timestamp': datetime.datetime(2021, 7, 15, 18, 5, 35, 374328),
+ 'test_inputs': [PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/test_input.npy')],
+ 'test_outputs': [PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/test_output.npy')],
+ 'weights': {'pytorch_state_dict': PytorchStateDictWeightsEntry(authors=&lt;marshmallow.missing&gt;, attachments=&lt;marshmallow.missing&gt;, parent=&lt;marshmallow.missing&gt;, sha256='cf54ae273f335246887245ff2215becb677190fa44ee0ed63014bf2b51e84c4e', source=PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/weights.pt'), dependencies=Dependencies(manager='conda', file=PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/environment.yaml')), architecture=ImportedSource(factory=&lt;class 'module_from_source.unet.UNet2d'&gt;), architecture_sha256='49cc4bd009e4bfbdba7e8bd68ebf1a206983c9f108941be79fe658198d0e2275', kwargs={'depth': 4, 'final_activation': None, 'gain': 2, 'in_channels': 1, 'initial_features': 64, 'out_channels': 9, 'postprocessing': 'affinities_with_foreground_to_boundaries2d', 'return_side_outputs': False}, pytorch_version=&lt;marshmallow.missing&gt;),
+  'torchscript': TorchscriptWeightsEntry(authors=&lt;marshmallow.missing&gt;, attachments=&lt;marshmallow.missing&gt;, parent=&lt;marshmallow.missing&gt;, sha256='0f4577246926fda1908bf378741a1aad8ad81f2a94ff034437d4240fbeb93e64', source=PosixPath('/tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/weights-torchscript.pt'), dependencies=&lt;marshmallow.missing&gt;, pytorch_version=&lt;marshmallow.missing&gt;)}}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the "model_resource" instance returned by load_resource_description</span>
+<span class="c1"># contains the information stored in the resource description (see https://github.com/bioimage-io/spec-bioimage-io/blob/gh-pages/model_spec_latest.md)</span>
+
+<span class="c1"># we can e.g. check what weight formats are available in the model (pytorch_state_dict for the model used here)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Available weight formats for this model:"</span><span class="p">,</span> <span class="n">model_resource</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># or how the weight files are stored</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Pytorch state dict weights are stored at:"</span><span class="p">,</span> <span class="n">model_resource</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s2">"pytorch_state_dict"</span><span class="p">]</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="c1"># or what inputs the model expects</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The model requires as inputs:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">model_resource</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Input with axes:"</span><span class="p">,</span> <span class="n">inp</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="s2">"and shape"</span><span class="p">,</span> <span class="n">inp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="c1"># and what the model outputs are</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The model returns the following outputs:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">model_resource</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Output with axes:"</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="s2">"and shape"</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Available weight formats for this model: dict_keys(['pytorch_state_dict', 'torchscript'])
+Pytorch state dict weights are stored at: /tmp/bioimageio_cache/https/sandbox.zenodo.org/api/files/782ae236-8146-44fe-b2ac-a16314dcd7e2/weights.pt
+
+The model requires as inputs:
+Input with axes: ('b', 'c', 'y', 'x') and shape ParametrizedInputShape(min=[1, 1, 32, 32], step=[0, 0, 16, 16])
+
+The model returns the following outputs:
+Output with axes: ('b', 'c', 'y', 'x') and shape ImplicitOutputShape(reference_tensor='input', scale=[1.0, 2.0, 1.0, 1.0], offset=[0.0, 0.0, 0.0, 0.0])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the function 'test_model' from 'bioimageio.core.resource_tests' can be used to fully test the model,</span>
+<span class="c1"># including running prediction for the test input(s) and checking that they agree with the test output(s)</span>
+<span class="c1"># before using a model, it is recommended to check that it properly works with this function</span>
+<span class="c1"># 'test_model' returns a dict, if there are any errros they will be in the key "error"</span>
+<span class="c1"># if the model passes it will be None</span>
+<span class="kn">from</span> <span class="nn">bioimageio.core.resource_tests</span> <span class="kn">import</span> <span class="n">test_model</span>
+<span class="n">test_result</span> <span class="o">=</span> <span class="n">test_model</span><span class="p">(</span><span class="n">model_resource</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">test_result</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"The model test failed with:"</span><span class="p">,</span> <span class="n">test_result</span><span class="p">[</span><span class="s2">"error"</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"with the traceback:"</span><span class="p">,</span> <span class="n">test_result</span><span class="p">[</span><span class="s2">"traceback"</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"The model passed all tests"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The model passed all tests
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Run-model-with-a-sample-image">
+<h2>Run model with a sample image<a class="headerlink" href="#Run-model-with-a-sample-image" title="Permalink to this headline">#</a></h2>
+<p>The model comes with a sample image. We are going to test the model with it. We can deduce from the sample image that this model would expect <code class="docutils literal notranslate"><span class="pre">(b,</span> <span class="pre">1,</span> <span class="pre">h,</span> <span class="pre">w)</span></code> shape of image(s) (number of channel being 1 means grayscale image).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the example image for this model, which is stored in numpy file format</span>
+<span class="n">input_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_resource</span><span class="o">.</span><span class="n">test_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">input_image</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())</span>
+<span class="c1"># We should have a right shape (b, 1, h, w) and dtype</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">input_image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">input_image</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1, 1, 256, 256) uint8
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_bioimage_io_11_1.png" src="../_images/notebooks_bioimage_io_11_1.png"/>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define a function to run prediction on a numpy input</span>
+<span class="c1"># "devices" can be used to run prediction on a gpu instead of the cpu</span>
+<span class="c1"># "weight_format" to specify which weight format to use in case the model contains different weight formats</span>
+<span class="k">def</span> <span class="nf">predict_numpy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">input_</span><span class="p">,</span> <span class="n">devices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weight_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># the prediction pipeline combines preprocessing, prediction and postprocessing.</span>
+    <span class="c1"># it should always be used for prediction with a bioimageio model</span>
+    <span class="n">pred_pipeline</span> <span class="o">=</span> <span class="n">create_prediction_pipeline</span><span class="p">(</span>
+        <span class="n">bioimageio_model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">devices</span><span class="o">=</span><span class="n">devices</span><span class="p">,</span> <span class="n">weight_format</span><span class="o">=</span><span class="n">weight_format</span>
+    <span class="p">)</span>
+
+    <span class="c1"># the prediction pipeline expects inputs as xarray.DataArrays.</span>
+    <span class="c1"># these are similar to numpy arrays, but allow for named dimensions (the dims keyword argument)</span>
+    <span class="c1"># in bioimage.io the dims have to agree with the input axes required by the model</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span>
+    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">input_</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
+
+    <span class="c1"># the prediction pipeline call expects the same number of inputs as the number of inputs required by the model</span>
+    <span class="c1"># in the case here, the model just expects a single input. in the case of multiple inputs use</span>
+    <span class="c1"># prediction = pred_pipeline(input1, input2, ...)</span>
+    <span class="c1"># or, if you have the inputs in a list or tuple</span>
+    <span class="c1"># prediction = pred_pipeline(*inputs)</span>
+    <span class="c1"># the call returns a list of output tensors, corresponding to the output tensors of the model</span>
+    <span class="c1"># (in this case, we just have a single output)</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">pred_pipeline</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run prediction for the test input and show the result</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">predict_numpy</span><span class="p">(</span><span class="n">model_resource</span><span class="p">,</span> <span class="n">input_image</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'image'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'prediction'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, 'prediction')
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_bioimage_io_13_1.png" src="../_images/notebooks_bioimage_io_13_1.png"/>
+</div>
+</div>
+</div>
+<div class="section" id="Run-with-bioimageloader">
+<h2>Run with <em>bioimageloader</em><a class="headerlink" href="#Run-with-bioimageloader" title="Permalink to this headline">#</a></h2>
+<p>Now it’s time to show power of <code class="docutils literal notranslate"><span class="pre">bioimageloder</span></code>. We can easily iterate any images from <code class="docutils literal notranslate"><span class="pre">bioimageloader.collections</span></code>.</p>
+<p>As an example we can load <code class="docutils literal notranslate"><span class="pre">BBBC041</span></code> (<a class="reference external" href="https://bbbc.broadinstitute.org/bbbc041">https://bbbc.broadinstitute.org/bbbc041</a>) and test the model on them. Note that this dataset has RGB channel, which the model does not expect, thus it needs extra processing, especially RGBtoGray conversion. So we will pass <code class="docutils literal notranslate"><span class="pre">grayscale</span></code> argument.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># give a path to dataset and set grayscale=True</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'BBBC041'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'root_dir'</span><span class="p">:</span> <span class="s1">'../Data/bbbc/041'</span><span class="p">,</span>
+        <span class="s1">'grayscale'</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Additionally, we need some juggling to match the requirement of the model, becuase the model expects</p>
+<ol class="arabic">
+<li><p>To have <code class="docutils literal notranslate"><span class="pre">(b,</span> <span class="pre">1,</span> <span class="pre">h,</span> <span class="pre">w)</span></code> shape</p>
+<blockquote>
+<div><p>Ignore b(=batch) for the moment. First we will use <code class="docutils literal notranslate"><span class="pre">bioimageloader.transforms.HWCToCHW</span></code> to transform an image that has <code class="docutils literal notranslate"><span class="pre">(h,</span> <span class="pre">w,</span> <span class="pre">3)</span></code>, which is the default shape from <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>, into <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">h,</span> <span class="pre">w)</span></code>. Then, we will pick only one channel using <code class="docutils literal notranslate"><span class="pre">bioimageloader.transforms.SqueezeGrayImageCHW</span></code>. This will preserve the number of channel to be 1, so that the final shape could be <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">h,</span> <span class="pre">w)</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p>To be a numpy.ndarray</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> already returns numpy array!</p>
+</div></blockquote>
+</li>
+<li><p>To have dtype=uint8</p>
+<blockquote>
+<div><p>This, as well, a default of <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>.</p>
+</div></blockquote>
+</li>
+</ol>
+<p>Plus, we will resize images to have (256, 256), just to reduce the size (each image of BBBC041 originally has over (1000, 1000) pixels).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transforms</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+    <span class="n">HWCToCHW</span><span class="p">(),</span>            <span class="c1"># from (h, w, 3) to (3, h, w)</span>
+    <span class="n">SqueezeGrayImageCHW</span><span class="p">()</span>  <span class="c1"># from (3, h, w) to (1, h, w)</span>
+<span class="p">])</span>
+
+<span class="n">datasets</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">dset</span><span class="o">.</span><span class="n">acronym</span><span class="si">:</span><span class="s1">10s</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dset</span><span class="p">)</span><span class="si">:</span><span class="s1">10d</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BBBC041   :       1208
+</pre></div></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">bioimageloader.BatchDataloader</span></code> to load data in batch</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Feel free to adjust</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">NUM_WORKERS</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bbbc041</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">BatchDataloader</span><span class="p">(</span><span class="n">bbbc041</span><span class="p">,</span>
+                         <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+                         <span class="n">num_workers</span><span class="o">=</span><span class="n">NUM_WORKERS</span><span class="p">)</span>
+<span class="n">iter_loader</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">loader</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iter_loader</span><span class="p">)</span>
+
+<span class="n">input_image</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span>
+<span class="c1"># will have shape (BATCH_SIZE, 1, 256, 256)</span>
+
+<span class="c1"># run prediction for the test input and show the result</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">predict_numpy</span><span class="p">(</span><span class="n">model_resource</span><span class="p">,</span> <span class="n">input_image</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                       <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">BATCH_SIZE</span><span class="p">],</span>
+                       <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">prediction</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'image'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'prediction'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_bioimage_io_21_0.png" src="../_images/notebooks_bioimage_io_21_0.png"/>
+</div>
+</div>
+<p>Voilà !</p>
+</div>
+</div>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="benchmark.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">DL: StarDist and Cellpose</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="pca.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">ML: Data statistics with PCA</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Seongbin Lim
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/sbinnee/bioimageloader" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">DL: Deep learning with <em>BioImage.IO</em></a><ul>
+<li><a class="reference internal" href="#Install-dependencies-and-Imports">Install dependencies and Imports</a></li>
+<li><a class="reference internal" href="#Load-a-model-through-bioimage.io-API">Load a model through bioimage.io API</a></li>
+<li><a class="reference internal" href="#Run-model-with-a-sample-image">Run model with a sample image</a></li>
+<li><a class="reference internal" href="#Run-with-bioimageloader">Run with <em>bioimageloader</em></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>
