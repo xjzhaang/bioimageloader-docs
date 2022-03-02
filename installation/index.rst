@@ -37,4 +37,4 @@ for dev environment, have a editable local copy
 
    git clone "https://github.com/LaboratoryOpticsBiosciences/bioimageloader"
    cd bioimageloader
-   pip install --editable .
+   pip install --editable .[dev]
