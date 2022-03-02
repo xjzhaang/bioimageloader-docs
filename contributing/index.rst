@@ -35,7 +35,7 @@ ignore them and use whatever suits you, except automatic code formatters.
 
 .. code-block:: bash
 
-   git clone https://github.com/LaboratoryOpticsBiosciences/bioimageloader.git
+   git clone --recurse-submodules https://github.com/LaboratoryOpticsBiosciences/bioimageloader.git
    cd bioimageloader
    pip install --editable .[dev]
 
