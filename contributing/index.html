@@ -215,13 +215,17 @@
         <article role="main">
           <div class="section" id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">#</a></h1>
-<p>Contributions are always welcome!</p>
-<p>All development is done on Github: <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader">https://github.com/LaboratoryOpticsBiosciences/bioimageloader</a></p>
-<p>That being said, you need to use <code class="docutils literal notranslate"><span class="pre">git</span></code> to make changes.</p>
-<p>If you would like to add a feature, please file an issue first:
-<a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues">https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues</a></p>
-<p>If you find a bug and want to fix it, you can directly make a pull request:</p>
-<ol class="arabic simple">
+<p><strong>Contributions are always welcome!</strong></p>
+<p><strong>All development is done on Github</strong>: <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader">https://github.com/LaboratoryOpticsBiosciences/bioimageloader</a></p>
+<ul class="simple">
+<li><p>That being said, you need to use <code class="docutils literal notranslate"><span class="pre">git</span></code> to make changes.</p></li>
+<li><p>If you would like to add a feature, please file an issue first:</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues">https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues</a></p>
+<ul>
+<li><p>If you find a bug and want to fix it, you can directly make a pull request:</p>
+<blockquote>
+<div><ol class="arabic simple">
 <li><p>Fork the repository</p></li>
 <li><p>Clone the repository locally</p></li>
 <li><p>(optional, but recommended) Make a clean virtual environment</p></li>
@@ -230,6 +234,9 @@
 <li><p>(if needed) Recompile and update docs. Follow instruction in <code class="docutils literal notranslate"><span class="pre">docs/README.md</span></code></p></li>
 <li><p>Create a pull request: <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader/pulls">https://github.com/LaboratoryOpticsBiosciences/bioimageloader/pulls</a></p></li>
 </ol>
+</div></blockquote>
+</li>
+</ul>
 <div class="section" id="test">
 <h2>Test<a class="headerlink" href="#test" title="Permalink to this headline">#</a></h2>
 <p>Currently <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> lacks of unit tests. It means you need to manually make
@@ -241,35 +248,37 @@ will be well appreciated!</p>
 <h2>Code convention<a class="headerlink" href="#code-convention" title="Permalink to this headline">#</a></h2>
 <p>You can install minimal dev tools with pip. The choices are opinionated. You can totally
 ignore them and use whatever suits you, except automatic code formatters.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/LaboratoryOpticsBiosciences/bioimageloader.git
+<span class="nb">cd</span> bioimageloader
+pip install --editable .<span class="o">[</span>dev<span class="o">]</span>
+</pre></div>
+</div>
 <p>I personally do not use automatic code formatter and think that <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> does
-not need one for the moment considering the repo is small, but I may consider it in the
+not need one for the moment considering the repo is small, but I may consider one in the
 future. Currently, I would like to have some tools to keep codes in consistent shapes.</p>
 <ul>
+<li><p>[numpydoc](<a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/">https://numpydoc.readthedocs.io/en/latest/</a>)</p>
+<blockquote>
+<div><p>(required) All docs should follow numpydoc syntax and formats</p>
+</div></blockquote>
+</li>
 <li><p>[mypy](<a class="reference external" href="https://github.com/python/mypy">https://github.com/python/mypy</a>)</p>
 <blockquote>
-<div><p>Static type checker. Typing is a good way to find bugs.</p>
+<div><p>(optional) Static type checker. Typing is a good way to find bugs.</p>
 </div></blockquote>
 </li>
 <li><p>[flake8](<a class="reference external" href="https://flake8.pycqa.org/en/latest/">https://flake8.pycqa.org/en/latest/</a>)</p>
 <blockquote>
-<div><p>I don’t follow all formats it suggests but I do some.</p>
+<div><p>(optional) I don’t follow all formats it suggests but I do some. The only thing I
+always follow is “Module imported but unused (F401)”.</p>
 </div></blockquote>
 </li>
 <li><p>[isort](<a class="reference external" href="https://pycqa.github.io/isort/">https://pycqa.github.io/isort/</a>)</p>
 <blockquote>
-<div><p>Imports can easily become ugly.</p>
-</div></blockquote>
-</li>
-<li><p>[numpydoc](<a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/">https://numpydoc.readthedocs.io/en/latest/</a>)</p>
-<blockquote>
-<div><p>All docs should follow its syntax and formats.</p>
+<div><p>(optional) Imports can easily become ugly.</p>
 </div></blockquote>
 </li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> bioimageloader
-pip install --editable .<span class="o">[</span>dev<span class="o">]</span>
-</pre></div>
-</div>
 </div>
 </div>
 
