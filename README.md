@@ -1,5 +1,6 @@
 # Docs
-Compile docs using make and sphinx. Find HTML inside `_build/html/index.html`.
+This repo is a submodule of `bioimageloader` for documentation. Compile docs using make
+and sphinx. Find HTML inside `_build/html/index.html`.
 
 ## Notes
 - Allow only HTML compilation
@@ -7,6 +8,8 @@ Compile docs using make and sphinx. Find HTML inside `_build/html/index.html`.
 - Post compilation
     - `modify_table_html.py`: Add necessary tags to `table_maskdataset.html`
     - `add_images_table_html.py`: Add samples images to `table_maskdataset.html`
+
+Install requirements from `bioimageloader` package.
 
 Compile docs
 ``` bash
