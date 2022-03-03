@@ -8,8 +8,8 @@ through a package manager that your OS supports, or `<https://www.python.org/>`_
 Open a terminal where you can execute ``pip`` or ``git`` and choose an option of your
 choice.
 
-Option 1 (CURRENTLY NOT AVAILABLE!)
------------------------------------
+Option 1
+--------
 Install ``bioimageloader`` through `<https://pypi.org/>`_
 
 .. code-block:: bash
