@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Collection Catalogue" href="../catalogue/index.html" /><link rel="prev" title="DL: Deep learning with BioImage.IO" href="bioimage_io.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Collection Catalogue" href="../catalogue/index.html" /><link rel="prev" title="DL: Deep learning with BioImage.IO" href="bioimage_io.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>DL: StarDist and Cellpose - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -462,12 +471,12 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-<script>require=requirejs;</script><div class="section" id="DL:-StarDist-and-Cellpose">
+<script>require=requirejs;</script><section id="DL:-StarDist-and-Cellpose">
 <h1>DL: StarDist and Cellpose<a class="headerlink" href="#DL:-StarDist-and-Cellpose" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://github.com/stardist/stardist">StarDist</a> and <a class="reference external" href="https://github.com/mouseLand/cellpose">Cellpose</a> are the two most popular deep neural network to perform object detection and segmentation. Let’s try them out with <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>.</p>
 <p>NOTE <strong>I am not trying to make a statement through this example that one model is better than the other. What I want to demonstrate here is that both models are fabulous and may or may not perform well depending on datasets.</strong></p>
 <p>NOTE This notebook requires around 4GB of GPU memory if you choose to use a GPU. If your GPU cannot cope with it then try running each model separately after reinitializaing the kernel.</p>
-<div class="section" id="Install-dependencies-and-Imports">
+<section id="Install-dependencies-and-Imports">
 <h2>Install dependencies and Imports<a class="headerlink" href="#Install-dependencies-and-Imports" title="Permalink to this headline">#</a></h2>
 <p><strong>notes about ``tensorflow``</strong></p>
 <p>We need <code class="docutils literal notranslate"><span class="pre">stardist</span></code>, which can be easily installed through pip (through <a class="reference external" href="https://pypi.org/">https://pypi.org/</a>), but what’s more important is to install <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code> pkg. If you would like to use GPU, please find a <strong>guide in “Miscellaneous” -&gt;</strong><a class="reference external" href="../tips/tensorflow.html">“TensorFlow installation”</a> in <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> documentation.</p>
@@ -595,10 +604,10 @@ env: TF_FORCE_GPU_ALLOW_GROWTH='true'
 [PhysicalDevice(name='/physical_device:CPU:0', device_type='CPU'), PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="StarDist">
+</section>
+<section id="StarDist">
 <h2>StarDist<a class="headerlink" href="#StarDist" title="Permalink to this headline">#</a></h2>
-<div class="section" id="Test-StarDist">
+<section id="Test-StarDist">
 <h3>Test StarDist<a class="headerlink" href="#Test-StarDist" title="Permalink to this headline">#</a></h3>
 <p>Let’s check if everything works</p>
 <p>I followed this guide on github page (<a class="reference external" href="https://github.com/stardist/stardist#pretrained-models-for-2d">https://github.com/stardist/stardist#pretrained-models-for-2d</a>)</p>
@@ -709,8 +718,8 @@ Text(0.5, 1.0, 'prediction + input overlay')
 <img alt="../_images/notebooks_benchmark_10_1.png" src="../_images/notebooks_benchmark_10_1.png"/>
 </div>
 </div>
-</div>
-<div class="section" id="Test-StarDist-with-bioimageloader">
+</section>
+<section id="Test-StarDist-with-bioimageloader">
 <h3>Test StarDist with <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code><a class="headerlink" href="#Test-StarDist-with-bioimageloader" title="Permalink to this headline">#</a></h3>
 <p>Once we have a working StarDist, now it is time to have some fun with <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>!</p>
 <p>We will resize images to manageable size (256, 256) and squeeze channels.</p>
@@ -800,7 +809,7 @@ DSB2018   :        670
 </div>
 <p>Notice how easy it was to load data and run <em>StarDist</em> on them with <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>? Let’s have some more fun.</p>
 <p>*The thrid and the forth one had better be inverted. Anyway let’s keep going on.</p>
-<div class="section" id="Evaluation">
+<section id="Evaluation">
 <h4>Evaluation<a class="headerlink" href="#Evaluation" title="Permalink to this headline">#</a></h4>
 <p>Using <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>, we can easily iterate through all images of <em>DSB2018</em> and get metric values.</p>
 <div class="nbinput nblast docutils container">
@@ -976,9 +985,9 @@ DSB2018   :        670
 </div>
 </div>
 <p>It performs pretty well overall!</p>
-</div>
-</div>
-<div class="section" id="Scaling-up-evaluation">
+</section>
+</section>
+<section id="Scaling-up-evaluation">
 <h3>Scaling up evaluation<a class="headerlink" href="#Scaling-up-evaluation" title="Permalink to this headline">#</a></h3>
 <p>We saw that iterating <em>DSB2018</em> dataset can be easily done with <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>. Likewise, it is simple to iterate all other datasets in the same steps.</p>
 <p>Below, I am loading datasets that have instance segmented mask annotation, so that I can get object detection related metrics in the end. In addition, I am converting color images to grayscale with <code class="docutils literal notranslate"><span class="pre">grayscale</span></code> argument, because StarDist expects that.</p>
@@ -1396,11 +1405,11 @@ Text(0.5, 1.0, 'StarDist (mAP=0.50)')
 </div>
 <p>Overall StarDist is very impressive!</p>
 <p>[Some More] Accuracy (average precision) value of <em>ComPath</em> is brutal. Did we do something wrong? Check out the last section in this notebook <strong>1.4. [Some More] Fixing(?) ComPath</strong> if you are interested.</p>
-</div>
-</div>
-<div class="section" id="Cellpose">
+</section>
+</section>
+<section id="Cellpose">
 <h2>Cellpose<a class="headerlink" href="#Cellpose" title="Permalink to this headline">#</a></h2>
-<div class="section" id="Test-Cellpose">
+<section id="Test-Cellpose">
 <h3>Test Cellpose<a class="headerlink" href="#Test-Cellpose" title="Permalink to this headline">#</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -1450,8 +1459,8 @@ Text(0.5, 1.0, 'StarDist (mAP=0.50)')
 <img alt="../_images/notebooks_benchmark_39_1.png" src="../_images/notebooks_benchmark_39_1.png"/>
 </div>
 </div>
-</div>
-<div class="section" id="Evaluation-with-Cellpose-and-bioimageloader">
+</section>
+<section id="Evaluation-with-Cellpose-and-bioimageloader">
 <h3>Evaluation with Cellpose and <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code><a class="headerlink" href="#Evaluation-with-Cellpose-and-bioimageloader" title="Permalink to this headline">#</a></h3>
 <p>Below code cells are almost copy-paste form StarDist parts except for some parts.</p>
 <div class="nbinput docutils container">
@@ -2003,9 +2012,9 @@ Text(0.5, 1.0, 'Cellpose (mAP=0.34)')
 </div>
 <p>Again as I mentioned at the beginning of this notbook, there is no winner! Cellpose does better in some cases and does not in others. Depending on your images and tasks, you decide which to use, what pre-/post-processes are needed on top of that, how to normalize your data so that they get fit to these models, etc.</p>
 <p>You definitely want to analyze and get statistics of your data before you do anything on them, and now you have <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> that could make all these steps so much easier and much painless!</p>
-</div>
-</div>
-<div class="section" id="[Some-More]-Fixing(?)-ComPath">
+</section>
+</section>
+<section id="[Some-More]-Fixing(?)-ComPath">
 <h2>[Some More] Fixing(?) <em>ComPath</em><a class="headerlink" href="#[Some-More]-Fixing(?)-ComPath" title="Permalink to this headline">#</a></h2>
 <p>This <a class="reference external" href="../_static/table_maskdataset.html">overview table</a> is a helpful one. You could see from the sample images that <em>ComPath</em> is, first of all, H&amp;E histopathology images, which are distinct from the others. And images are dense and have high resolution (1000, 1000). So resizing them to (256, 256) may have not been a wise choice for <em>ComPath</em>.</p>
 <p>Let’s define a new set of transforms for <em>ComPath</em>. We are going to do two things:</p>
@@ -2331,8 +2340,8 @@ Text(0.5, 0.98, 'ComPath')
 </div>
 </div>
 <p>We fixed(?) it from almost zero prediction!</p>
-</div>
-</div>
+</section>
+</section>
 
         </article>
       </div>

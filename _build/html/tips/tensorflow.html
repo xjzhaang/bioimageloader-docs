@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="PyTorch installation" href="torch.html" /><link rel="prev" title="Miscellaneous" href="index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="PyTorch installation" href="torch.html" /><link rel="prev" title="Miscellaneous" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>TensorFlow installation - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -213,7 +222,7 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="tensorflow-installation">
+          <section id="tensorflow-installation">
 <h1>TensorFlow installation<a class="headerlink" href="#tensorflow-installation" title="Permalink to this headline">#</a></h1>
 <p>This guide is about installing GPU enabled TensorFlow python package on Nvidia
 GPU with CUDA capability.</p>
@@ -229,11 +238,10 @@ install CUDA toolkit on every OS platforms. The truth is, however, they do not
 necessarily care about compatibility with a certain version of TensorFlow. If
 you still insist to install CUDA toolkit through the official docs, you could
 try it and I wish you do not break anything on your system.</p>
-<p>May I suggest what I think the best way is to use <code class="docutils literal notranslate"><span class="pre">conda</span></code> through community
-channel called <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> (<a class="reference external" href="https://conda-forge.org">https://conda-forge.org</a>). Someone already went
-through all the pain of searching for the right combination of dependencies and
-built tensorflow from the source and uploaded there. All you have to do is to
-install it through <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
+<p>What I think the best way is to use <code class="docutils literal notranslate"><span class="pre">conda</span></code> through community channel called
+<code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> (<a class="reference external" href="https://conda-forge.org">https://conda-forge.org</a>). Someone already went through all the pain of
+searching for the right combination of dependencies and built tensorflow from the source
+and uploaded there. All you have to do is to install it through <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
 <p>Create a new virtual environment using conda and execute <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">search</span> <span class="pre">-c</span>
 <span class="pre">conda-forge</span> <span class="pre">tensorflow-gpu</span></code>. You will see multiple packages with different
 build tags, such as cuda102py39, etc. “cuda102” means that that pkg was compiled
@@ -244,6 +252,12 @@ and install it with <code class="docutils literal notranslate"><span class="pre"
 architecture (when you installed it) and it will auto-detect python version,
 already installed pkgs. Accordingly, it will choose the best <code class="docutils literal notranslate"><span class="pre">cudatoolkit</span></code> and
 <code class="docutils literal notranslate"><span class="pre">tensorflow-gpu</span></code>.</p>
+<p>If you do not care about other packages or a specific version of python, you can simply
+execute commands below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create --name tf-gpu tensorflow-gpu
+</pre></div>
+</div>
+<p>If you would like to have certain versions of pkgs, you can do something like below:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># create virtual env</span>
 conda create --name tf-gpu <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9
 <span class="c1"># search</span>
@@ -256,7 +270,7 @@ conda install --channel conda-forge <span class="nv">cudatoolkit</span><span cla
 conda create --name py39tf26-gpu --channel conda-forge <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9 <span class="nv">cudatoolkit</span><span class="o">=</span><span class="m">10</span>.2 tensorflow-gpu<span class="o">=</span><span class="m">2</span>.6
 </pre></div>
 </div>
-<div class="section" id="useful-links">
+<section id="useful-links">
 <h2>Useful links<a class="headerlink" href="#useful-links" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>StarDist Git repository : <a class="reference external" href="https://github.com/stardist/stardist">https://github.com/stardist/stardist</a></p></li>
@@ -264,14 +278,14 @@ conda create --name py39tf26-gpu --channel conda-forge <span class="nv">python</
 <li><p>CUDA toolkit documentation : <a class="reference external" href="https://developer.nvidia.com/cuda-toolkit-archive">https://developer.nvidia.com/cuda-toolkit-archive</a></p></li>
 <li><p>GPU on Apple M1 : <a class="reference external" href="https://forum.image.sc/t/napari-tensorflow-aicsimageio-stardist-care-n2v-pyclesperanto-running-native-on-apple-silicon-m1/55051/3">https://forum.image.sc/t/napari-tensorflow-aicsimageio-stardist-care-n2v-pyclesperanto-running-native-on-apple-silicon-m1/55051/3</a></p></li>
 </ul>
-</div>
-<div class="section" id="useless-links">
+</section>
+<section id="useless-links">
 <h2>Useless links 🙃<a class="headerlink" href="#useless-links" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>tensorflow installation docs : <a class="reference external" href="https://www.tensorflow.org/install">https://www.tensorflow.org/install</a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
         </article>
       </div>

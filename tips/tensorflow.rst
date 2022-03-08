@@ -17,11 +17,10 @@ necessarily care about compatibility with a certain version of TensorFlow. If
 you still insist to install CUDA toolkit through the official docs, you could
 try it and I wish you do not break anything on your system.
 
-May I suggest what I think the best way is to use ``conda`` through community
-channel called ``conda-forge`` (https://conda-forge.org). Someone already went
-through all the pain of searching for the right combination of dependencies and
-built tensorflow from the source and uploaded there. All you have to do is to
-install it through ``conda``.
+What I think the best way is to use ``conda`` through community channel called
+``conda-forge`` (https://conda-forge.org). Someone already went through all the pain of
+searching for the right combination of dependencies and built tensorflow from the source
+and uploaded there. All you have to do is to install it through ``conda``.
 
 Create a new virtual environment using conda and execute ``conda search -c
 conda-forge tensorflow-gpu``. You will see multiple packages with different
@@ -34,6 +33,15 @@ architecture (when you installed it) and it will auto-detect python version,
 already installed pkgs. Accordingly, it will choose the best ``cudatoolkit`` and
 ``tensorflow-gpu``.
 
+If you do not care about other packages or a specific version of python, you can simply
+execute commands below:
+
+.. code-block:: bash
+
+   conda create --name tf-gpu tensorflow-gpu
+
+
+If you would like to have certain versions of pkgs, you can do something like below:
 
 .. code-block:: bash
 

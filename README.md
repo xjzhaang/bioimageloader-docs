@@ -33,3 +33,11 @@ Normally, it should be enough to write acronym in the filename.
 
 This HTML file will be processed before sphinx-build by `scripts/add_images_table_html.py`
 and `scripts/modify_table_html.py`.
+
+
+## Troubleshooting
+- [pandoc](https://pandoc.org/) missing
+
+    `nbsphinx` requires `pandoc`. If you are using `conda`, install it by executing
+    `conda install -c conda-forge pandoc`. Otherwise, follow the official documentation
+    (https://pandoc.org/installing.html).

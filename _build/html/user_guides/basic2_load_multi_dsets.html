@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Basic: Deep learning with PyTorch" href="basic3_deep_learning_with_pytorch.html" /><link rel="prev" title="Basic: Basic usage" href="basic1_basic.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Basic: Deep learning with PyTorch" href="basic3_deep_learning_with_pytorch.html" /><link rel="prev" title="Basic: Basic usage" href="basic1_basic.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>Basic: Load multiple datasets - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -213,12 +222,12 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="basic-load-multiple-datasets">
+          <section id="basic-load-multiple-datasets">
 <h1>Basic: Load multiple datasets<a class="headerlink" href="#basic-load-multiple-datasets" title="Permalink to this headline">#</a></h1>
 <p>Load multiple datasets either one by one or use <a class="reference internal" href="../api/bioimageloader.html#bioimageloader.Config" title="bioimageloader.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageloader.Config</span></code></a> to
 read them all at once from <code class="docutils literal notranslate"><span class="pre">.yml</span></code> file. If you are not familiar with yaml format
 please, check out <a class="reference external" href="https://quickref.me/yaml">https://quickref.me/yaml</a> or go to the <a class="reference external" href="https://yaml.org/">official yaml webpage</a> for more detail.</p>
-<div class="section" id="concatenate-multiple-datasets">
+<section id="concatenate-multiple-datasets">
 <h2>Concatenate multiple datasets<a class="headerlink" href="#concatenate-multiple-datasets" title="Permalink to this headline">#</a></h2>
 <p>Grouping multiple datasets allows to load them as if they are a single dataset. You can
 define <code class="docutils literal notranslate"><span class="pre">transforms</span></code> for each dataset and group them together. Concatenating can be
@@ -267,19 +276,19 @@ annotation, meaning that those do not have <code class="docutils literal notrans
 <span class="linenos">38</span>    <span class="n">do_something</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="load-datasets-using-config-yml">
+</section>
+<section id="load-datasets-using-config-yml">
 <h2>Load datasets using <code class="docutils literal notranslate"><span class="pre">config.yml</span></code><a class="headerlink" href="#load-datasets-using-config-yml" title="Permalink to this headline">#</a></h2>
 <p>You can make a yaml file to manage parameters for multiple datasets in one place.</p>
 <p><code class="docutils literal notranslate"><span class="pre">./config/config.yml</span></code></p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nt">DSB2018</span><span class="p">:</span>
-<span class="linenos">2</span>  <span class="nt">root_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./data/DSB2018/</span>
-<span class="linenos">3</span>  <span class="nt">output</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">image</span>
-<span class="linenos">4</span><span class="nt">TNBC</span><span class="p">:</span>
-<span class="linenos">5</span>  <span class="nt">root_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./data/TNBC_NucleiSegmentation/</span>
-<span class="linenos">6</span>  <span class="nt">output</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">image</span>
-<span class="linenos">7</span><span class="nt">BBBC016</span><span class="p">:</span>
-<span class="linenos">8</span>  <span class="nt">root_dir</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./data/BBBC016_v1/</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nt">DSB2018</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">2</span><span class="w">  </span><span class="nt">root_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./data/DSB2018/</span><span class="w"></span>
+<span class="linenos">3</span><span class="w">  </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image</span><span class="w"></span>
+<span class="linenos">4</span><span class="nt">TNBC</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">  </span><span class="nt">root_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./data/TNBC_NucleiSegmentation/</span><span class="w"></span>
+<span class="linenos">6</span><span class="w">  </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image</span><span class="w"></span>
+<span class="linenos">7</span><span class="nt">BBBC016</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">8</span><span class="w">  </span><span class="nt">root_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./data/BBBC016_v1/</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">./main.py</span></code></p>
@@ -327,8 +336,8 @@ annotation, meaning that those do not have <code class="docutils literal notrans
 <span class="linenos">42</span><span class="n">datasets_transformed_indv</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">transforms_indv</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
         </article>
       </div>

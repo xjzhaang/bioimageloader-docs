@@ -23,9 +23,9 @@ https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues
 Test
 ----
 Currently ``bioimageloader`` lacks of unit tests. It means you need to manually make
-sure that your changes do not break anything, which is not possible without unit
-tests... So if you love writing unit tests, you are more than welcome and your efforts
-will be well appreciated!
+sure that your changes do not break anything, which is not easy without unit tests... So
+if you love writing unit tests (does anyone...?), you are more than welcome and your
+efforts will be well appreciated!
 
 
 Code convention

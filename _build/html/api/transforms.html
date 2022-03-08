@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Contributing" href="../contributing/index.html" /><link rel="prev" title="bioimageloader.utils" href="utils.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Contributing" href="../contributing/index.html" /><link rel="prev" title="bioimageloader.utils" href="utils.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>bioimageloader.transforms - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -213,7 +222,7 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="module-bioimageloader.transforms">
+          <section id="module-bioimageloader.transforms">
 <span id="bioimageloader-transforms"></span><h1>bioimageloader.transforms<a class="headerlink" href="#module-bioimageloader.transforms" title="Permalink to this headline">#</a></h1>
 <p>Custom transforms for bioimages based on albumentations</p>
 <dl class="py class">
@@ -443,7 +452,79 @@ and <code class="docutils literal notranslate"><span class="pre">grayscale_mode<
 </pre></div>
 </div>
 </dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="bioimageloader.transforms.NormalizePercentile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.transforms.</span></span><span class="sig-name descname"><span class="pre">NormalizePercentile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qmin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">99.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">always_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/transforms.html#NormalizePercentile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.transforms.NormalizePercentile" title="Permalink to this definition">#</a></dt>
+<dd><p>Normalize using percentile</p>
+<p>Compute q-th percentile min- and max-values from given image array and
+normalize.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">numpy.percentile()</span></code> <a class="reference internal" href="#r40a2aafb13e3-1" id="id5">[1]</a></p>
+<p>Expect images with 3 channels. Reorder and make it continuous in ‘C’ order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>qmin</strong><span class="classifier">float, default: 0.0</span></dt><dd><p>Lower bound quantile in range of [0, 100)</p>
+</dd>
+<dt><strong>qmax</strong><span class="classifier">float, default: 99.8</span></dt><dd><p>Upper bound quantile in range of (0, 100]</p>
+</dd>
+<dt><strong>per_channel</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to calculate percentile per channel or not</p>
+</dd>
+<dt><strong>clip</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to clip in [0, 1] or not. Read more in Returns section.</p>
+</dd>
+<dt><strong>order</strong><span class="classifier">tuple of three integers</span></dt><dd><p>Reorder by indexing</p>
+</dd>
+<dt><strong>always_apply</strong><span class="classifier">bool, default: False</span></dt><dd></dd>
+<dt><strong>p</strong><span class="classifier">float, default: 1.0</span></dt><dd><p>Value between [0.0, 1.0]</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>img_norm</dt><dd><p>Normalized image in float32 in range of [0.0, 1.0] if <code class="docutils literal notranslate"><span class="pre">clip</span></code> set to
+True, else its value overflows lower beyond 0.0 and higher beyond 1.0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">albumentations.ImageOnlyTransform</span></code></dt><dd><p>super class</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">albumentations.augmentations.transforms.ChannelShuffle</span></code></dt><dd><p>random shuffling</p>
+</dd>
+</dl>
 </div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="r40a2aafb13e3-1"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
+<dd><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.percentile.html">https://numpy.org/doc/stable/reference/generated/numpy.percentile.html</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">ChannelReorder</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="go">[[[ 0  1  2]</span>
+<span class="go">  [ 3  4  5]]</span>
+<span class="go"> [[ 6  7  8]</span>
+<span class="go">  [ 9 10 11]]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reorder</span> <span class="o">=</span> <span class="n">ChannelReorder</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arr_reordered</span> <span class="o">=</span> <span class="n">reorder</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arr_reordered</span><span class="p">)</span>
+<span class="go">[[[ 2  1  0]</span>
+<span class="go">  [ 5  4  3]]</span>
+<span class="go"> [[ 8  7  6]</span>
+<span class="go">  [11 10  9]]]</span>
+</pre></div>
+</div>
+</dd></dl>
+</section>
 
         </article>
       </div>

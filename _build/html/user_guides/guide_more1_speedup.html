@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="More: Modifying existing collections" href="more2_subclassing.html" /><link rel="prev" title="More: Split training/test set" href="more0_split.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="More: Modifying existing collections" href="more2_subclassing.html" /><link rel="prev" title="More: Split training/test set" href="more0_split.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>More: Speeding up loading by pre-parsing - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -462,7 +471,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-<script>require=requirejs;</script><div class="section" id="More:-Speeding-up-loading-by-pre-parsing">
+<script>require=requirejs;</script><section id="More:-Speeding-up-loading-by-pre-parsing">
 <h1>More: Speeding up loading by pre-parsing<a class="headerlink" href="#More:-Speeding-up-loading-by-pre-parsing" title="Permalink to this headline">#</a></h1>
 <p>Since <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> is designed for computer vision ML/DL, it expects to have image arrays both for an image and its annotation. But datasets sometimes come with encoded annotation or in formats other than image formats. By its design, <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> does not transform or modify the original source. That being said, as you may guess, decoding and parsing them to build image arrays take a while and easily become a bottle neck. The solution is to simply <strong>pre-parse them only once and save
 them</strong>.</p>
@@ -637,7 +646,7 @@ format in the same annotation directory. Re-initiate an instance with
 </pre></div></div>
 </div>
 <p>Iteration that took <strong>16.1 seconds</strong> now takes <strong>1.21 seconds</strong>!</p>
-</div>
+</section>
 
         </article>
       </div>

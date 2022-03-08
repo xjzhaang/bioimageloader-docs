@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DL: Deep learning with BioImage.IO" href="bioimage_io.html" /><link rel="prev" title="Notebooks" href="index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DL: Deep learning with BioImage.IO" href="bioimage_io.html" /><link rel="prev" title="Notebooks" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>ML: Data statistics with PCA - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -462,12 +471,12 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-<script>require=requirejs;</script><div class="section" id="ML:-Data-statistics-with-PCA">
+<script>require=requirejs;</script><section id="ML:-Data-statistics-with-PCA">
 <h1>ML: Data statistics with PCA<a class="headerlink" href="#ML:-Data-statistics-with-PCA" title="Permalink to this headline">#</a></h1>
 <p>Once you have chosen datasets, it is time to load and inspect them. This notebook demonstrates steps for a simple machine learning (ML), in this case, principle component analysis (PCA).</p>
 <p>We are going to use additional packages: <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> for PCA, <code class="docutils literal notranslate"><span class="pre">plotly</span></code> for drawing graphs and <code class="docutils literal notranslate"><span class="pre">pandas</span></code> for tabular data.</p>
 <p>Install additional dependencies. This notebook was written in <a class="reference external" href="https://jupyter.org/">jupyter lab</a>. If you are in jupyter notebook or other environments, <code class="docutils literal notranslate"><span class="pre">plotly</span></code> may not work. If you have troubles, follow this instruction <a class="reference external" href="https://plotly.com/python/getting-started/#installation">https://plotly.com/python/getting-started/#installation</a>.</p>
-<div class="section" id="Install-dependencies-and-Imports">
+<section id="Install-dependencies-and-Imports">
 <h2>Install dependencies and Imports<a class="headerlink" href="#Install-dependencies-and-Imports" title="Permalink to this headline">#</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -511,8 +520,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Load-collections">
+</section>
+<section id="Load-collections">
 <h2>Load collections<a class="headerlink" href="#Load-collections" title="Permalink to this headline">#</a></h2>
 <p>Start by loading collections using <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>. You have two options.</p>
 <ol class="arabic simple">
@@ -618,8 +627,8 @@ BBBC021   :        240
 BBBC041   :       1208
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="hist(datasets)">
+</section>
+<section id="hist(datasets)">
 <h2>hist(datasets)<a class="headerlink" href="#hist(datasets)" title="Permalink to this headline">#</a></h2>
 <p>Plot histogram</p>
 <div class="nbinput nblast docutils container">
@@ -1001,11 +1010,11 @@ if (outputEl) {{
 
                         })                };                });            </script> </div></div>
 </div>
-</div>
-<div class="section" id="PCA(datasets)">
+</section>
+<section id="PCA(datasets)">
 <h2>PCA(datasets)<a class="headerlink" href="#PCA(datasets)" title="Permalink to this headline">#</a></h2>
 <p>Using <code class="docutils literal notranslate"><span class="pre">BatchDataloader</span></code> won’t do much in this example since it only has Resize transformation which is pretty cheap operation. But it is a good practice to benefit from multi-processing.</p>
-<div class="section" id="Sample">
+<section id="Sample">
 <h3>Sample<a class="headerlink" href="#Sample" title="Permalink to this headline">#</a></h3>
 <p>Loading all images would require a lot of memory. We will sample 10% (minimum 5 images) from each dataset</p>
 <div class="nbinput docutils container">
@@ -1083,8 +1092,8 @@ BBBC041   :       1208 =&gt;        120
 (505, 16, 32)
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Prep-for-PCA">
+</section>
+<section id="Prep-for-PCA">
 <h3>Prep for PCA<a class="headerlink" href="#Prep-for-PCA" title="Permalink to this headline">#</a></h3>
 <p>Flatten all image arrays and stack them so that the array has shape of <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_feature)</span></code>.</p>
 <div class="nbinput nblast docutils container">
@@ -1133,8 +1142,8 @@ BBBC041   :       1208 =&gt;        120
 (505, 196608)
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Perform-PCA">
+</section>
+<section id="Perform-PCA">
 <h3>Perform PCA<a class="headerlink" href="#Perform-PCA" title="Permalink to this headline">#</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1156,10 +1165,10 @@ BBBC041   :       1208 =&gt;        120
 PCA(n_components=10)
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Plot-results">
+</section>
+<section id="Plot-results">
 <h3>Plot results<a class="headerlink" href="#Plot-results" title="Permalink to this headline">#</a></h3>
-<div class="section" id="Scree-Plot">
+<section id="Scree-Plot">
 <h4>Scree Plot<a class="headerlink" href="#Scree-Plot" title="Permalink to this headline">#</a></h4>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1220,8 +1229,8 @@ if (outputEl) {{
 
                         })                };                });            </script> </div></div>
 </div>
-</div>
-<div class="section" id="2D-PCA-(from-sample)">
+</section>
+<section id="2D-PCA-(from-sample)">
 <h4>2D PCA (from sample)<a class="headerlink" href="#2D-PCA-(from-sample)" title="Permalink to this headline">#</a></h4>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -1321,8 +1330,8 @@ if (outputEl) {{
 
                         })                };                });            </script> </div></div>
 </div>
-</div>
-<div class="section" id="2D-PCA-(full-size)">
+</section>
+<section id="2D-PCA-(full-size)">
 <h4>2D PCA (full size)<a class="headerlink" href="#2D-PCA-(full-size)" title="Permalink to this headline">#</a></h4>
 <p>We have a PCA model fitted with samples. Now we will load all images in batch using using <code class="docutils literal notranslate"><span class="pre">bioimageloader.BatchDataloader</span></code>, which is a generator and thus it requires much less memory.</p>
 <p>This one will take a while (~10mins).</p>
@@ -1513,10 +1522,10 @@ if (outputEl) {{
 
                         })                };                });            </script> </div></div>
 </div>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
         </article>
       </div>
