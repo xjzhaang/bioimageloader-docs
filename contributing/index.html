@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="bioimageloader.transforms" href="../api/transforms.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="bioimageloader.transforms" href="../api/transforms.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>Contributing - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -213,7 +222,7 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="contributing">
+          <section id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">#</a></h1>
 <p><strong>Contributions are always welcome!</strong></p>
 <p><strong>All development is done on Github</strong>: <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader">https://github.com/LaboratoryOpticsBiosciences/bioimageloader</a></p>
@@ -237,14 +246,14 @@
 </div></blockquote>
 </li>
 </ul>
-<div class="section" id="test">
+<section id="test">
 <h2>Test<a class="headerlink" href="#test" title="Permalink to this headline">#</a></h2>
 <p>Currently <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> lacks of unit tests. It means you need to manually make
-sure that your changes do not break anything, which is not possible without unit
-tests… So if you love writing unit tests, you are more than welcome and your efforts
-will be well appreciated!</p>
-</div>
-<div class="section" id="code-convention">
+sure that your changes do not break anything, which is not easy without unit tests… So
+if you love writing unit tests (does anyone…?), you are more than welcome and your
+efforts will be well appreciated!</p>
+</section>
+<section id="code-convention">
 <h2>Code convention<a class="headerlink" href="#code-convention" title="Permalink to this headline">#</a></h2>
 <p>You can install minimal dev tools with pip. The choices are opinionated. You can totally
 ignore them and use whatever suits you, except automatic code formatters.</p>
@@ -279,8 +288,8 @@ always follow is “Module imported but unused (F401)”.</p>
 </div></blockquote>
 </li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
         </article>
       </div>

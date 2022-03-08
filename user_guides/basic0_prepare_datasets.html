@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Basic: Basic usage" href="basic1_basic.html" /><link rel="prev" title="User Guides" href="index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Basic: Basic usage" href="basic1_basic.html" /><link rel="prev" title="User Guides" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>Basic: Prepare datasets - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -213,7 +222,7 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="basic-prepare-datasets">
+          <section id="basic-prepare-datasets">
 <h1>Basic: Prepare datasets<a class="headerlink" href="#basic-prepare-datasets" title="Permalink to this headline">#</a></h1>
 <p>Before we get to use <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>, you need dataset(s) to load. <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>
 provides collections, but that does not mean that you can download them by using
@@ -221,7 +230,7 @@ provides collections, but that does not mean that you can download them by using
 that it is important for you to go there, read papers, understand terms and licenses
 before using their works, because bioimages themselves are results of paramount time,
 efforts, and resources.</p>
-<div class="section" id="browse-and-download-supported-collections">
+<section id="browse-and-download-supported-collections">
 <h2>1. Browse and download supported collections<a class="headerlink" href="#browse-and-download-supported-collections" title="Permalink to this headline">#</a></h2>
 <p>You can browse supported collections with their description and links at <a class="reference internal" href="../catalogue/index.html#collection-catalogue"><span class="std std-ref">Collection Catalogue</span></a> and <a class="reference external" href="../_static/table_maskdataset.html">collection overview table</a>. Choose
 one or more datasets and download them on your local machine.</p>
@@ -230,8 +239,8 @@ one or more datasets and download them on your local machine.</p>
 <a class="reference internal" href="../api/utils.html#bioimageloader.utils.get_maskdataset_from_directory" title="bioimageloader.utils.get_maskdataset_from_directory"><code class="xref py py-func docutils literal notranslate"><span class="pre">bioimageloader.utils.get_maskdataset_from_directory()</span></code></a> depending on the
 structure of your dataset. Read more following the links to each function above. <strong>Note
 that these functions are experimental</strong>.</p>
-</div>
-<div class="section" id="unzip-it">
+</section>
+<section id="unzip-it">
 <h2>2. Unzip it<a class="headerlink" href="#unzip-it" title="Permalink to this headline">#</a></h2>
 <p>There are in large 4 different structures when it comes to an archive file. To explain
 each, let’s name a zip file <strong>dataset.zip</strong>. It may seem subtle and trivial but bare
@@ -338,8 +347,8 @@ below:</p>
 might not have followed the rules above. If you found such cases, try to point
 <code class="docutils literal notranslate"><span class="pre">root_dir</span></code> to one directory above or below and so on, and please file an issue through
 github repository <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues">https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
         </article>
       </div>

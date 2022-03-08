@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="bioimageloader.batch" href="batch.html" /><link rel="prev" title="bioimageloader.common" href="common.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="bioimageloader.batch" href="batch.html" /><link rel="prev" title="bioimageloader.common" href="common.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>bioimageloader.collections - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -213,7 +222,7 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="module-bioimageloader.collections">
+          <section id="module-bioimageloader.collections">
 <span id="bioimageloader-collections"></span><h1>bioimageloader.collections<a class="headerlink" href="#module-bioimageloader.collections" title="Permalink to this headline">#</a></h1>
 <p>Collection of public bioimage datasets</p>
 <dl class="py class">
@@ -1412,7 +1421,7 @@ format in the same annotation directory. Re-initiate an instance with
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageloader.collections.DSB2018">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">DSB2018</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cv2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_dsb2018.html#DSB2018"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.DSB2018" title="Permalink to this definition">#</a></dt>
-<dd><p>Data Science Bowl 2018 <a class="reference internal" href="#r6ad5ab3120e1-1" id="id26">[1]</a></p>
+<dd><p>Data Science Bowl 2018 <a class="reference internal" href="#r6ad5ab3120e1-1" id="id26">[1]</a> also known as BBBC038 <a class="reference internal" href="#r6ad5ab3120e1-2" id="id27">[2]</a></p>
 <p>Find the nuclei in divergent images to advance medical discovery</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1454,6 +1463,9 @@ axis, then divides it by the number of expected channels.</p>
 <dt class="label" id="r6ad5ab3120e1-1"><span class="brackets"><a class="fn-backref" href="#id26">1</a></span></dt>
 <dd><p><a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018/">https://www.kaggle.com/c/data-science-bowl-2018/</a></p>
 </dd>
+<dt class="label" id="r6ad5ab3120e1-2"><span class="brackets"><a class="fn-backref" href="#id27">2</a></span></dt>
+<dd><p><a class="reference external" href="https://bbbc.broadinstitute.org/BBBC038/">https://bbbc.broadinstitute.org/BBBC038/</a></p>
+</dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageloader.collections.DSB2018.get_image">
@@ -1480,7 +1492,7 @@ axis, then divides it by the number of expected channels.</p>
 <dt class="sig sig-object py" id="bioimageloader.collections.DigitalPathology">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">DigitalPathology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cv2'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_digitpath.html#DigitalPathology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.DigitalPathology" title="Permalink to this definition">#</a></dt>
 <dd><p>Deep learning for digital pathology image analysis: A comprehensive
-tutorial with selected use cases <a class="reference internal" href="#rdcfe2d43dee5-1" id="id28">[1]</a></p>
+tutorial with selected use cases <a class="reference internal" href="#rdcfe2d43dee5-1" id="id30">[1]</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -1521,7 +1533,7 @@ axis, then divides it by the number of expected channels.</p>
 </ul>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="rdcfe2d43dee5-1"><span class="brackets"><a class="fn-backref" href="#id28">1</a></span></dt>
+<dt class="label" id="rdcfe2d43dee5-1"><span class="brackets"><a class="fn-backref" href="#id30">1</a></span></dt>
 <dd><p>A. Janowczyk and A. Madabhushi, “Deep learning for digital pathology
 image analysis: A comprehensive tutorial with selected use cases,” J
 Pathol Inform, vol. 7, Jul. 2016, doi: 10.4103/2153-3539.186902.</p>
@@ -1551,7 +1563,7 @@ Pathol Inform, vol. 7, Jul. 2016, doi: 10.4103/2153-3539.186902.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageloader.collections.FRUNet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">FRUNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_frunet.html#FRUNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.FRUNet" title="Permalink to this definition">#</a></dt>
-<dd><p>FRU-Net: Robust Segmentation of Small Extracellular Vesicles <a class="reference internal" href="#r4af27370572d-1" id="id30">[1]</a></p>
+<dd><p>FRU-Net: Robust Segmentation of Small Extracellular Vesicles <a class="reference internal" href="#r4af27370572d-1" id="id32">[1]</a></p>
 <p>TEM images</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1591,7 +1603,7 @@ reason.</p></li>
 </ul>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="r4af27370572d-1"><span class="brackets"><a class="fn-backref" href="#id30">1</a></span></dt>
+<dt class="label" id="r4af27370572d-1"><span class="brackets"><a class="fn-backref" href="#id32">1</a></span></dt>
 <dd><p>E. Gómez-de-Mariscal, M. Maška, A. Kotrbová, V. Pospíchalová, P.
 Matula, and A. Muñoz-Barrutia, “Deep-Learning-Based Segmentation of Small
 Extracellular Vesicles in Transmission Electron Microscopy Images,”
@@ -1624,7 +1636,7 @@ Scientific Reports, vol. 9, no. 1, Art. no. 1, Sep. 2019, doi:
 <dt class="sig sig-object py" id="bioimageloader.collections.MurphyLab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">MurphyLab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_missing_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_broken_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_murphylab.html#MurphyLab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.MurphyLab" title="Permalink to this definition">#</a></dt>
 <dd><p>Nuclei Segmentation In Microscope Cell Images: A Hand-Segmented Dataset
-And Comparison Of Algorithms <a class="reference internal" href="#r392840f6ea36-1" id="id32">[1]</a></p>
+And Comparison Of Algorithms <a class="reference internal" href="#r392840f6ea36-1" id="id34">[1]</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -1645,7 +1657,7 @@ mask pairs.</p>
 </dd>
 <dt><strong>filled_mask</strong><span class="classifier">bool, default: False</span></dt><dd><p>Use saved filled masks through <cite>fill_save_mask()</cite> method instead of
 default boundary masks. If one would want to use manually modified
-masks, the annotation files should have the same name as ‘<a href="#id33"><span class="problematic" id="id34">*</span></a>.xcf’
+masks, the annotation files should have the same name as ‘<a href="#id35"><span class="problematic" id="id36">*</span></a>.xcf’
 with modified suffix by ‘.png’.</p>
 </dd>
 </dl>
@@ -1694,7 +1706,7 @@ does not have ‘borders’ layer like the others.  This one alone has
 </ul>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="r392840f6ea36-1"><span class="brackets"><a class="fn-backref" href="#id32">1</a></span></dt>
+<dt class="label" id="r392840f6ea36-1"><span class="brackets"><a class="fn-backref" href="#id34">1</a></span></dt>
 <dd><p>L. P. Coelho, A. Shariff, and R. F. Murphy, “Nuclear segmentation in
 microscope cell images: A hand-segmented dataset and comparison of
 algorithms,” in 2009 IEEE International Symposium on Biomedical Imaging:
@@ -1738,7 +1750,7 @@ closed by this algorithm (36, 40, 63).</p>
 <dt class="sig sig-object py" id="bioimageloader.collections.S_BSST265">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">S_BSST265</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_s_bsst265.html#S_BSST265"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.S_BSST265" title="Permalink to this definition">#</a></dt>
 <dd><p>An annotated fluorescence image dataset for training nuclear segmentation
-methods <a class="reference internal" href="#reb25356749b6-1" id="id36">[1]</a></p>
+methods <a class="reference internal" href="#reb25356749b6-1" id="id38">[1]</a></p>
 <p>Immuno Fluorescence (IF) images, designed for ML</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1786,7 +1798,7 @@ randomly selected nuclei in PNG format</p></li>
 </ul>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="reb25356749b6-1"><span class="brackets"><a class="fn-backref" href="#id36">1</a></span></dt>
+<dt class="label" id="reb25356749b6-1"><span class="brackets"><a class="fn-backref" href="#id38">1</a></span></dt>
 <dd><p>F. Kromp et al., “An annotated fluorescence image dataset for
 training nuclear segmentation methods,” Scientific Data, vol. 7, no. 1,
 Art. no. 1, Aug. 2020, doi: 10.1038/s41597-020-00608-w.</p>
@@ -1816,7 +1828,7 @@ Art. no. 1, Aug. 2020, doi: 10.1038/s41597-020-00608-w.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageloader.collections.TNBC">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">TNBC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cv2'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_tnbc.html#TNBC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.TNBC" title="Permalink to this definition">#</a></dt>
-<dd><p>TNBC Nuclei Segmentation Dataset <a class="reference internal" href="#r7621ea10f8ba-1" id="id38">[1]</a></p>
+<dd><p>TNBC Nuclei Segmentation Dataset <a class="reference internal" href="#r7621ea10f8ba-1" id="id40">[1]</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -1852,7 +1864,7 @@ channel axis, then divides it by the number of expected channels.</p>
 </div>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="r7621ea10f8ba-1"><span class="brackets"><a class="fn-backref" href="#id38">1</a></span></dt>
+<dt class="label" id="r7621ea10f8ba-1"><span class="brackets"><a class="fn-backref" href="#id40">1</a></span></dt>
 <dd><p>Segmentation of Nuclei in Histopathology Images by Deep Regression of
 the Distance Map, <a class="reference external" href="https://ieeexplore.ieee.org/document/8438559">https://ieeexplore.ieee.org/document/8438559</a></p>
 </dd>
@@ -1953,7 +1965,7 @@ analysis methods,” BMC Bioinformatics, vol. 10, p. 368, Nov. 2009, doi:
 <dd><p>Dictionary of pathes to annotation files</p>
 </dd></dl>
 </dd></dl>
-</div>
+</section>
 
         </article>
       </div>

@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DL: StarDist and Cellpose" href="benchmark.html" /><link rel="prev" title="ML: Data statistics with PCA" href="pca.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DL: StarDist and Cellpose" href="benchmark.html" /><link rel="prev" title="ML: Data statistics with PCA" href="pca.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>DL: Deep learning with BioImage.IO - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -462,12 +471,12 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-<script>require=requirejs;</script><div class="section" id="DL:-Deep-learning-with-BioImage.IO">
+<script>require=requirejs;</script><section id="DL:-Deep-learning-with-BioImage.IO">
 <h1>DL: Deep learning with <em>BioImage.IO</em><a class="headerlink" href="#DL:-Deep-learning-with-BioImage.IO" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://bioimage.io/">BioImageIO</a> is a fantasic project to bring ML/DL to bioimages. It is a hub for datasets and models specific to bioimage applications. We will fetch a deep neural network using its API and test it on our own images.</p>
 <p>This notebook is almost identical to <a class="reference external" href="https://github.com/bioimage-io/core-bioimage-io-python/blob/0385d873b5705779cf205106c022e559d44b8f79/example/bioimageio-core-usage.ipynb">this example</a> provided by from BioImageIO team, except for <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> part.</p>
 <p>Note that it is fine not to have GPU setup to run this notebook, but to process a lot of images it is recommended to use GPU acceleration. This model requires <a class="reference external" href="https://pytorch.org/">PyTorch</a> (<code class="docutils literal notranslate"><span class="pre">torch</span></code>) for that. Once you installed it, this notebook will automatically detect GPU(s) on your machine.</p>
-<div class="section" id="Install-dependencies-and-Imports">
+<section id="Install-dependencies-and-Imports">
 <h2>Install dependencies and Imports<a class="headerlink" href="#Install-dependencies-and-Imports" title="Permalink to this headline">#</a></h2>
 <p>We are going to use venerable <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> instead of <code class="docutils literal notranslate"><span class="pre">napari</span></code> to embed figures in this notebook, but <code class="docutils literal notranslate"><span class="pre">napari</span></code> (<a class="reference external" href="https://napari.org/">https://napari.org/</a>) is definetly a right choice!</p>
 <div class="nbinput nblast docutils container">
@@ -505,8 +514,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Load-a-model-through-bioimage.io-API">
+</section>
+<section id="Load-a-model-through-bioimage.io-API">
 <h2>Load a model through bioimage.io API<a class="headerlink" href="#Load-a-model-through-bioimage.io-API" title="Permalink to this headline">#</a></h2>
 <p>We will use a model that predicts foreground and boundaries in images of nuclei from the kaggle nucles segmentation challenge. Find the model on bioimage.io <a class="reference external" href="https://bioimage.io/#/?id=10.5072%2Fzenodo.881940">here</a> (if it does not work, click <a class="reference external" href="https://deploy-preview-199--bioimage.netlify.app/?tags=dsb&amp;id=10.5072%2Fzenodo.881940#/?tags=dsb&amp;id=10.5072%2Fzenodo.881940">this link</a>).</p>
 <p><code class="docutils literal notranslate"><span class="pre">bioimage.io</span></code> uses what they call RDF (resource description file) which contains all the necessary information of a model. We are going to use it to download the model as well as a sample image.</p>
@@ -681,8 +690,8 @@ Output with axes: ('b', 'c', 'y', 'x') and shape ImplicitOutputShape(reference_t
 The model passed all tests
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Run-model-with-a-sample-image">
+</section>
+<section id="Run-model-with-a-sample-image">
 <h2>Run model with a sample image<a class="headerlink" href="#Run-model-with-a-sample-image" title="Permalink to this headline">#</a></h2>
 <p>The model comes with a sample image. We are going to test the model with it. We can deduce from the sample image that this model would expect <code class="docutils literal notranslate"><span class="pre">(b,</span> <span class="pre">1,</span> <span class="pre">h,</span> <span class="pre">w)</span></code> shape of image(s) (number of channel being 1 means grayscale image).</p>
 <div class="nbinput nblast docutils container">
@@ -782,8 +791,8 @@ Text(0.5, 1.0, 'prediction')
 <img alt="../_images/notebooks_bioimage_io_13_1.png" src="../_images/notebooks_bioimage_io_13_1.png"/>
 </div>
 </div>
-</div>
-<div class="section" id="Run-with-bioimageloader">
+</section>
+<section id="Run-with-bioimageloader">
 <h2>Run with <em>bioimageloader</em><a class="headerlink" href="#Run-with-bioimageloader" title="Permalink to this headline">#</a></h2>
 <p>Now it’s time to show power of <code class="docutils literal notranslate"><span class="pre">bioimageloder</span></code>. We can easily iterate any images from <code class="docutils literal notranslate"><span class="pre">bioimageloader.collections</span></code>.</p>
 <p>As an example we can load <code class="docutils literal notranslate"><span class="pre">BBBC041</span></code> (<a class="reference external" href="https://bbbc.broadinstitute.org/bbbc041">https://bbbc.broadinstitute.org/bbbc041</a>) and test the model on them. Note that this dataset has RGB channel, which the model does not expect, thus it needs extra processing, especially RGBtoGray conversion. So we will pass <code class="docutils literal notranslate"><span class="pre">grayscale</span></code> argument.</p>
@@ -898,8 +907,8 @@ BBBC041   :       1208
 </div>
 </div>
 <p>Voilà !</p>
-</div>
-</div>
+</section>
+</section>
 
         </article>
       </div>

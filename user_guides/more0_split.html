@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="More: Speeding up loading by pre-parsing" href="guide_more1_speedup.html" /><link rel="prev" title="Basic: Deep learning with PyTorch" href="basic3_deep_learning_with_pytorch.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="More: Speeding up loading by pre-parsing" href="guide_more1_speedup.html" /><link rel="prev" title="Basic: Deep learning with PyTorch" href="basic3_deep_learning_with_pytorch.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.02.14.1"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>More: Split training/test set - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=a8f031f701c6af50c9919b48f173a5785af06fac" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
@@ -20,16 +21,18 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
     }
   }
 </style></head>
@@ -199,6 +202,12 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
@@ -213,12 +222,12 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="more-split-training-test-set">
+          <section id="more-split-training-test-set">
 <h1>More: Split training/test set<a class="headerlink" href="#more-split-training-test-set" title="Permalink to this headline">#</a></h1>
 <p>Some datasets (actually many) do not split training/test sets. It is up to us how to
 split. We will look at two functions, namely <a class="reference internal" href="../api/utils.html#bioimageloader.utils.random_split_dataset" title="bioimageloader.utils.random_split_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">bioimageloader.utils.random_split_dataset()</span></code></a>
 and <a class="reference internal" href="../api/utils.html#bioimageloader.utils.split_dataset_by_indices" title="bioimageloader.utils.split_dataset_by_indices"><code class="xref py py-func docutils literal notranslate"><span class="pre">bioimageloader.utils.split_dataset_by_indices()</span></code></a>.</p>
-<div class="section" id="random-split">
+<section id="random-split">
 <h2>Random split<a class="headerlink" href="#random-split" title="Permalink to this headline">#</a></h2>
 <p>Let’s pick one dataset which does not provide training/test split, for instance
 <a class="reference internal" href="../api/collections.html#bioimageloader.collections.ComputationalPathology" title="bioimageloader.collections.ComputationalPathology"><code class="xref py py-class docutils literal notranslate"><span class="pre">bioimageloader.collections.ComputationalPathology</span></code></a>. We will split it
@@ -254,8 +263,8 @@ into three parts (training/validation/test) using
 <span class="linenos">28</span><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">dset_test</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_test</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="manual-split">
+</section>
+<section id="manual-split">
 <h2>Manual split<a class="headerlink" href="#manual-split" title="Permalink to this headline">#</a></h2>
 <p>Manual split means hard-coded indices. I found it useful to have hard-coded
 indices for training/test split for all datasets and have them saved somewhere
@@ -296,8 +305,8 @@ for experiments and analyses. We will use <a class="reference internal" href="..
 <span class="linenos">34</span><span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">dset_test</span><span class="p">)</span> <span class="o">==</span> <span class="n">n_test</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
         </article>
       </div>
