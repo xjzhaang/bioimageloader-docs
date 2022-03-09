@@ -223,7 +223,7 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a></div>
 </section>
 <section id="A" class="genindex-section">
   <h2>A</h2>
@@ -257,6 +257,8 @@
           <li><a href="api/collections.html#bioimageloader.collections.MurphyLab.anno_dict">(bioimageloader.collections.MurphyLab property)</a>
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.S_BSST265.anno_dict">(bioimageloader.collections.S_BSST265 property)</a>
+</li>
+          <li><a href="api/collections.html#bioimageloader.collections.StarDist.anno_dict">(bioimageloader.collections.StarDist property)</a>
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.TNBC.anno_dict">(bioimageloader.collections.TNBC property)</a>
 </li>
@@ -400,8 +402,6 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/bioimageloader.html#bioimageloader.datasets_from_config">datasets_from_config() (in module bioimageloader)</a>
-</li>
         <li><a href="api/collections.html#bioimageloader.collections.DigitalPathology">DigitalPathology (class in bioimageloader.collections)</a>
 </li>
         <li><a href="api/collections.html#bioimageloader.collections.DSB2018">DSB2018 (class in bioimageloader.collections)</a>
@@ -471,6 +471,8 @@
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.S_BSST265.file_list">(bioimageloader.collections.S_BSST265 property)</a>
 </li>
+          <li><a href="api/collections.html#bioimageloader.collections.StarDist.file_list">(bioimageloader.collections.StarDist property)</a>
+</li>
           <li><a href="api/collections.html#bioimageloader.collections.TNBC.file_list">(bioimageloader.collections.TNBC property)</a>
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.UCSB.file_list">(bioimageloader.collections.UCSB property)</a>
@@ -539,6 +541,8 @@
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.S_BSST265.get_image">(bioimageloader.collections.S_BSST265 method)</a>
 </li>
+          <li><a href="api/collections.html#bioimageloader.collections.StarDist.get_image">(bioimageloader.collections.StarDist method)</a>
+</li>
           <li><a href="api/collections.html#bioimageloader.collections.TNBC.get_image">(bioimageloader.collections.TNBC method)</a>
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.UCSB.get_image">(bioimageloader.collections.UCSB method)</a>
@@ -574,6 +578,8 @@
           <li><a href="api/collections.html#bioimageloader.collections.MurphyLab.get_mask">(bioimageloader.collections.MurphyLab method)</a>
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.S_BSST265.get_mask">(bioimageloader.collections.S_BSST265 method)</a>
+</li>
+          <li><a href="api/collections.html#bioimageloader.collections.StarDist.get_mask">(bioimageloader.collections.StarDist method)</a>
 </li>
           <li><a href="api/collections.html#bioimageloader.collections.TNBC.get_mask">(bioimageloader.collections.TNBC method)</a>
 </li>
@@ -613,6 +619,16 @@
         <li><a href="api/batch.html#bioimageloader.batch.IterBatchDataloader">IterBatchDataloader (class in bioimageloader.batch)</a>
 </li>
         <li><a href="api/base.html#bioimageloader.base.IterDataset">IterDataset (class in bioimageloader.base)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/bioimageloader.html#bioimageloader.Config.load_datasets">load_datasets() (bioimageloader.Config method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -717,15 +733,17 @@
 </li>
         <li><a href="api/utils.html#bioimageloader.utils.split_dataset_by_indices">split_dataset_by_indices() (in module bioimageloader.utils)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/transforms.html#bioimageloader.transforms.SqueezeGrayImageCHW">SqueezeGrayImageCHW (class in bioimageloader.transforms)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/transforms.html#bioimageloader.transforms.SqueezeGrayImageHWC">SqueezeGrayImageHWC (class in bioimageloader.transforms)</a>
 </li>
         <li><a href="api/utils.html#bioimageloader.utils.stack_channels">stack_channels() (in module bioimageloader.utils)</a>
 </li>
         <li><a href="api/utils.html#bioimageloader.utils.stack_channels_to_rgb">stack_channels_to_rgb() (in module bioimageloader.utils)</a>
+</li>
+        <li><a href="api/collections.html#bioimageloader.collections.StarDist">StarDist (class in bioimageloader.collections)</a>
 </li>
     </ul></td>
   </tr></table>
