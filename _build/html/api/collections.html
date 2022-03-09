@@ -1826,9 +1826,84 @@ Art. no. 1, Aug. 2020, doi: 10.1038/s41597-020-00608-w.</p>
 </dd></dl>
 </dd></dl>
 <dl class="py class">
+<dt class="sig sig-object py" id="bioimageloader.collections.StarDist">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">StarDist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cv2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_stardist.html#StarDist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.StarDist" title="Permalink to this definition">#</a></dt>
+<dd><p>Training set for StarDist <a class="reference internal" href="#r8947d9710bf3-1" id="id40">[1]</a>, <a class="reference internal" href="#r8947d9710bf3-2" id="id41">[2]</a></p>
+<p>StarDist data is a subset of Data Science Bowl 2018 <a class="reference internal" href="#r8947d9710bf3-3" id="id42">[3]</a></p>
+<p>Find the nuclei in divergent images to advance medical discovery</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>root_dir</strong><span class="classifier">str</span></dt><dd><p>Path to root directory</p>
+</dd>
+<dt><strong>output</strong><span class="classifier">{‘both’, ‘image’, ‘mask’}, default: ‘both’</span></dt><dd><p>Change outputs. ‘both’ returns {‘image’: image, ‘mask’: mask}.</p>
+</dd>
+<dt><strong>transforms</strong><span class="classifier">albumentations.Compose, optional</span></dt><dd><p>An instance of Compose (albumentations pkg) that defines augmentation in
+sequence.</p>
+</dd>
+<dt><strong>num_calls</strong><span class="classifier">int, optional</span></dt><dd><p>Useful when <code class="docutils literal notranslate"><span class="pre">transforms</span></code> is set. Define the total length of the
+dataset. If it is set, it overwrites <code class="docutils literal notranslate"><span class="pre">__len__</span></code>.</p>
+</dd>
+<dt><strong>grayscale</strong><span class="classifier">bool, default: False</span></dt><dd><p>Convert images to grayscale</p>
+</dd>
+<dt><strong>grayscale_mode</strong><span class="classifier">{‘cv2’, ‘equal’, Sequence[float]}, default: ‘cv2’</span></dt><dd><p>How to convert to grayscale. If set to ‘cv2’, it follows opencv
+implementation. Else if set to ‘equal’, it sums up values along channel
+axis, then divides it by the number of expected channels.</p>
+</dd>
+<dt><strong>training</strong><span class="classifier">bool, default: True</span></dt><dd><p>Load training set if True, else load testing one</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#bioimageloader.collections.DSB2018" title="bioimageloader.collections.DSB2018"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSB2018</span></code></a></dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaskDataset</span></code></dt><dd><p>Super class</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dataset</span></code></dt><dd><p>Base class</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetInterface</span></code></dt><dd><p>Interface</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="r8947d9710bf3-1"><span class="brackets"><a class="fn-backref" href="#id40">1</a></span></dt>
+<dd><p><a class="reference external" href="https://arxiv.org/abs/1806.03535">https://arxiv.org/abs/1806.03535</a></p>
+</dd>
+<dt class="label" id="r8947d9710bf3-2"><span class="brackets"><a class="fn-backref" href="#id41">2</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/stardist/stardist/releases/download/0.1.0/dsb2018.zip">https://github.com/stardist/stardist/releases/download/0.1.0/dsb2018.zip</a></p>
+</dd>
+<dt class="label" id="r8947d9710bf3-3"><span class="brackets"><a class="fn-backref" href="#id42">3</a></span></dt>
+<dd><p><a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018/">https://www.kaggle.com/c/data-science-bowl-2018/</a></p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bioimageloader.collections.StarDist.get_image">
+<span class="sig-name descname"><span class="pre">get_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../_modules/bioimageloader/collections/_stardist.html#StarDist.get_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.StarDist.get_image" title="Permalink to this definition">#</a></dt>
+<dd><p>Get an image</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bioimageloader.collections.StarDist.get_mask">
+<span class="sig-name descname"><span class="pre">get_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../_modules/bioimageloader/collections/_stardist.html#StarDist.get_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.StarDist.get_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a mask</p>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="bioimageloader.collections.StarDist.file_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bioimageloader.collections.StarDist.file_list" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of pathes to image files</p>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="bioimageloader.collections.StarDist.anno_dict">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">anno_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#bioimageloader.collections.StarDist.anno_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of pathes to annotation files</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
 <dt class="sig sig-object py" id="bioimageloader.collections.TNBC">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.collections.</span></span><span class="sig-name descname"><span class="pre">TNBC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_calls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cv2'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/collections/_tnbc.html#TNBC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.collections.TNBC" title="Permalink to this definition">#</a></dt>
-<dd><p>TNBC Nuclei Segmentation Dataset <a class="reference internal" href="#r7621ea10f8ba-1" id="id40">[1]</a></p>
+<dd><p>TNBC Nuclei Segmentation Dataset <a class="reference internal" href="#r7621ea10f8ba-1" id="id46">[1]</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -1864,7 +1939,7 @@ channel axis, then divides it by the number of expected channels.</p>
 </div>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="r7621ea10f8ba-1"><span class="brackets"><a class="fn-backref" href="#id40">1</a></span></dt>
+<dt class="label" id="r7621ea10f8ba-1"><span class="brackets"><a class="fn-backref" href="#id46">1</a></span></dt>
 <dd><p>Segmentation of Nuclei in Histopathology Images by Deep Regression of
 the Distance Map, <a class="reference external" href="https://ieeexplore.ieee.org/document/8438559">https://ieeexplore.ieee.org/document/8438559</a></p>
 </dd>

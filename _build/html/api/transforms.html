@@ -241,15 +241,16 @@ shape of images as input. It converts (C, H, W) to (C, H, W).</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">datasets_from_config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s1">'config.yml'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transforms</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
 <span class="go">        HWCToCHW(),</span>
 <span class="go">    ])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first image</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(3, H, W)</span>
 </pre></div>
@@ -285,7 +286,7 @@ W) to (1, H, W).</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">datasets_from_config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s1">'config.yml'</span><span class="p">)</span>
@@ -293,8 +294,9 @@ W) to (1, H, W).</p>
 <span class="go">        HWCToCHW(),</span>
 <span class="go">        SqueezeGrayImageCHW(),</span>
 <span class="go">    ])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first image</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(1, H, W)</span>
 </pre></div>
@@ -305,8 +307,9 @@ require. But use <code class="docutils literal notranslate"><span class="pre">Sq
 <span class="go">        HWCToCHW(),</span>
 <span class="go">        SqueezeGrayImageCHW(keep_dim=False),  # drop channel axis</span>
 <span class="go">    ])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first image</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(H, W)</span>
 </pre></div>
@@ -340,15 +343,16 @@ from (H, W, 3) to (H, W).</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">datasets_from_config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="s1">'config.yml'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transforms</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
 <span class="go">        SqueezeGrayImageHWC(),</span>
 <span class="go">    ])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select only the first image</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(H, W)</span>
 </pre></div>

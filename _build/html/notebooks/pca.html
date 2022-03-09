@@ -513,8 +513,7 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
 
-<span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="n">datasets_from_config</span><span class="p">,</span> <span class="n">ConcatDataset</span><span class="p">,</span>
-                            <span class="n">BatchDataloader</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ConcatDataset</span><span class="p">,</span> <span class="n">BatchDataloader</span>
 <span class="kn">from</span> <span class="nn">bioimageloader.utils</span> <span class="kn">import</span> <span class="n">random_split_dataset</span>
 <span class="kn">from</span> <span class="nn">bioimageloader.plots</span> <span class="kn">import</span> <span class="n">cycle_colors</span><span class="p">,</span> <span class="n">to_hex_color</span>
 </pre></div>
@@ -553,7 +552,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cfg = {</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># _cfg = {</span>
 <span class="c1">#     'BBBC007': {</span>
 <span class="c1">#         'root_dir': '../Data/bbbc/007',</span>
 <span class="c1">#         'output': 'image',</span>
@@ -566,6 +565,7 @@ div.rendered_html tbody tr:hover {
 <span class="c1">#         'root_dir': '../Data/bbbc/013',</span>
 <span class="c1">#     },</span>
 <span class="c1"># }</span>
+<span class="c1"># cfg = Config.from_dict(_cfg)</span>
 </pre></div>
 </div>
 </div>
@@ -575,7 +575,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resize</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
-<span class="n">datasets</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">resize</span><span class="p">)</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">transforms</span><span class="o">=</span><span class="n">resize</span><span class="p">)</span>
 <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">dset</span><span class="p">)</span> <span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">lengths</span><span class="p">),</span> <span class="n">lengths</span><span class="p">)</span>
 </pre></div>

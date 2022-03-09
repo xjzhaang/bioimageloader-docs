@@ -247,14 +247,15 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import albumentations as A</span>
-<span class="sd">    &gt;&gt;&gt; from bioimageloader import Config, datasets_from_config</span>
+<span class="sd">    &gt;&gt;&gt; from bioimageloader import Config</span>
 
 <span class="sd">    &gt;&gt;&gt; cfg = Config('config.yml')</span>
 <span class="sd">    &gt;&gt;&gt; transforms = A.Compose([</span>
 <span class="sd">            HWCToCHW(),</span>
 <span class="sd">        ])</span>
-<span class="sd">    &gt;&gt;&gt; dataset = datasets_from_config(cfg, transforms=transforms)</span>
-<span class="sd">    &gt;&gt;&gt; data = dataset[0]</span>
+<span class="sd">    &gt;&gt;&gt; datasets = cfg.load_datasets(transforms=transforms)</span>
+<span class="sd">    &gt;&gt;&gt; dset = datasets[0]  # select only the first dataset</span>
+<span class="sd">    &gt;&gt;&gt; data = dset[0]  # select only the first image</span>
 <span class="sd">    &gt;&gt;&gt; print(data['image'].shape)</span>
 <span class="sd">    (3, H, W)</span>
 
@@ -292,15 +293,16 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import albumentations as A</span>
-<span class="sd">    &gt;&gt;&gt; from bioimageloader import Config, datasets_from_config</span>
+<span class="sd">    &gt;&gt;&gt; from bioimageloader import Config</span>
 
 <span class="sd">    &gt;&gt;&gt; cfg = Config('config.yml')</span>
 <span class="sd">    &gt;&gt;&gt; transforms = A.Compose([</span>
 <span class="sd">            HWCToCHW(),</span>
 <span class="sd">            SqueezeGrayImageCHW(),</span>
 <span class="sd">        ])</span>
-<span class="sd">    &gt;&gt;&gt; dataset = datasets_from_config(cfg, transforms=transforms)</span>
-<span class="sd">    &gt;&gt;&gt; data = dataset[0]</span>
+<span class="sd">    &gt;&gt;&gt; datasets = cfg.load_datasets(transforms=transforms)</span>
+<span class="sd">    &gt;&gt;&gt; dset = datasets[0]  # select only the first dataset</span>
+<span class="sd">    &gt;&gt;&gt; data = dset[0]  # select only the first image</span>
 <span class="sd">    &gt;&gt;&gt; print(data['image'].shape)</span>
 <span class="sd">    (1, H, W)</span>
 
@@ -311,8 +313,9 @@
 <span class="sd">            HWCToCHW(),</span>
 <span class="sd">            SqueezeGrayImageCHW(keep_dim=False),  # drop channel axis</span>
 <span class="sd">        ])</span>
-<span class="sd">    &gt;&gt;&gt; dataset = datasets_from_config(cfg, transforms=transforms)</span>
-<span class="sd">    &gt;&gt;&gt; data = dataset[0]</span>
+<span class="sd">    &gt;&gt;&gt; datasets = cfg.load_datasets(transforms=transforms)</span>
+<span class="sd">    &gt;&gt;&gt; dset = datasets[0]  # select only the first dataset</span>
+<span class="sd">    &gt;&gt;&gt; data = dset[0]  # select only the first image</span>
 <span class="sd">    &gt;&gt;&gt; print(data['image'].shape)</span>
 <span class="sd">    (H, W)</span>
 
@@ -363,14 +366,15 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import albumentations as A</span>
-<span class="sd">    &gt;&gt;&gt; from bioimageloader import Config, datasets_from_config</span>
+<span class="sd">    &gt;&gt;&gt; from bioimageloader import Config</span>
 
 <span class="sd">    &gt;&gt;&gt; cfg = Config('config.yml')</span>
 <span class="sd">    &gt;&gt;&gt; transforms = A.Compose([</span>
 <span class="sd">            SqueezeGrayImageHWC(),</span>
 <span class="sd">        ])</span>
-<span class="sd">    &gt;&gt;&gt; dataset = datasets_from_config(cfg, transforms=transforms)</span>
-<span class="sd">    &gt;&gt;&gt; data = dataset[0]</span>
+<span class="sd">    &gt;&gt;&gt; datasets = cfg.load_datasets(transforms=transforms)</span>
+<span class="sd">    &gt;&gt;&gt; dset = datasets[0]  # select only the first dataset</span>
+<span class="sd">    &gt;&gt;&gt; data = dset[0]  # select only the first image</span>
 <span class="sd">    &gt;&gt;&gt; print(data['image'].shape)</span>
 <span class="sd">    (H, W)</span>
 

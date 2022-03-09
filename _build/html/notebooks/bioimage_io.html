@@ -508,8 +508,7 @@ div.rendered_html tbody tr:hover {
 
 <span class="kn">from</span> <span class="nn">bioimageio.core.prediction_pipeline</span> <span class="kn">import</span> <span class="n">create_prediction_pipeline</span>
 
-<span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="n">datasets_from_config</span><span class="p">,</span> <span class="n">ConcatDataset</span><span class="p">,</span>
-                            <span class="n">BatchDataloader</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">ConcatDataset</span><span class="p">,</span> <span class="n">BatchDataloader</span>
 <span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">HWCToCHW</span><span class="p">,</span> <span class="n">SqueezeGrayImageCHW</span>
 </pre></div>
 </div>
@@ -807,6 +806,7 @@ Text(0.5, 1.0, 'prediction')
         <span class="s1">'grayscale'</span><span class="p">:</span> <span class="kc">True</span>
     <span class="p">},</span>
 <span class="p">}</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -839,7 +839,7 @@ Text(0.5, 1.0, 'prediction')
     <span class="n">SqueezeGrayImageCHW</span><span class="p">()</span>  <span class="c1"># from (3, h, w) to (1, h, w)</span>
 <span class="p">])</span>
 
-<span class="n">datasets</span> <span class="o">=</span> <span class="n">datasets_from_config</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">load_datasets</span><span class="p">(</span><span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">dset</span><span class="o">.</span><span class="n">acronym</span><span class="si">:</span><span class="s1">10s</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dset</span><span class="p">)</span><span class="si">:</span><span class="s1">10d</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>

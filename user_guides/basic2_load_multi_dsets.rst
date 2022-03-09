@@ -87,13 +87,13 @@ You can make a yaml file to manage parameters for multiple datasets in one place
    :linenos:
 
    import albumentations as A
-   from bioimageloader import Config, datasets_from_config
+   from bioimageloader import Config
 
    # parse config
    config = Config('./config/config.yml')
 
    # 1. load datsets without transforms
-   datasets: list[Dataset] = datasets_from_config(config)
+   datasets: list[Dataset] = config.load_datasets()
    print([dset.acronym for dset in datsets])
    # ['DSB2018', 'TNBC', 'BBBC016']
 
@@ -103,7 +103,7 @@ You can make a yaml file to manage parameters for multiple datasets in one place
        A.HorizontalFlip(p=0.5),
        A.RandomBrightnessContrast(p=0.2),
    ])
-   datasets_transformed = datasets_from_config(config, transforms)
+   datasets_transformed = config.load_datasets(transforms)
 
    # 3. load datsets with a set of transforms for each dataset
    transforms_dsb2018 = A.Compose([
@@ -127,4 +127,4 @@ You can make a yaml file to manage parameters for multiple datasets in one place
        'TNBC': transforms_tnbc,
        'BBBC016': transforms_bbbc016,
    }
-   datasets_transformed_indv = datasets_from_config(config, transforms_indv)
+   datasets_transformed_indv = config.load_datasets(transforms_indv)
