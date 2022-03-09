@@ -223,7 +223,6 @@
         <article role="main">
           <h1>Source code for bioimageloader.config</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">albumentations</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
@@ -286,33 +285,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
-
-
-<span class="c1"># def datasets_from_config(</span>
-<span class="c1">#     config: Config,</span>
-<span class="c1">#     transforms: Optional[Union[albumentations.Compose, Dict[str, albumentations.Compose]]] = None,</span>
-<span class="c1"># ) -&gt; List[Dataset]:</span>
-<span class="c1">#     """Load multiple datasets from a yaml file</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     config : configuration object</span>
-<span class="c1">#         Config instance that contains acronyms and arguments to initialize</span>
-<span class="c1">#         each dataset</span>
-<span class="c1">#     transforms : albumentations.Compose or dictionary, optional</span>
-<span class="c1">#         Either apply a single composed transformations for every datasets or</span>
-<span class="c1">#         pass a dictionary that defines transformations for each dataset with</span>
-<span class="c1">#         keys being the acronyms of datsets.</span>
-
-<span class="c1">#     """</span>
-<span class="c1">#     warnings.warn("Use `Config.load_datasets()` instead", DeprecationWarning)</span>
-<span class="c1">#     datasets: List[Dataset] = []</span>
-<span class="c1">#     for dataset, kwargs in config.items():</span>
-<span class="c1">#         if isinstance(transforms, dict):</span>
-<span class="c1">#             exec(f'datasets.append({dataset}(transforms=transforms[dataset], **kwargs))')</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             exec(f'datasets.append({dataset}(transforms=transforms, **kwargs))')</span>
-<span class="c1">#     return datasets</span>
 </pre></div>
         </article>
       </div>

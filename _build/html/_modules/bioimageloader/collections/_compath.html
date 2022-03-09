@@ -249,7 +249,7 @@
 <span class="sd">    transforms : albumentations.Compose, optional</span>
 <span class="sd">        An instance of Compose (albumentations pkg) that defines augmentation in</span>
 <span class="sd">        sequence.</span>
-<span class="sd">    num_calls : int, optional</span>
+<span class="sd">    num_samples : int, optional</span>
 <span class="sd">        Useful when ```transforms``` is set. Define the total length of the</span>
 <span class="sd">        dataset. If it is set, it overwrites ``__len__``.</span>
 <span class="sd">    grayscale : bool, default: False</span>
@@ -273,8 +273,8 @@
 <span class="sd">      long time to parse and to reconstruct mask images dynamically during</span>
 <span class="sd">      training. Drawing masks beforehand makes training much faster. Use</span>
 <span class="sd">      ``mask_tif`` in that case.</span>
-<span class="sd">    - When ``augmenters`` is provided, set the ``num_calls`` argument</span>
-<span class="sd">      30x1000x1000 -&gt; 16x30=480 patches. Thus, the default ``num_calls=720``</span>
+<span class="sd">    - When ``augmenters`` is provided, set the ``num_samples`` argument</span>
+<span class="sd">      30x1000x1000 -&gt; 16x30=480 patches. Thus, the default ``num_samples=720``</span>
 <span class="sd">      (x1.5)</span>
 <span class="sd">    - dtype of 'gt' is int16. However, to make batching easier, it will be</span>
 <span class="sd">      casted to float32</span>
@@ -305,7 +305,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'both'</span><span class="p">,</span>
         <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">albumentations</span><span class="o">.</span><span class="n">Compose</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">num_calls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_samples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">grayscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">grayscale_mode</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">'cv2'</span><span class="p">,</span>
         <span class="c1"># specific to this dataset</span>
@@ -315,7 +315,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_root_dir</span> <span class="o">=</span> <span class="n">root_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span> <span class="o">=</span> <span class="n">output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transforms</span> <span class="o">=</span> <span class="n">transforms</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_num_calls</span> <span class="o">=</span> <span class="n">num_calls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples</span> <span class="o">=</span> <span class="n">num_samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grayscale</span> <span class="o">=</span> <span class="n">grayscale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grayscale_mode</span> <span class="o">=</span> <span class="n">grayscale_mode</span>
         <span class="c1"># specific to this dataset</span>

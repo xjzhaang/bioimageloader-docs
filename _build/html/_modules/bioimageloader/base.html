@@ -306,7 +306,7 @@
 <span class="sd">    root_dir</span>
 <span class="sd">    output</span>
 <span class="sd">    transforms</span>
-<span class="sd">    num_calls</span>
+<span class="sd">    num_samples</span>
 <span class="sd">    grayscale : optional</span>
 <span class="sd">    grayscale_mode : optional</span>
 <span class="sd">    num_channels : optional</span>
@@ -330,9 +330,9 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acronym</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Length of dataset. Can be overwritten with ``num_calls``"""</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_calls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_calls</span>
+        <span class="sd">"""Length of dataset. Can be overwritten with ``num_samples``"""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -360,10 +360,10 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_calls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">num_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="sd">"""Number of calls that will override __len__"""</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'_num_calls'</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'_num_calls'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'_num_samples'</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'_num_samples'</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
@@ -413,15 +413,15 @@
 <span class="sd">        Other Parameters</span>
 <span class="sd">        ----------------</span>
 <span class="sd">        self._transforms</span>
-<span class="sd">        self._num_calls</span>
+<span class="sd">        self._num_samples</span>
 <span class="sd">        self._grayscale</span>
 <span class="sd">        self._grayscale_mode</span>
 <span class="sd">        self._num_channels</span>
 
 <span class="sd">        """</span>
-        <span class="c1"># Randomize `ind` when `num_calls` set</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_calls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_calls</span><span class="p">:</span>
+        <span class="c1"># Randomize `ind` when `num_samples` set</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">'list index out of range'</span><span class="p">)</span>
             <span class="n">ind_max</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">)</span>
             <span class="n">ind</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ind_max</span><span class="p">)</span>
@@ -566,15 +566,15 @@
 <span class="sd">        Other Parameters</span>
 <span class="sd">        ----------------</span>
 <span class="sd">        self._transforms</span>
-<span class="sd">        self._num_calls</span>
+<span class="sd">        self._num_samples</span>
 <span class="sd">        self._grayscale</span>
 <span class="sd">        self._grayscale_mode</span>
 <span class="sd">        self._num_channels</span>
 
 <span class="sd">        """</span>
-        <span class="c1"># Randomize `ind` when `num_calls` set</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_calls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_calls</span><span class="p">:</span>
+        <span class="c1"># Randomize `ind` when `num_samples` set</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">'list index out of range'</span><span class="p">)</span>
             <span class="n">ind_max</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">!=</span> <span class="s1">'image'</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anno_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
