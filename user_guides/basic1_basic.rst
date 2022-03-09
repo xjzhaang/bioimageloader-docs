@@ -37,8 +37,8 @@ transforms and their supported targets
 albumentations library.
 
 Applying transformations often implies random shuffling and you may want to sample more
-from datasets. Once you pass ``num_calls``, it will automatically perform shuffle and
-set the sampling number to ``num_calls``.
+from datasets. Once you pass ``num_samples``, it will automatically perform shuffle and
+set the sampling number to ``num_samples``.
 
 .. code-block:: python
    :linenos:
@@ -51,9 +51,9 @@ set the sampling number to ``num_calls``.
        A.HorizontalFlip(p=0.5),
        A.RandomBrightnessContrast(p=0.2),
    ])
-   num_calls = 2000  # DSB2018 training set has 670 images
+   num_samples = 2000  # DSB2018 training set has 670 images
 
-   dsb2018 = DSB2018('./data/DSB2018', transforms=transforms, num_calls=num_calls)
+   dsb2018 = DSB2018('./data/DSB2018', transforms=transforms, num_samples=num_samples)
 
    # iterate transformed images
    data: dict[str, numpy.ndarray]

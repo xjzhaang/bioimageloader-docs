@@ -69,7 +69,7 @@ from ``scipy`` package.
            *,
            output: str = 'both',
            transforms: Optional[albumentations.Compose] = None,
-           num_calls: Optional[int] = None,
+           num_samples: Optional[int] = None,
            # specific to this dataset
            image_ch: Sequence[str] = ('DNA', 'actin',),
            anno_ch: Sequence[str] = ('DNA',),
@@ -87,7 +87,7 @@ from ``scipy`` package.
            transforms : albumentations.Compose, optional
                An instance of Compose (albumentations pkg) that defines
                augmentation in sequence.
-           num_calls : int, optional
+           num_samples : int, optional
                Useful when ``transforms`` is set. Define the total length of the
                dataset. If it is set, it overwrites ``__len__``.
            image_ch : {'DNA', 'actin'} (default: ('DNA', 'actin'))
@@ -110,7 +110,7 @@ from ``scipy`` package.
                root_dir=root_dir,
                output=output,
                transforms=transforms,
-               num_calls=num_calls,
+               num_samples=num_samples,
                image_ch=image_ch,
                anno_ch=anno_ch,
                **kwargs
