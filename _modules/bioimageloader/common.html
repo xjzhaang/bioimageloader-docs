@@ -300,7 +300,7 @@
 <span class="sd">    root_dir</span>
 <span class="sd">    output : optional</span>
 <span class="sd">    transforms : optional</span>
-<span class="sd">    num_calls : optional</span>
+<span class="sd">    num_samples : optional</span>
 <span class="sd">    grayscale : optional</span>
 <span class="sd">    grayscale_mode : optional</span>
 <span class="sd">    num_channels : optional</span>
@@ -331,7 +331,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">albumentations</span><span class="o">.</span><span class="n">Compose</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">num_calls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_samples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">grayscale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">grayscale_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
@@ -341,7 +341,7 @@
         <span class="c1"># keywords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_ifvalue</span><span class="p">(</span><span class="s1">'_output'</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_ifvalue</span><span class="p">(</span><span class="s1">'_transforms'</span><span class="p">,</span> <span class="n">transforms</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_ifvalue</span><span class="p">(</span><span class="s1">'_num_calls'</span><span class="p">,</span> <span class="n">num_calls</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_ifvalue</span><span class="p">(</span><span class="s1">'_num_samples'</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_ifvalue</span><span class="p">(</span><span class="s1">'_grayscale'</span><span class="p">,</span> <span class="n">grayscale</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_ifvalue</span><span class="p">(</span><span class="s1">'_grayscale_mode'</span><span class="p">,</span> <span class="n">grayscale_mode</span><span class="p">)</span>
         <span class="c1"># count # of instances</span>
@@ -379,7 +379,7 @@
 <span class="sd">    root_dir</span>
 <span class="sd">    output : optional</span>
 <span class="sd">    transforms : optional</span>
-<span class="sd">    num_calls : optional</span>
+<span class="sd">    num_samples : optional</span>
 <span class="sd">    grayscale : optional</span>
 <span class="sd">    grayscale_mode : optional</span>
 <span class="sd">    num_channels : optional</span>
@@ -412,7 +412,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">albumentations</span><span class="o">.</span><span class="n">Compose</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">num_calls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_samples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">grayscale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">grayscale_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
@@ -421,7 +421,7 @@
             <span class="n">root_dir</span><span class="o">=</span><span class="n">root_dir</span><span class="p">,</span>
             <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
             <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span>
-            <span class="n">num_calls</span><span class="o">=</span><span class="n">num_calls</span><span class="p">,</span>
+            <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">,</span>
             <span class="n">grayscale</span><span class="o">=</span><span class="n">grayscale</span><span class="p">,</span>
             <span class="n">grayscale_mode</span><span class="o">=</span><span class="n">grayscale_mode</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span>

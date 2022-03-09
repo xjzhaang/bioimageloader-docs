@@ -246,7 +246,7 @@
 <span class="sd">    transforms : albumentations.Compose, optional</span>
 <span class="sd">        An instance of Compose (albumentations pkg) that defines</span>
 <span class="sd">        augmentation in sequence.</span>
-<span class="sd">    num_calls : int, optional</span>
+<span class="sd">    num_samples : int, optional</span>
 <span class="sd">        Useful when ``transforms`` is set. Define the total length of the</span>
 <span class="sd">        dataset. If it is set, it overwrites ``__len__``.</span>
 <span class="sd">    grayscale : bool, default: False</span>
@@ -267,7 +267,7 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    - 32 'benign', 26 'malignant' images (58 images in total)</span>
-<span class="sd">    - 58x768x896 -&gt; ~600 patches. Thus, the defulat `num_calls=900` (x1.5).</span>
+<span class="sd">    - 58x768x896 -&gt; ~600 patches. Thus, the defulat `num_samples=900` (x1.5).</span>
 <span class="sd">    - Images are not fully annotated</span>
 
 <span class="sd">    References</span>
@@ -286,7 +286,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'both'</span><span class="p">,</span>
         <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">albumentations</span><span class="o">.</span><span class="n">Compose</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">num_calls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_samples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">grayscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">grayscale_mode</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">'cv2'</span><span class="p">,</span>
         <span class="c1"># specific to this dataset</span>
@@ -296,7 +296,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_root_dir</span> <span class="o">=</span> <span class="n">root_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span> <span class="o">=</span> <span class="n">output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transforms</span> <span class="o">=</span> <span class="n">transforms</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_num_calls</span> <span class="o">=</span> <span class="n">num_calls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples</span> <span class="o">=</span> <span class="n">num_samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grayscale</span> <span class="o">=</span> <span class="n">grayscale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grayscale_mode</span> <span class="o">=</span> <span class="n">grayscale_mode</span>
         <span class="c1"># specific to this dataset</span>
