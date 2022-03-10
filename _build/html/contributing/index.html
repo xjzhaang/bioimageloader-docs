@@ -289,6 +289,28 @@ always follow is “Module imported but unused (F401)”.</p>
 </li>
 </ul>
 </section>
+<section id="adding-a-new-collection">
+<h2>Adding a new collection<a class="headerlink" href="#adding-a-new-collection" title="Permalink to this headline">#</a></h2>
+<p>Collections are the core value of <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>. Thank you for considering
+contribution! Please be aware that every collections that <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> provides
+should be public and reachable by all potential users.</p>
+<p>After writing a new collection, please follow below steps,</p>
+<ol class="arabic simple">
+<li><p>Make sure it has docstrings. Place it under the directory <code class="docutils literal notranslate"><span class="pre">bioimageloader/collections</span></code>.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">bioimageloader.collections.__init__</span></code> module</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">configs/all_collections.yml</span></code> file</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">docs/_notebooks/_plots.ipynb</span></code> to update histogram in <a class="reference internal" href="../catalogue/index.html"><span class="doc">Collection Catalogue</span></a>.
+And sample 2 images (and 2 annotation images, if they exist) place them under
+<code class="docutils literal notranslate"><span class="pre">docs/_static/sample_images</span></code>. Sample images will be displayed at
+<a class="reference external" href="../_static/table_maskdataset.html">collection overview table</a>, once you compile
+docs.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">docs/_static/table_maskdataset.md</span></code> and <code class="docutils literal notranslate"><span class="pre">docs/_static/table_maskdataset.html.orig</span></code>,
+following <code class="docutils literal notranslate"><span class="pre">docs/README.md</span></code></p></li>
+<li><p>Compile docs and check if everything is okay</p></li>
+<li><p>Make a pull request in <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader">both library repo</a>
+and <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader-docs">docs repo</a>.</p></li>
+</ol>
+</section>
 </section>
 
         </article>
@@ -348,6 +370,7 @@ always follow is “Module imported but unused (F401)”.</p>
 <li><a class="reference internal" href="#">Contributing</a><ul>
 <li><a class="reference internal" href="#test">Test</a></li>
 <li><a class="reference internal" href="#code-convention">Code convention</a></li>
+<li><a class="reference internal" href="#adding-a-new-collection">Adding a new collection</a></li>
 </ul>
 </li>
 </ul>
