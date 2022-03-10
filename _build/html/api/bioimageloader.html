@@ -256,7 +256,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="bioimageloader.Config.load_datasets">
-<span class="sig-name descname"><span class="pre">load_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="base.html#bioimageloader.base.Dataset" title="bioimageloader.base.Dataset"><span class="pre">bioimageloader.base.Dataset</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/bioimageloader/config.html#Config.load_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.Config.load_datasets" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">albumentations.core.composition.Compose</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">bioimageloader.types.DatasetList</span></span></span><a class="reference internal" href="../_modules/bioimageloader/config.html#Config.load_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.Config.load_datasets" title="Permalink to this definition">#</a></dt>
 <dd><p>Load multiple datasets from a yaml file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -271,6 +271,27 @@ keys being the acronyms of datsets.</p>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bioimageloader.Config.replace_commonpath">
+<span class="sig-name descname"><span class="pre">replace_commonpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/config.html#Config.replace_commonpath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.Config.replace_commonpath" title="Permalink to this definition">#</a></dt>
+<dd><p>Replace common path for all <code class="docutils literal notranslate"><span class="pre">root_dir</span></code> with a new one</p>
+<p>All <code class="docutils literal notranslate"><span class="pre">root_dir</span></code> should have a commonpath. Do not put trailing ‘/’ at
+the end.</p>
+<p>You made a config with root_dir being relative path. You do not need to
+replace them manually with this method.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bioimageloader.Config.set_training">
+<span class="sig-name descname"><span class="pre">set_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/config.html#Config.set_training"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.Config.set_training" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterate config and set all <code class="docutils literal notranslate"><span class="pre">training</span></code> to given value</p>
+<p>It only affects those that have <code class="docutils literal notranslate"><span class="pre">training</span></code> kwarg.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bioimageloader.Config.set_ouput">
+<span class="sig-name descname"><span class="pre">set_ouput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/config.html#Config.set_ouput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.Config.set_ouput" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterate config and set all <code class="docutils literal notranslate"><span class="pre">output</span></code> to given value</p>
+<p>It only affects those that have <code class="docutils literal notranslate"><span class="pre">output</span></code> kwarg.</p>
 </dd></dl>
 </dd></dl>
 </section>

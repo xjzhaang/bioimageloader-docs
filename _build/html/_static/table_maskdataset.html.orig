@@ -30,9 +30,21 @@
     <td class="tg-0pky">uint8</td>
     <td class="tg-0pky">PNG</td>
     <td class="tg-0pky">● (I)</td>
-    <td class="tg-0pky">Kaggle; Mixture of images here and there</td>
+    <td class="tg-0pky">Kaggle; Mixture of images here and there; Also known as BBBC038</td>
     <td class="tg-0pky">Data Science Bowl 2018</td>
     <td class="tg-0pky">[DSB2018](https://www.kaggle.com/c/data-science-bowl-2018)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">StarDist</td>
+    <td class="tg-0pky">(~300, ~300)</td>
+    <td class="tg-0pky">1,</td>
+    <td class="tg-0pky">497 (447/50)</td>
+    <td class="tg-0pky">uint8</td>
+    <td class="tg-0pky">TIF</td>
+    <td class="tg-0pky">● (I)</td>
+    <td class="tg-0pky">Subset of DSB2018; For StarDist model; All grayscale</td>
+    <td class="tg-0pky">StarDist - Object Detection with Star-convex Shapes</td>
+    <td class="tg-0pky">[StarDist](https://github.com/stardist/stardist/releases/download/0.1.0/dsb2018.zip)</td>
   </tr>
   <tr>
     <td class="tg-0pky">ComPath</td>

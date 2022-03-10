@@ -13,3 +13,9 @@ Mask datasets
 
 .. raw:: html
    :file: ../_static/hist_mask_collections_div.html
+
+
+Notes
+^^^^^
+- :py:class:`bioimageloader.collections.StarDist` dataset is not included here, because
+  it is a subset of :py:class:`bioimageloader.collections.DSB2018`.
