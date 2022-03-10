@@ -287,7 +287,7 @@ from <code class="docutils literal notranslate"><span class="pre">scipy</span></
 <span class="linenos"> 44</span>        <span class="o">*</span><span class="p">,</span>
 <span class="linenos"> 45</span>        <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'both'</span><span class="p">,</span>
 <span class="linenos"> 46</span>        <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">albumentations</span><span class="o">.</span><span class="n">Compose</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="linenos"> 47</span>        <span class="n">num_calls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="linenos"> 47</span>        <span class="n">num_samples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="linenos"> 48</span>        <span class="c1"># specific to this dataset</span>
 <span class="linenos"> 49</span>        <span class="n">image_ch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'DNA'</span><span class="p">,</span> <span class="s1">'actin'</span><span class="p">,),</span>
 <span class="linenos"> 50</span>        <span class="n">anno_ch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'DNA'</span><span class="p">,),</span>
@@ -305,7 +305,7 @@ from <code class="docutils literal notranslate"><span class="pre">scipy</span></
 <span class="linenos"> 62</span><span class="sd">        transforms : albumentations.Compose, optional</span>
 <span class="linenos"> 63</span><span class="sd">            An instance of Compose (albumentations pkg) that defines</span>
 <span class="linenos"> 64</span><span class="sd">            augmentation in sequence.</span>
-<span class="linenos"> 65</span><span class="sd">        num_calls : int, optional</span>
+<span class="linenos"> 65</span><span class="sd">        num_samples : int, optional</span>
 <span class="linenos"> 66</span><span class="sd">            Useful when ``transforms`` is set. Define the total length of the</span>
 <span class="linenos"> 67</span><span class="sd">            dataset. If it is set, it overwrites ``__len__``.</span>
 <span class="linenos"> 68</span><span class="sd">        image_ch : {'DNA', 'actin'} (default: ('DNA', 'actin'))</span>
@@ -328,7 +328,7 @@ from <code class="docutils literal notranslate"><span class="pre">scipy</span></
 <span class="linenos"> 85</span>            <span class="n">root_dir</span><span class="o">=</span><span class="n">root_dir</span><span class="p">,</span>
 <span class="linenos"> 86</span>            <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
 <span class="linenos"> 87</span>            <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span>
-<span class="linenos"> 88</span>            <span class="n">num_calls</span><span class="o">=</span><span class="n">num_calls</span><span class="p">,</span>
+<span class="linenos"> 88</span>            <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">,</span>
 <span class="linenos"> 89</span>            <span class="n">image_ch</span><span class="o">=</span><span class="n">image_ch</span><span class="p">,</span>
 <span class="linenos"> 90</span>            <span class="n">anno_ch</span><span class="o">=</span><span class="n">anno_ch</span><span class="p">,</span>
 <span class="linenos"> 91</span>            <span class="o">**</span><span class="n">kwargs</span>

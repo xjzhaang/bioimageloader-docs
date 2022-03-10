@@ -254,8 +254,8 @@ horizontal flip, and random contrast image augmentations. Check out <a class="re
 transforms and their supported targets</a> from
 albumentations library.</p>
 <p>Applying transformations often implies random shuffling and you may want to sample more
-from datasets. Once you pass <code class="docutils literal notranslate"><span class="pre">num_calls</span></code>, it will automatically perform shuffle and
-set the sampling number to <code class="docutils literal notranslate"><span class="pre">num_calls</span></code>.</p>
+from datasets. Once you pass <code class="docutils literal notranslate"><span class="pre">num_samples</span></code>, it will automatically perform shuffle and
+set the sampling number to <code class="docutils literal notranslate"><span class="pre">num_samples</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
 <span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">bioimageloader.collections</span> <span class="kn">import</span> <span class="n">DSB2018</span>
 <span class="linenos"> 3</span>
@@ -264,9 +264,9 @@ set the sampling number to <code class="docutils literal notranslate"><span clas
 <span class="linenos"> 6</span>    <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
 <span class="linenos"> 7</span>    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
 <span class="linenos"> 8</span><span class="p">])</span>
-<span class="linenos"> 9</span><span class="n">num_calls</span> <span class="o">=</span> <span class="mi">2000</span>  <span class="c1"># DSB2018 training set has 670 images</span>
+<span class="linenos"> 9</span><span class="n">num_samples</span> <span class="o">=</span> <span class="mi">2000</span>  <span class="c1"># DSB2018 training set has 670 images</span>
 <span class="linenos">10</span>
-<span class="linenos">11</span><span class="n">dsb2018</span> <span class="o">=</span> <span class="n">DSB2018</span><span class="p">(</span><span class="s1">'./data/DSB2018'</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_calls</span><span class="o">=</span><span class="n">num_calls</span><span class="p">)</span>
+<span class="linenos">11</span><span class="n">dsb2018</span> <span class="o">=</span> <span class="n">DSB2018</span><span class="p">(</span><span class="s1">'./data/DSB2018'</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
 <span class="linenos">12</span>
 <span class="linenos">13</span><span class="c1"># iterate transformed images</span>
 <span class="linenos">14</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>

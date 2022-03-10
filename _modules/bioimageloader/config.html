@@ -222,13 +222,17 @@
         </div>
         <article role="main">
           <h1>Source code for bioimageloader.config</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
+<span></span><span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">albumentations</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">.collections</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">DatasetList</span>
 
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../api/bioimageloader.html#bioimageloader.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -257,7 +261,7 @@
 <div class="viewcode-block" id="Config.load_datasets"><a class="viewcode-back" href="../../api/bioimageloader.html#bioimageloader.Config.load_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">load_datasets</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">transforms</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">albumentations</span><span class="o">.</span><span class="n">Compose</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">albumentations</span><span class="o">.</span><span class="n">Compose</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dataset</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DatasetList</span><span class="p">:</span>
         <span class="sd">"""Load multiple datasets from a yaml file</span>
 
 <span class="sd">        Parameters</span>
@@ -277,7 +281,52 @@
                 <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s1">'datasets.append(</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">(transforms=transforms[dataset], **kwargs))'</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s1">'datasets.append(</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">(transforms=transforms, **kwargs))'</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">datasets</span></div></div>
+        <span class="k">return</span> <span class="n">DatasetList</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">commonpath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">commonpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">commonpath</span><span class="p">([</span>
+            <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">'root_dir'</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="p">])</span>
+        <span class="k">return</span> <span class="n">commonpath</span>
+
+<div class="viewcode-block" id="Config.replace_commonpath"><a class="viewcode-back" href="../../api/bioimageloader.html#bioimageloader.Config.replace_commonpath">[docs]</a>    <span class="k">def</span> <span class="nf">replace_commonpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">"""Replace common path for all ``root_dir`` with a new one</span>
+
+<span class="sd">        All ``root_dir`` should have a commonpath. Do not put trailing '/' at</span>
+<span class="sd">        the end.</span>
+
+<span class="sd">        You made a config with root_dir being relative path. You do not need to</span>
+<span class="sd">        replace them manually with this method.</span>
+<span class="sd">        """</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">'root_dir'</span><span class="p">]</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">'root_dir'</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commonpath</span><span class="p">,</span> <span class="n">new</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">'/'</span><span class="p">))</span>
+        <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'commonpath'</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.set_training"><a class="viewcode-back" href="../../api/bioimageloader.html#bioimageloader.Config.set_training">[docs]</a>    <span class="k">def</span> <span class="nf">set_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="sd">"""Iterate config and set all ``training`` to given value</span>
+
+<span class="sd">        It only affects those that have ``training`` kwarg.</span>
+
+<span class="sd">        """</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="s1">'training'</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="Config.set_ouput"><a class="viewcode-back" href="../../api/bioimageloader.html#bioimageloader.Config.set_ouput">[docs]</a>    <span class="k">def</span> <span class="nf">set_ouput</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">"""Iterate config and set all ``output`` to given value</span>
+
+<span class="sd">        It only affects those that have ``output`` kwarg.</span>
+
+<span class="sd">        """</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="s1">'output'</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_Config</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
