@@ -326,6 +326,18 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="Config.set_grayscale"><a class="viewcode-back" href="../../api/bioimageloader.html#bioimageloader.Config.set_grayscale">[docs]</a>    <span class="k">def</span> <span class="nf">set_grayscale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="sd">"""Iterate config and set all ``grayscale`` to given value</span>
+
+<span class="sd">        It only affects those that have ``grayscale`` kwarg.</span>
+
+<span class="sd">        """</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="s1">'grayscale'</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div></div>
 
 
