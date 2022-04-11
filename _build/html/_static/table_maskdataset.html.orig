@@ -130,6 +130,18 @@
     <td class="tg-0pky">Cellpose: a generalist algorithm for cellular segmentation</td>
     <td class="tg-0pky">[Cellpose](https://www.cellpose.org/dataset)</td>
   </tr>
+   <tr>
+    <td class="tg-0pky">LIVECell</td>
+    <td class="tg-0pky">(520, 704)</td>
+    <td class="tg-0pky">3</td>
+    <td class="tg-0pky">5239</td>
+    <td class="tg-0pky">int32</td>
+    <td class="tg-0pky">TIF</td>
+    <td class="tg-0pky">● (I)</td>
+    <td class="tg-0pky">HUGE dataset (3727 train, 1512 test); 3 channels (R, G, B) </td>
+    <td class="tg-0pky">LIVECell dataset</td>
+    <td class="tg-0pky">[LIVECell](https://www.nature.com/articles/s41592-021-01249-6)</td>
+  </tr>
   <tr>
     <td class="tg-0pky">TNBC</td>
     <td class="tg-0pky">(512, 512)</td>
@@ -141,6 +153,18 @@
     <td class="tg-0pky">H&amp;E; Triple Negative Breast Cancer</td>
     <td class="tg-0pky">Segmentation of Nuclei in Histopathology Images by Deep Regression of the Distance Map</td>
     <td class="tg-0pky">[IEEE Xplore](https://ieeexplore.ieee.org/document/8438559)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">BBBC004</td>
+    <td class="tg-0pky">(950, 950)</td>
+    <td class="tg-0pky">3</td>
+    <td class="tg-0pky">100</td>
+    <td class="tg-0pky">uint8</td>
+    <td class="tg-0pky">TIF</td>
+    <td class="tg-0pky">● (F)</td>
+    <td class="tg-0pky">3 channels (R, G, B)</td>
+    <td class="tg-0pky">Synthetic cells</td>
+    <td class="tg-0pky">[BBBC004](https://bbbc.broadinstitute.org/BBBC004)</td>
   </tr>
   <tr>
     <td class="tg-0pky">BBBC008</td>
@@ -179,6 +203,18 @@
     <td class="tg-0pky">[BBBC007](https://bbbc.broadinstitute.org/BBBC007)</td>
   </tr>
   <tr>
+    <td class="tg-0pky">BBBC009</td>
+    <td class="tg-0pky">(600, 800)</td>
+    <td class="tg-0pky">3</td>
+    <td class="tg-0pky">5</td>
+    <td class="tg-0pky">uint8</td>
+    <td class="tg-0pky">TIF</td>
+    <td class="tg-0pky">● (O)</td>
+    <td class="tg-0pky">DIC images; 3 channels (R, G, B)</td>
+    <td class="tg-0pky">Human red blood cells</td>
+    <td class="tg-0pky">[BBBC009](https://bbbc.broadinstitute.org/BBBC009)</td>
+  </tr>
+  <tr>
     <td class="tg-0pky">BBBC018</td>
     <td class="tg-0pky">(512, 512)</td>
     <td class="tg-0pky">3</td>
@@ -189,6 +225,18 @@
     <td class="tg-0pky">Outline anno; One missing annotation (ind=55)</td>
     <td class="tg-0pky">Human HT29 colon-cancer cells (diverse phenotypes)</td>
     <td class="tg-0pky">[BBBC018](https://bbbc.broadinstitute.org/BBBC018)</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">BBBC030</td>
+    <td class="tg-0pky">(1032, 1376)</td>
+    <td class="tg-0pky">3</td>
+    <td class="tg-0pky">60</td>
+    <td class="tg-0pky">uint8</td>
+    <td class="tg-0pky">TIF</td>
+    <td class="tg-0pky">● (O)</td>
+    <td class="tg-0pky">DIC images; 3 channels (R, G, B)</td>
+    <td class="tg-0pky">Chinese Hamster Ovary Cells</td>
+    <td class="tg-0pky">[BBBC030](https://bbbc.broadinstitute.org/BBBC030)</td>
   </tr>
   <tr>
     <td class="tg-0pky">BBBC041</td>

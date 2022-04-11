@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
         <title>bioimageloader.collections._bbbc020 - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -170,6 +172,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/pca.html">ML: Data statistics with PCA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html">DL: Train Models</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../catalogue/index.html">Collection Catalogue</a></li>
@@ -229,6 +232,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">albumentations</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tifffile</span>
 
@@ -261,6 +265,9 @@
 <span class="sd">        How to convert to grayscale. If set to 'cv2', it follows opencv</span>
 <span class="sd">        implementation. Else if set to 'equal', it sums up values along channel</span>
 <span class="sd">        axis, then divides it by the number of expected channels.</span>
+<span class="sd">    image_ch : {'cell', 'nuclei'}, default: ('cell', 'nuclei')</span>
+<span class="sd">        Which channel(s) to load as image. Make sure to give it as a Sequence</span>
+<span class="sd">        when choose a single channel.</span>
 <span class="sd">    anno_ch : {'nuclei', 'cells'}, default: ('nuclei',)</span>
 <span class="sd">        Which channel(s) to load as annotation. Make sure to give it as a</span>
 <span class="sd">        Sequence when choose a single channel.</span>
@@ -284,9 +291,10 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    - Anotations are instance segmented where each of them is saved as a single</span>
-<span class="sd">      image file. It loads and aggregates them as a single array. Later label</span>
-<span class="sd">      will overlap the former ones. If you do not want this behavior, modify</span>
-<span class="sd">      subclass this class and override ``get_mask()`` method.</span>
+<span class="sd">      image file. It loads and aggregates them as a single array. Label loaded</span>
+<span class="sd">      after will override the one loaded before. If you do not want this</span>
+<span class="sd">      behavior, make a subclass out of this class and override ``get_mask()``</span>
+<span class="sd">      method, accordingly.</span>
 <span class="sd">    - 2 channels; R channel is the same as G, R==G!=B</span>
 <span class="sd">        Assign 0 to red channel</span>
 <span class="sd">    - BBBC has received a complaint that "BBB020_v1_outlines_nuclei" appears</span>
@@ -321,6 +329,7 @@
         <span class="n">grayscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">grayscale_mode</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">'equal'</span><span class="p">,</span>
         <span class="c1"># specific to this dataset</span>
+        <span class="n">image_ch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,</span> <span class="s1">'cells'</span><span class="p">),</span>
         <span class="n">anno_ch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,),</span>
         <span class="n">drop_missing_pairs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
@@ -333,7 +342,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_grayscale_mode</span> <span class="o">=</span> <span class="n">grayscale_mode</span>
         <span class="c1"># specific to this dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_channels</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># explicit for `grayscale`</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_ch</span> <span class="o">=</span> <span class="n">image_ch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">anno_ch</span> <span class="o">=</span> <span class="n">anno_ch</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">ch</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,</span> <span class="s1">'cells'</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">image_ch</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Set `image_ch` in ('nuclei', 'cells') in sequence"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">ch</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,</span> <span class="s1">'cells'</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">anno_ch</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Set `anno_ch` in ('nuclei', 'cells') in sequence"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">drop_missing_pairs</span> <span class="o">=</span> <span class="n">drop_missing_pairs</span>
@@ -345,6 +357,13 @@
         <span class="n">img</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="c1"># R==G, zero 0</span>
         <span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ch</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_ch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'cells'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'nuclei'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
         <span class="k">return</span> <span class="n">img</span></div>
 
 <div class="viewcode-block" id="BBBC020.get_mask"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.BBBC020.get_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst_p</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BundledPath</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BundledPath</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -393,6 +412,13 @@
     <span class="k">def</span> <span class="nf">file_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
         <span class="n">root_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
         <span class="n">parent</span> <span class="o">=</span> <span class="s1">'BBBC020_v1_images'</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ch</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_ch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'cells'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/*/*_c1.TIF'</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'nuclei'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/*/*_c5.TIF'</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span>
         <span class="n">file_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/*/*_(c1+c5).TIF'</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">file_list</span>
 
