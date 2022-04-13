@@ -260,6 +260,7 @@ ignore them and use whatever suits you, except automatic code formatters.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --recurse-submodules https://github.com/LaboratoryOpticsBiosciences/bioimageloader.git
 <span class="nb">cd</span> bioimageloader
 pip install --editable .<span class="o">[</span>dev<span class="o">]</span>
+pre-commit install  <span class="c1"># install pre-commit hooks</span>
 </pre></div>
 </div>
 <p>I personally do not use automatic code formatter and think that <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> does
@@ -269,6 +270,12 @@ future. Currently, I would like to have some tools to keep codes in consistent s
 <li><p>[numpydoc](<a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/">https://numpydoc.readthedocs.io/en/latest/</a>)</p>
 <blockquote>
 <div><p>(required) All docs should follow numpydoc syntax and formats</p>
+</div></blockquote>
+</li>
+<li><p>[pre-commit](<a class="reference external" href="https://pre-commit.com/">https://pre-commit.com/</a>)</p>
+<blockquote>
+<div><p>(recommended) Check hooks listed in <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> every time you make
+a git commit.</p>
 </div></blockquote>
 </li>
 <li><p>[mypy](<a class="reference external" href="https://github.com/python/mypy">https://github.com/python/mypy</a>)</p>

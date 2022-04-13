@@ -38,6 +38,7 @@ ignore them and use whatever suits you, except automatic code formatters.
    git clone --recurse-submodules https://github.com/LaboratoryOpticsBiosciences/bioimageloader.git
    cd bioimageloader
    pip install --editable .[dev]
+   pre-commit install  # install pre-commit hooks
 
 I personally do not use automatic code formatter and think that ``bioimageloader`` does
 not need one for the moment considering the repo is small, but I may consider one in the
@@ -46,6 +47,11 @@ future. Currently, I would like to have some tools to keep codes in consistent s
 - [numpydoc](https://numpydoc.readthedocs.io/en/latest/)
 
    (required) All docs should follow numpydoc syntax and formats
+
+- [pre-commit](https://pre-commit.com/)
+
+   (recommended) Check hooks listed in ``.pre-commit-config.yaml`` every time you make
+   a git commit.
 
 - [mypy](https://github.com/python/mypy)
 

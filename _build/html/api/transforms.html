@@ -360,14 +360,16 @@ from (H, W, 3) to (H, W).</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageloader.transforms.ExpandToRGB">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.transforms.</span></span><span class="sig-name descname"><span class="pre">ExpandToRGB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">always_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_mask_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/transforms.html#ExpandToRGB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.transforms.ExpandToRGB" title="Permalink to this definition">#</a></dt>
-<dd><p>Make sure image has 3 channels, RGB</p>
-<p>Expand axis of image that has 2 channels to have 3 channels mainly for
-visualization. Albumentations ver.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This will be deprecated. Grayscale conversion is done in eash Dataset</p>
-</div>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.transforms.</span></span><span class="sig-name descname"><span class="pre">ExpandToRGB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">always_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/transforms.html#ExpandToRGB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.transforms.ExpandToRGB" title="Permalink to this definition">#</a></dt>
+<dd><p>Make sure image/mask has 3 channels, either from HW or HW1 to HW3</p>
+<p>Expand the channel axis of image array</p>
+<p class="rubric">Notes</p>
+<p>When used with <code class="docutils literal notranslate"><span class="pre">albumentations.pytoch.ToTensorV2</span></code>, set
+<code class="docutils literal notranslate"><span class="pre">transpose_mask=True</span></code> to transpose masks.</p>
+<dl class="simple">
+<dt>Targets:</dt><dd><p>image, mask</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="bioimageloader.transforms.RGBToGray">
@@ -484,7 +486,7 @@ normalize.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>img_norm</dt><dd><p>Normalized image in float32 in range of [0.0, 1.0] if <code class="docutils literal notranslate"><span class="pre">clip</span></code> set to
+<dt><strong>img_norm</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Normalized image in float32 in range of [0.0, 1.0] if <code class="docutils literal notranslate"><span class="pre">clip</span></code> set to
 True, else its value overflows lower beyond 0.0 and higher beyond 1.0.</p>
 </dd>
 </dl>
@@ -525,6 +527,64 @@ True, else its value overflows lower beyond 0.0 and higher beyond 1.0.</p>
 <span class="go">  [ 5  4  3]]</span>
 <span class="go"> [[ 8  7  6]</span>
 <span class="go">  [11 10  9]]]</span>
+</pre></div>
+</div>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="bioimageloader.transforms.BinarizeMask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bioimageloader.transforms.</span></span><span class="sig-name descname"><span class="pre">BinarizeMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">always_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/bioimageloader/transforms.html#BinarizeMask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#bioimageloader.transforms.BinarizeMask" title="Permalink to this definition">#</a></dt>
+<dd><p>Transform instance masks into binary masks</p>
+<p>Note that when composed with other transforms, BinarizeMask would rather
+come after them, because dtype will be boolean and <code class="docutils literal notranslate"><span class="pre">albumentations</span></code> does
+not like it. When you set <code class="docutils literal notranslate"><span class="pre">val</span></code> and <code class="docutils literal notranslate"><span class="pre">dtype</span></code> compatible with
+<code class="docutils literal notranslate"><span class="pre">albumentations</span></code>, you can place BinarizeMask in any order safely.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>always_apply</strong><span class="classifier">bool, default: False</span></dt><dd></dd>
+<dt><strong>p</strong><span class="classifier">float, default: 1.0</span></dt><dd><p>Value between [0.0, 1.0]</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">str or dtype, optional</span></dt><dd><p>Determine dtype. Default dtype becomes float32, when <code class="docutils literal notranslate"><span class="pre">val</span></code> is set.
+Otherwise, it becomes boolean.</p>
+</dd>
+<dt><strong>val</strong><span class="classifier">float, optional</span></dt><dd><p>Change binarized mask value other than True if set. It also enforces
+dtype to be float32.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>mask</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Mask that has binary value either [False, True] or [0, <code class="docutils literal notranslate"><span class="pre">val</span></code>]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">albumentations.DualTransform</span></code></dt><dd><p>super class</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">BinarizeMask</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># instance mask</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask_inst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">mask_inst</span><span class="p">)</span>
+<span class="go">[[ 0  1  2  3]</span>
+<span class="go"> [ 4  5  6  7]</span>
+<span class="go"> [ 8  9 10 11]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">binarizemask</span> <span class="o">=</span> <span class="n">BinarizeMask</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask_binary</span> <span class="o">=</span> <span class="n">binarizemask</span><span class="o">.</span><span class="n">apply_to_mask</span><span class="p">(</span><span class="n">mask_inst</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">mask_binary</span><span class="p">)</span>
+<span class="go">[[False  True  True  True]</span>
+<span class="go"> [ True  True  True  True]</span>
+<span class="go"> [ True  True  True  True]]</span>
 </pre></div>
 </div>
 </dd></dl>
