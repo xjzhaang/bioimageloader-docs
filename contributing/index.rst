@@ -75,22 +75,25 @@ should be public and reachable by all potential users.
 
 After writing a new collection, please follow below steps,
 
-1. Make sure it has docstrings. Place it under the directory ``bioimageloader/collections``.
+1. Make sure it has docstrings: description of dataset; docs for every arguments; links
+   to project page, paper, and etc; worth noting details. Place it under the directory
+   ``bioimageloader/collections``.
 
 2. Update ``bioimageloader.collections.__init__`` module
 
 3. Update ``configs/all_collections.yml`` file
 
 4. Run ``docs/_notebooks/_plots.ipynb`` to update histogram in :doc:`../catalogue/index`.
-   And sample 2 images (and 2 annotation images, if they exist) place them under
+
+5. And sample 2 images (and 2 annotation images, if they exist) place them under
    ``docs/_static/sample_images``. Sample images will be displayed at
    `collection overview table <../_static/table_maskdataset.html>`_, once you compile
    docs.
 
-5. Update ``docs/_static/table_maskdataset.md`` and ``docs/_static/table_maskdataset.html.orig``,
+6. Update ``docs/_static/table_maskdataset.md`` and ``docs/_static/table_maskdataset.html.orig``,
    following ``docs/README.md``
 
-6. Compile docs and check if everything is okay
+7. Compile docs and check if everything is okay
 
-7. Make a pull request in `both library repo <https://github.com/LaboratoryOpticsBiosciences/bioimageloader>`_
+8. Make a pull request in `both library repo <https://github.com/LaboratoryOpticsBiosciences/bioimageloader>`_
    and `docs repo <https://github.com/LaboratoryOpticsBiosciences/bioimageloader-docs>`_.
