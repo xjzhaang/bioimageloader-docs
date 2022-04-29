@@ -14,3 +14,4 @@ in the git repository.
    bioimage_io
    benchmark
    train_models
+   table

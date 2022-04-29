@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Collection Catalogue" href="../catalogue/index.html" /><link rel="prev" title="DL: StarDist and Cellpose" href="benchmark.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DL: Benchmark Table" href="table.html" /><link rel="prev" title="DL: StarDist and Cellpose" href="benchmark.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
         <title>DL: Train Models - bioimageloader</title>
@@ -174,6 +174,7 @@
 <li class="toctree-l2"><a class="reference internal" href="bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">DL: Train Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../catalogue/index.html">Collection Catalogue</a></li>
@@ -492,8 +493,6 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">bioimageloader.collections</span> <span class="kn">import</span> <span class="n">BBBC020</span><span class="p">,</span> <span class="n">ComputationalPathology</span><span class="p">,</span> <span class="n">S_BSST265</span><span class="p">,</span> <span class="n">DSB2018</span><span class="p">,</span> <span class="n">FRUNet</span><span class="p">,</span> <span class="n">BBBC039</span><span class="p">,</span> <span class="n">BBBC006</span><span class="p">,</span> <span class="n">Cellpose</span><span class="p">,</span> <span class="n">LIVECell</span>
 
 <span class="c1">#Stardist</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">csbdeep.utils</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">normalize</span>
 <span class="kn">from</span> <span class="nn">stardist</span> <span class="kn">import</span> <span class="n">fill_label_holes</span><span class="p">,</span> <span class="n">random_label_cmap</span><span class="p">,</span> <span class="n">calculate_extents</span><span class="p">,</span> <span class="n">gputools_available</span>
 <span class="kn">from</span> <span class="nn">stardist.matching</span> <span class="kn">import</span> <span class="n">matching</span><span class="p">,</span> <span class="n">matching_dataset</span>
 <span class="kn">from</span> <span class="nn">stardist.models</span> <span class="kn">import</span> <span class="n">Config2D</span><span class="p">,</span> <span class="n">StarDist2D</span><span class="p">,</span> <span class="n">StarDistData2D</span>
@@ -784,6 +783,7 @@ Saving to 'thresholds.json'.
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Cellpose imports</span>
+<span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">cellpose</span> <span class="kn">import</span> <span class="n">models</span>
 </pre></div>
 </div>
@@ -887,7 +887,7 @@ Saving to 'thresholds.json'.
 </section>
 <section id="Train/val-split">
 <h3>Train/val split<a class="headerlink" href="#Train/val-split" title="Permalink to this headline">#</a></h3>
-<p>For Cellpose, we do not need to normalize the data</p>
+<p>For Cellpose, we do not need to normalize the data before training, it is done by specifying <code class="docutils literal notranslate"><span class="pre">normalize</span> <span class="pre">=</span> <span class="pre">True</span></code> in the training parameters.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -911,7 +911,7 @@ Saving to 'thresholds.json'.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#We set n_epochs = 1 for demonstration</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#We set n_epochs = 1 for demonstratio</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CellposeModel</span><span class="p">(</span><span class="n">pretrained_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diam_mean</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">X_trn</span><span class="p">,</span> <span class="n">train_labels</span><span class="o">=</span><span class="n">Y_trn</span><span class="p">,</span> <span class="n">train_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">X_val</span><span class="p">,</span> <span class="n">test_labels</span><span class="o">=</span><span class="n">Y_val</span><span class="p">,</span> <span class="n">test_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
               <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">save_path</span><span class="o">=</span><span class="s1">'cellpose_models'</span><span class="p">,</span> <span class="n">save_every</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -928,12 +928,12 @@ Saving to 'thresholds.json'.
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../catalogue/index.html">
+          <a class="next-page" href="table.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Collection Catalogue</div>
+                <div class="title">DL: Benchmark Table</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
