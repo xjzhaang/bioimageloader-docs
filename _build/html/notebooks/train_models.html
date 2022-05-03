@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DL: Benchmark Table" href="table.html" /><link rel="prev" title="DL: StarDist and Cellpose" href="benchmark.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>DL: Train Models - bioimageloader</title>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
+        <title>DL: Training Stardist and Cellpose Models - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -173,7 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pca.html">ML: Data statistics with PCA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="benchmark.html">DL: StarDist and Cellpose</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">DL: Train Models</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">DL: Training Stardist and Cellpose Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -475,9 +475,12 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-<script>require=requirejs;</script><section id="DL:-Train-Models">
-<h1>DL: Train Models<a class="headerlink" href="#DL:-Train-Models" title="Permalink to this headline">#</a></h1>
+<script>require=requirejs;</script><section id="DL:-Training-Stardist-and-Cellpose-Models">
+<h1>DL: Training Stardist and Cellpose Models<a class="headerlink" href="#DL:-Training-Stardist-and-Cellpose-Models" title="Permalink to this headline">#</a></h1>
+<p>This notebook and the following <strong>DL: Benchmark Table</strong> is part of a small experiment.</p>
+<p>The aim is to build a benchmark table for <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>’s collection of instance segmentation datasets, using built-in and custom trained models.</p>
 <p>In this notebook, we use <a class="reference external" href="https://github.com/stardist/stardist">StarDist</a> and <a class="reference external" href="https://github.com/mouseLand/cellpose">Cellpose</a> with <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> to train our own models using a combined dataset.</p>
+<p>It serves as a demonstration on how you can use <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> to do model training. The code blocks can be easily modified to adapt to your own tasks.</p>
 <section id="1.-StarDist">
 <h2>1. StarDist<a class="headerlink" href="#1.-StarDist" title="Permalink to this headline">#</a></h2>
 <p>This tutorial is adapted from the github notebook (<a class="reference external" href="https://github.com/stardist/stardist/blob/master/examples/2D/2_training.ipynb">https://github.com/stardist/stardist/blob/master/examples/2D/2_training.ipynb</a>)</p>
@@ -485,33 +488,40 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Bioimageloader and Albumentation</span>
-<span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
-<span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">BatchDataloader</span><span class="p">,</span> <span class="n">ConcatDataset</span>
-<span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">SqueezeGrayImageHWC</span><span class="p">,</span> <span class="n">HWCToCHW</span>
-<span class="kn">from</span> <span class="nn">bioimageloader.utils</span> <span class="kn">import</span> <span class="n">random_label_cmap</span>
-<span class="kn">from</span> <span class="nn">bioimageloader.collections</span> <span class="kn">import</span> <span class="n">BBBC020</span><span class="p">,</span> <span class="n">ComputationalPathology</span><span class="p">,</span> <span class="n">S_BSST265</span><span class="p">,</span> <span class="n">DSB2018</span><span class="p">,</span> <span class="n">FRUNet</span><span class="p">,</span> <span class="n">BBBC039</span><span class="p">,</span> <span class="n">BBBC006</span><span class="p">,</span> <span class="n">Cellpose</span><span class="p">,</span> <span class="n">LIVECell</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">env</span> CUDA_VISIBLE_DEVICES=0
+<span class="o">%</span><span class="k">env</span> TF_CPP_MIN_LOG_LEVEL=3
 
-<span class="c1">#Stardist</span>
-<span class="kn">from</span> <span class="nn">stardist</span> <span class="kn">import</span> <span class="n">fill_label_holes</span><span class="p">,</span> <span class="n">random_label_cmap</span><span class="p">,</span> <span class="n">calculate_extents</span><span class="p">,</span> <span class="n">gputools_available</span>
-<span class="kn">from</span> <span class="nn">stardist.matching</span> <span class="kn">import</span> <span class="n">matching</span><span class="p">,</span> <span class="n">matching_dataset</span>
-<span class="kn">from</span> <span class="nn">stardist.models</span> <span class="kn">import</span> <span class="n">Config2D</span><span class="p">,</span> <span class="n">StarDist2D</span><span class="p">,</span> <span class="n">StarDistData2D</span>
-<span class="kn">from</span> <span class="nn">stardist</span> <span class="kn">import</span> <span class="n">fill_label_holes</span><span class="p">,</span> <span class="n">random_label_cmap</span><span class="p">,</span> <span class="n">calculate_extents</span><span class="p">,</span> <span class="n">gputools_available</span>
-
-<span class="c1">#Other imports</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">csbdeep.utils</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">normalize</span>
-<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1">#Built-in</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="c1">#Ignoring warnings for notebook compilation</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'TF_CPP_MIN_LOG_LEVEL'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'3'</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"tensorflow"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
-<span class="o">%</span><span class="k">env</span> CUDA_VISIBLE_DEVICES=0
+
+
+<span class="c1">#Bioimageloader and Albumentation</span>
+<span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
+<span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">BatchDataloader</span><span class="p">,</span> <span class="n">ConcatDataset</span>
+<span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">SqueezeGrayImageHWC</span><span class="p">,</span> <span class="n">HWCToCHW</span>
+<span class="kn">from</span> <span class="nn">bioimageloader.collections</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BBBC020</span><span class="p">,</span> <span class="n">ComputationalPathology</span><span class="p">,</span> <span class="n">S_BSST265</span><span class="p">,</span>
+    <span class="n">DSB2018</span><span class="p">,</span> <span class="n">FRUNet</span><span class="p">,</span> <span class="n">BBBC039</span><span class="p">,</span> <span class="n">BBBC006</span><span class="p">,</span> <span class="n">Cellpose</span><span class="p">,</span> <span class="n">LIVECell</span><span class="p">)</span>
+
+<span class="c1">#Stardist</span>
+<span class="kn">from</span> <span class="nn">stardist</span> <span class="kn">import</span> <span class="n">fill_label_holes</span><span class="p">,</span> <span class="n">random_label_cmap</span><span class="p">,</span> <span class="n">calculate_extents</span>
+<span class="kn">from</span> <span class="nn">stardist.matching</span> <span class="kn">import</span> <span class="n">matching</span><span class="p">,</span> <span class="n">matching_dataset</span>
+<span class="kn">from</span> <span class="nn">stardist.models</span> <span class="kn">import</span> <span class="n">Config2D</span><span class="p">,</span> <span class="n">StarDist2D</span>
+<span class="kn">from</span> <span class="nn">csbdeep.utils</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">normalize</span>
+
+<span class="c1">#Cellpose imports</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">cellpose</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="c1">#Other imports</span>
+<span class="c1">#!pip install matplotlib seaborn pandas tqdm numpy</span>
+<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -535,70 +545,46 @@ env: CUDA_VISIBLE_DEVICES=0
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Transformations</span>
 <span class="n">transforms</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
-    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
+    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>
 <span class="p">])</span>
 
 <span class="n">transforms_compath</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
     <span class="n">A</span><span class="o">.</span><span class="n">InvertImg</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
-    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
-<span class="p">])</span>
-
-<span class="n">transforms_compath_1</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="mf">0.8</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">InvertImg</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
-    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">SomeOf</span><span class="p">([</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
+    <span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>
 <span class="p">])</span>
 
 <span class="n">transforms_livecell</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
     <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
     <span class="n">A</span><span class="o">.</span><span class="n">InvertImg</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
-    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
+    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>
 <span class="p">])</span>
 
 <span class="n">transforms_020</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
     <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">SomeOf</span><span class="p">([</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
+    <span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>
 <span class="p">])</span>
-
-<span class="n">transforms_020_1</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
-<span class="p">])</span>
-
-<span class="n">transforms_020_2</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
-   <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
-<span class="p">])</span>
-
-<span class="n">transforms_020_3</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
-   <span class="n">SqueezeGrayImageHWC</span><span class="p">()</span>  <span class="c1"># from (h, w, 3) to (h, w)</span>
-<span class="p">])</span>
-
 
 <span class="n">bbbc020</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
-<span class="n">bbbc020_1</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020_1</span><span class="p">)</span>
-<span class="n">bbbc020_2</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020_2</span><span class="p">)</span>
-<span class="n">bbbc020_3</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020_3</span><span class="p">)</span>
+<span class="n">bbbc020_1</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
+<span class="n">bbbc020_2</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
+<span class="n">bbbc020_3</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
 <span class="n">comp</span> <span class="o">=</span> <span class="n">ComputationalPathology</span><span class="p">(</span><span class="s1">'./Data/ComputationalPathology'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_compath</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
-<span class="n">comp_1</span> <span class="o">=</span> <span class="n">ComputationalPathology</span><span class="p">(</span><span class="s1">'./Data/ComputationalPathology'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_compath_1</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">comp_1</span> <span class="o">=</span> <span class="n">ComputationalPathology</span><span class="p">(</span><span class="s1">'./Data/ComputationalPathology'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_compath</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
 <span class="n">dsb2018</span> <span class="o">=</span> <span class="n">DSB2018</span><span class="p">(</span><span class="s1">'./Data/data-science-bowl-2018'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 <span class="n">sbss</span> <span class="o">=</span> <span class="n">S_BSST265</span><span class="p">(</span><span class="s1">'./Data/BioStudies'</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 <span class="n">frunet</span> <span class="o">=</span> <span class="n">FRUNet</span><span class="p">(</span><span class="s1">'./Data/FRU_processing'</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
@@ -778,19 +764,9 @@ Saving to 'thresholds.json'.
 </section>
 <section id="2.-Cellpose">
 <h2>2. Cellpose<a class="headerlink" href="#2.-Cellpose" title="Permalink to this headline">#</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Cellpose imports</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">cellpose</span> <span class="kn">import</span> <span class="n">models</span>
-</pre></div>
-</div>
-</div>
 <section id="id1">
 <h3>Loading datasets<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
-<p>We follow the same procedures as StarDist, except here we use <code class="docutils literal notranslate"><span class="pre">HWCToCHW</span></code> (explained in the previous notebook <strong>DL: StarDist and Cellpose</strong>).</p>
+<p>We follow the same procedures as StarDist, except here we use <code class="docutils literal notranslate"><span class="pre">HWCToCHW</span></code> (explained in the previous notebook).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -800,20 +776,18 @@ Saving to 'thresholds.json'.
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
     <span class="n">HWCToCHW</span><span class="p">()</span>
 <span class="p">])</span>
+
 <span class="n">transforms_compath</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
     <span class="n">A</span><span class="o">.</span><span class="n">InvertImg</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">SomeOf</span><span class="p">([</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
+    <span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
     <span class="n">HWCToCHW</span><span class="p">()</span>
 <span class="p">])</span>
-
-<span class="n">transforms_compath_1</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="mf">0.8</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">InvertImg</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
-    <span class="n">HWCToCHW</span><span class="p">()</span>
-<span class="p">])</span>
-
 
 <span class="n">transforms_livecell</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
@@ -825,41 +799,22 @@ Saving to 'thresholds.json'.
 <span class="n">transforms_020</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
     <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
     <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">SomeOf</span><span class="p">([</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
+    <span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
     <span class="n">HWCToCHW</span><span class="p">()</span>
 <span class="p">])</span>
 
-<span class="n">transforms_020_1</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">HWCToCHW</span><span class="p">()</span>
-<span class="p">])</span>
 
-<span class="n">transforms_020_2</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
-    <span class="n">HWCToCHW</span><span class="p">()</span>
-<span class="p">])</span>
-
-<span class="n">transforms_020_3</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomCrop</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">Rotate</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span>
-    <span class="n">HWCToCHW</span><span class="p">()</span>
-<span class="p">])</span>
 <span class="n">bbbc020</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
-<span class="n">bbbc020_1</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020_1</span><span class="p">)</span>
-<span class="n">bbbc020_2</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020_2</span><span class="p">)</span>
-<span class="n">bbbc020_3</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020_3</span><span class="p">)</span>
+<span class="n">bbbc020_1</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
+<span class="n">bbbc020_2</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
+<span class="n">bbbc020_3</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">],</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_020</span><span class="p">)</span>
 <span class="n">comp</span> <span class="o">=</span> <span class="n">ComputationalPathology</span><span class="p">(</span><span class="s1">'./Data/ComputationalPathology'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_compath</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
-<span class="n">comp_1</span> <span class="o">=</span> <span class="n">ComputationalPathology</span><span class="p">(</span><span class="s1">'./Data/ComputationalPathology'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_compath_1</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">comp_1</span> <span class="o">=</span> <span class="n">ComputationalPathology</span><span class="p">(</span><span class="s1">'./Data/ComputationalPathology'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_compath</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
 <span class="n">dsb2018</span> <span class="o">=</span> <span class="n">DSB2018</span><span class="p">(</span><span class="s1">'./Data/data-science-bowl-2018'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 <span class="n">sbss</span> <span class="o">=</span> <span class="n">S_BSST265</span><span class="p">(</span><span class="s1">'./Data/BioStudies'</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 <span class="n">frunet</span> <span class="o">=</span> <span class="n">FRUNet</span><span class="p">(</span><span class="s1">'./Data/FRU_processing'</span><span class="p">,</span> <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
@@ -911,7 +866,7 @@ Saving to 'thresholds.json'.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#We set n_epochs = 1 for demonstratio</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#We set n_epochs = 1 for demonstration</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CellposeModel</span><span class="p">(</span><span class="n">pretrained_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diam_mean</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train_data</span><span class="o">=</span><span class="n">X_trn</span><span class="p">,</span> <span class="n">train_labels</span><span class="o">=</span><span class="n">Y_trn</span><span class="p">,</span> <span class="n">train_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">X_val</span><span class="p">,</span> <span class="n">test_labels</span><span class="o">=</span><span class="n">Y_val</span><span class="p">,</span> <span class="n">test_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
               <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">save_path</span><span class="o">=</span><span class="s1">'cellpose_models'</span><span class="p">,</span> <span class="n">save_every</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -985,7 +940,7 @@ Saving to 'thresholds.json'.
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">DL: Train Models</a><ul>
+<li><a class="reference internal" href="#">DL: Training Stardist and Cellpose Models</a><ul>
 <li><a class="reference internal" href="#1.-StarDist">1. StarDist</a><ul>
 <li><a class="reference internal" href="#Loading-datasets">Loading datasets</a></li>
 <li><a class="reference internal" href="#Normalization-and-train/val-split">Normalization and train/val split</a></li>

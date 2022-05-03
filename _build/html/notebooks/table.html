@@ -3,9 +3,9 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Collection Catalogue" href="../catalogue/index.html" /><link rel="prev" title="DL: Train Models" href="train_models.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Collection Catalogue" href="../catalogue/index.html" /><link rel="prev" title="DL: Training Stardist and Cellpose Models" href="train_models.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
         <title>DL: Benchmark Table - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
@@ -173,7 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pca.html">ML: Data statistics with PCA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="benchmark.html">DL: StarDist and Cellpose</a></li>
-<li class="toctree-l2"><a class="reference internal" href="train_models.html">DL: Train Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train_models.html">DL: Training Stardist and Cellpose Models</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -477,7 +477,8 @@ div.rendered_html tbody tr:hover {
 <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script>require=requirejs;</script><section id="DL:-Benchmark-Table">
 <h1>DL: Benchmark Table<a class="headerlink" href="#DL:-Benchmark-Table" title="Permalink to this headline">#</a></h1>
-<p>In this notebook, we build a benchmark table using the built-in models from <a class="reference external" href="https://github.com/stardist/stardist">StarDist</a> and <a class="reference external" href="https://github.com/mouseLand/cellpose">Cellpose</a> as well as our trained models from the previous notebook <strong>DL: Train Models</strong>.</p>
+<p>In this notebook, we build a benchmark table using the built-in models from <a class="reference external" href="https://github.com/stardist/stardist">StarDist</a> and <a class="reference external" href="https://github.com/mouseLand/cellpose">Cellpose</a> as well as our trained models from the previous notebook <strong>Training Stardist and Cellpose Models</strong>.</p>
+<p>The first section shows how to obtain the predictions from our custom trained models. The second section includes the code for building the table, using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> and <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p>
 <section id="Evaluate-a-custom-model">
 <h2>Evaluate a custom model<a class="headerlink" href="#Evaluate-a-custom-model" title="Permalink to this headline">#</a></h2>
 <section id="1.-StarDist">
@@ -488,7 +489,20 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Bioimageloader and Albumentation</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">env</span> CUDA_VISIBLE_DEVICES=0
+<span class="o">%</span><span class="k">env</span> TF_CPP_MIN_LOG_LEVEL=3
+
+<span class="c1">#Built-in</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1">#Ignoring warnings for notebook compilation</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"tensorflow"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+
+<span class="c1">#Bioimageloader and Albumentation</span>
 <span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
 <span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">BatchDataloader</span>
 <span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">SqueezeGrayImageHWC</span><span class="p">,</span> <span class="n">HWCToCHW</span>
@@ -503,24 +517,12 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">cellpose</span> <span class="kn">import</span> <span class="n">models</span> <span class="k">as</span> <span class="n">cellpose_models</span>
 
 <span class="c1">#Other imports</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1">#!pip install matplotlib seaborn pandas tqdm numpy</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="c1">#Ignoring warnings for notebook compilation</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'TF_CPP_MIN_LOG_LEVEL'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'3'</span>
-<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"tensorflow"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
-<span class="o">%</span><span class="k">env</span> CUDA_VISIBLE_DEVICES=0
-<span class="o">%</span><span class="k">env</span> TF_FORCE_GPU_ALLOW_GROWTH='true'
 </pre></div>
 </div>
 </div>
@@ -552,7 +554,7 @@ env: TF_FORCE_GPU_ALLOW_GROWTH='true'
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 <span class="c1"># see what devices you have (set)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">())</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1176,7 +1178,7 @@ total     :       3841
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">DL: Train Models</div>
+                <div class="title">DL: Training Stardist and Cellpose Models</div>
                 
               </div>
             </a>
