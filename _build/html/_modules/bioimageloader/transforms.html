@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+    <meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
         <title>bioimageloader.transforms - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -170,6 +172,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/pca.html">ML: Data statistics with PCA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../catalogue/index.html">Collection Catalogue</a></li>
@@ -402,46 +406,42 @@
 
 
 <div class="viewcode-block" id="ExpandToRGB"><a class="viewcode-back" href="../../api/transforms.html#bioimageloader.transforms.ExpandToRGB">[docs]</a><span class="k">class</span> <span class="nc">ExpandToRGB</span><span class="p">(</span><span class="n">albumentations</span><span class="o">.</span><span class="n">DualTransform</span><span class="p">):</span>
-    <span class="sd">"""Make sure image has 3 channels, RGB</span>
+    <span class="sd">"""Make sure image/mask has 3 channels, either from HW or HW1 to HW3</span>
 
-<span class="sd">    Expand axis of image that has 2 channels to have 3 channels mainly for</span>
-<span class="sd">    visualization. Albumentations ver.</span>
+<span class="sd">    Expand the channel axis of image array</span>
 
-<span class="sd">    Warnings</span>
-<span class="sd">    --------</span>
-<span class="sd">    This will be deprecated. Grayscale conversion is done in eash Dataset</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    When used with ``albumentations.pytoch.ToTensorV2``, set</span>
+<span class="sd">    ``transpose_mask=True`` to transpose masks.</span>
+
+<span class="sd">    Targets:</span>
+<span class="sd">        image, mask</span>
 
 <span class="sd">    """</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">always_apply</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">select_mask_channel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">always_apply</span><span class="o">=</span><span class="n">always_apply</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">select_mask_channel</span> <span class="o">=</span> <span class="n">select_mask_channel</span>
 
     <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-        <span class="n">num_channels</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">num_channels</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span>
-        <span class="n">stacked</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">img</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]],</span>
-            <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="c1"># if dtype is not None:</span>
-        <span class="c1">#     return stacked.astype(dtype)</span>
-        <span class="k">return</span> <span class="n">stacked</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ch</span> <span class="o">:=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># HW3: do nothing</span>
+            <span class="k">return</span> <span class="n">img</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># HW1</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># HW</span>
+        <span class="k">return</span> <span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">apply_to_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">ch</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_mask_channel</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">img</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_transform_init_args_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="s1">'select_mask_channel'</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="RGBToGray"><a class="viewcode-back" href="../../api/transforms.html#bioimageloader.transforms.RGBToGray">[docs]</a><span class="k">class</span> <span class="nc">RGBToGray</span><span class="p">(</span><span class="n">albumentations</span><span class="o">.</span><span class="n">ImageOnlyTransform</span><span class="p">):</span>
@@ -591,7 +591,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    img_norm</span>
+<span class="sd">    img_norm : numpy.ndarray</span>
 <span class="sd">        Normalized image in float32 in range of [0.0, 1.0] if ``clip`` set to</span>
 <span class="sd">        True, else its value overflows lower beyond 0.0 and higher beyond 1.0.</span>
 
@@ -663,6 +663,82 @@
             <span class="s1">'per_channel'</span><span class="p">,</span>
             <span class="s1">'clip'</span><span class="p">,</span>
         <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BinarizeMask"><a class="viewcode-back" href="../../api/transforms.html#bioimageloader.transforms.BinarizeMask">[docs]</a><span class="k">class</span> <span class="nc">BinarizeMask</span><span class="p">(</span><span class="n">albumentations</span><span class="o">.</span><span class="n">DualTransform</span><span class="p">):</span>
+    <span class="sd">"""Transform instance masks into binary masks</span>
+
+<span class="sd">    Note that when composed with other transforms, BinarizeMask would rather</span>
+<span class="sd">    come after them, because dtype will be boolean and ``albumentations`` does</span>
+<span class="sd">    not like it. When you set ``val`` and ``dtype`` compatible with</span>
+<span class="sd">    ``albumentations``, you can place BinarizeMask in any order safely.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    always_apply : bool, default: False</span>
+<span class="sd">    p : float, default: 1.0</span>
+<span class="sd">        Value between [0.0, 1.0]</span>
+<span class="sd">    dtype : str or dtype, optional</span>
+<span class="sd">        Determine dtype. Default dtype becomes float32, when ``val`` is set.</span>
+<span class="sd">        Otherwise, it becomes boolean.</span>
+<span class="sd">    val : float, optional</span>
+<span class="sd">        Change binarized mask value other than True if set. It also enforces</span>
+<span class="sd">        dtype to be float32.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mask : numpy.ndarray</span>
+<span class="sd">        Mask that has binary value either [False, True] or [0, ``val``]</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    albumentations.DualTransform : super class</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from bioimageloader.transforms import BinarizeMask</span>
+
+<span class="sd">    &gt;&gt;&gt; # instance mask</span>
+<span class="sd">    &gt;&gt;&gt; mask_inst = np.arange(12).reshape((3, 4))</span>
+<span class="sd">    &gt;&gt;&gt; print(mask_inst)</span>
+<span class="sd">    [[ 0  1  2  3]</span>
+<span class="sd">     [ 4  5  6  7]</span>
+<span class="sd">     [ 8  9 10 11]]</span>
+
+<span class="sd">    &gt;&gt;&gt; binarizemask = BinarizeMask()</span>
+<span class="sd">    &gt;&gt;&gt; mask_binary = binarizemask.apply_to_mask(mask_inst)</span>
+<span class="sd">    &gt;&gt;&gt; print(mask_binary)</span>
+<span class="sd">    [[False  True  True  True]</span>
+<span class="sd">     [ True  True  True  True]</span>
+<span class="sd">     [ True  True  True  True]]</span>
+
+<span class="sd">    """</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">always_apply</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">always_apply</span><span class="o">=</span><span class="n">always_apply</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">img</span>
+
+    <span class="k">def</span> <span class="nf">apply_to_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">img</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'float32'</span><span class="p">)</span>  <span class="c1"># make sure float before multiplication</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="n">mask</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">dtype</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mask</span>
+
+    <span class="k">def</span> <span class="nf">get_transform_init_args_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">()</span></div>
 </pre></div>
         </article>
       </div>

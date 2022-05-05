@@ -13,3 +13,5 @@ in the git repository.
    pca
    bioimage_io
    benchmark
+   train_models
+   table
