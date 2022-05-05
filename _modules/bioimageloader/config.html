@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
         <title>bioimageloader.config - bioimageloader</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -170,6 +172,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/pca.html">ML: Data statistics with PCA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../catalogue/index.html">Collection Catalogue</a></li>
@@ -243,11 +247,12 @@
 <span class="sd">    filename : str</span>
 <span class="sd">        Path to config file</span>
 <span class="sd">    """</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
-        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_yaml</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_yaml</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
     <span class="k">def</span> <span class="nf">_read_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -264,6 +269,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DatasetList</span><span class="p">:</span>
         <span class="sd">"""Load multiple datasets from a yaml file</span>
 
+<span class="sd">        Note that when you provide a dictionray for ``transforms``, keys should</span>
+<span class="sd">        be the class names, not their acronyms.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        config : configuration object</span>
@@ -272,13 +280,16 @@
 <span class="sd">        transforms : albumentations.Compose or dictionary, optional</span>
 <span class="sd">            Either apply a single composed transformations for every datasets or</span>
 <span class="sd">            pass a dictionary that defines transformations for each dataset with</span>
-<span class="sd">            keys being the acronyms of datsets.</span>
+<span class="sd">            keys being the class names of collections.</span>
 
 <span class="sd">        """</span>
         <span class="n">datasets</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dataset</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transforms</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s1">'datasets.append(</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">(transforms=transforms[dataset], **kwargs))'</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">transforms</span><span class="p">:</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s1">'datasets.append(</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">(transforms=transforms[dataset], **kwargs))'</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s1">'datasets.append(</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">(**kwargs))'</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">exec</span><span class="p">(</span><span class="sa">f</span><span class="s1">'datasets.append(</span><span class="si">{</span><span class="n">dataset</span><span class="si">}</span><span class="s1">(transforms=transforms, **kwargs))'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">DatasetList</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span></div>
@@ -311,7 +322,8 @@
 
 <span class="sd">        """</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="s1">'training'</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">,</span>
+                      <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
@@ -323,7 +335,8 @@
 
 <span class="sd">        """</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="s1">'output'</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">,</span>
+                      <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div>
@@ -335,7 +348,8 @@
 
 <span class="sd">        """</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="s1">'grayscale'</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This method only set those that have `</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">` kwarg."</span><span class="p">,</span>
+                      <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span></div></div>
