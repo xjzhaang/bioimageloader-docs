@@ -10,7 +10,6 @@ Contributing
 https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues
 
 - If you find a bug and want to fix it, you can directly make a pull request:
-
    1. Fork the repository
    2. Clone the repository locally
    3. (optional, but recommended) Make a clean virtual environment
