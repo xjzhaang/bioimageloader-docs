@@ -3,23 +3,28 @@ This repo is a submodule of `bioimageloader` for documentation. Compile docs usi
 and sphinx. Find HTML inside `_build/html/index.html`.
 
 ## Notes
+- [IMPORTANT] Separate environment for compiling docs. Follow below instruction.
 - Allow only HTML compilation
-- Notebooks in `$ROOT/docs/notebooks` are symbolic links from `$ROOT/notebooks`
 - Post compilation
     - `modify_table_html.py`: Add necessary tags to `table_maskdataset.html`
     - `add_images_table_html.py`: Add samples images to `table_maskdataset.html`
 
-Install requirements from `bioimageloader` package.
+## Steps
+1. Install requirements from `bioimageloader` package. ``pip intall bioimageloader[dev]``
 
-Compile docs
-``` bash
-make html
-```
+2. (optional) Execute notebook first and save outputs
 
-Clean docs
-```bash
-make clean
-```
+3. Switch to env for docs
+
+4. Compile docs
+    ``` bash
+    make html
+    ```
+
+- (anytime) Clean docs
+    ```bash
+    make clean
+    ```
 
 ## How to update table overview
 Table is stored in `_static/table_maskdataset.md` as a Markdown format. Once you added a

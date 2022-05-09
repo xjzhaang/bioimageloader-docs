@@ -6,12 +6,11 @@ Contributing
 
 - That being said, you need to use ``git`` to make changes.
 
-- If you would like to add a feature, please file an issue first:
-https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues
+- If you would like to add a feature, please file an issue first: https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues
 
 - If you find a bug and want to fix it, you can directly make a pull request:
    1. Fork the repository
-   2. Clone the repository locally
+   2. Clone the repository locally ``git clone --recurse-submodules ...``
    3. (optional, but recommended) Make a clean virtual environment
    4. Install ``bioimageloader`` in development mode
    5. Make changes, test, and commit them
@@ -50,7 +49,7 @@ future. Currently, I would like to have some tools to keep codes in consistent s
 - [pre-commit](https://pre-commit.com/)
 
    (recommended) Check hooks listed in ``.pre-commit-config.yaml`` every time you make
-   a git commit.
+   a git commit. Install pre-commit hooks with ``pre-commit install``.
 
 - [mypy](https://github.com/python/mypy)
 
