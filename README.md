@@ -2,6 +2,8 @@
 This repo is a submodule of `bioimageloader` for documentation. Compile docs using make
 and sphinx. Find HTML inside `_build/html/index.html`.
 
+Main repo: https://github.com/LaboratoryOpticsBiosciences/bioimageloader
+
 ## Notes
 - [IMPORTANT] Separate environment for compiling docs. Follow below instruction.
 - Allow only HTML compilation
