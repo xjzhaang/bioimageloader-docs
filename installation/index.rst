@@ -35,6 +35,6 @@ for dev environment, have a editable local copy
 .. code-block:: bash
    :linenos:
 
-   git clone "https://github.com/LaboratoryOpticsBiosciences/bioimageloader"
+   git clone --recurse-submodules "https://github.com/LaboratoryOpticsBiosciences/bioimageloader"
    cd bioimageloader
    pip install --editable .[dev]
