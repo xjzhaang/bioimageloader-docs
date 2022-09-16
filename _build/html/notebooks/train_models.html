@@ -174,6 +174,7 @@
 <li class="toctree-l2"><a class="reference internal" href="bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -485,14 +486,182 @@ div.rendered_html tbody tr:hover {
 <p>The aim is to build a benchmark table for <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code>’s collection of instance segmentation datasets, using built-in and custom trained models.</p>
 <p>In this notebook, we use <a class="reference external" href="https://github.com/stardist/stardist">StarDist</a> and <a class="reference external" href="https://github.com/mouseLand/cellpose">Cellpose</a> with <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> to train our own models using a combined dataset.</p>
 <p>It serves as a demonstration on how you can use <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> to do model training. The code blocks can be easily modified to adapt to your own tasks.</p>
+<section id="Changes">
+<h2>Changes<a class="headerlink" href="#Changes" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>2022-09-14: Add TissueNet</p>
+<ul>
+<li><p>Author: Seongbin Lim (@sbinnee, <a class="reference external" href="https://github.com/sbinnee">https://github.com/sbinnee</a>)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="(tmp)-Setup">
+<h1>(tmp) Setup<a class="headerlink" href="#(tmp)-Setup" title="Permalink to this headline">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %load_ext autoreload</span>
+<span class="c1"># %autoreload 2</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">env</span> CUDA_VISIBLE_DEVICES=2
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+env: CUDA_VISIBLE_DEVICES=2
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="n">gpus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">'GPU'</span><span class="p">)</span>
+<span class="n">gpus</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2022-09-14 20:19:23.331641: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-09-14 20:19:24.376168: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2022-09-14 20:19:24.376930: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+2022-09-14 20:19:24.438119: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties:
+pciBusID: 0000:d8:00.0 name: Tesla V100-PCIE-32GB computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.75GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-09-14 20:19:24.438153: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-09-14 20:19:24.443301: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-09-14 20:19:24.443346: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-09-14 20:19:24.444161: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2022-09-14 20:19:24.444366: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2022-09-14 20:19:24.445765: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2022-09-14 20:19:24.446542: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2022-09-14 20:19:24.446662: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-09-14 20:19:24.447097: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># memory growth</span>
+<span class="k">if</span> <span class="n">gpus</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Currently, memory growth needs to be the same across GPUs</span>
+        <span class="k">for</span> <span class="n">gpu</span> <span class="ow">in</span> <span class="n">gpus</span><span class="p">:</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">set_memory_growth</span><span class="p">(</span><span class="n">gpu</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">logical_gpus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_logical_devices</span><span class="p">(</span><span class="s1">'GPU'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gpus</span><span class="p">),</span> <span class="s2">"Physical GPUs,"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">logical_gpus</span><span class="p">),</span> <span class="s2">"Logical GPUs"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Memory growth must be set before GPUs have been initialized</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 Physical GPUs, 1 Logical GPUs
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2022-09-14 20:19:24.459351: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-09-14 20:19:24.467646: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+2022-09-14 20:19:24.467960: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties:
+pciBusID: 0000:d8:00.0 name: Tesla V100-PCIE-32GB computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.75GiB deviceMemoryBandwidth: 836.37GiB/s
+2022-09-14 20:19:24.467981: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-09-14 20:19:24.467997: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.11
+2022-09-14 20:19:24.468005: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.11
+2022-09-14 20:19:24.468013: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+2022-09-14 20:19:24.468020: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+2022-09-14 20:19:24.468027: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+2022-09-14 20:19:24.468035: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.11
+2022-09-14 20:19:24.468043: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.8
+2022-09-14 20:19:24.468402: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+2022-09-14 20:19:24.468425: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+2022-09-14 20:19:24.960897: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+2022-09-14 20:19:24.960936: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0
+2022-09-14 20:19:24.960942: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N
+2022-09-14 20:19:24.963510: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 30130 MB memory) -&gt; physical GPU (device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:d8:00.0, compute capability: 7.0)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># memory limit</span>
+<span class="c1"># gpus = tf.config.list_physical_devices('GPU')</span>
+<span class="k">if</span> <span class="n">gpus</span><span class="p">:</span>
+    <span class="c1"># Restrict TensorFlow to only allocate 1GB of memory on the first GPU</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set_logical_device_configuration</span><span class="p">(</span>
+            <span class="n">gpus</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">LogicalDeviceConfiguration</span><span class="p">(</span><span class="n">memory_limit</span><span class="o">=</span><span class="mi">1024</span><span class="p">)])</span>
+        <span class="n">logical_gpus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_logical_devices</span><span class="p">(</span><span class="s1">'GPU'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gpus</span><span class="p">),</span> <span class="s2">"Physical GPUs,"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">logical_gpus</span><span class="p">),</span> <span class="s2">"Logical GPUs"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Virtual devices must be set before GPUs have been initialized</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Virtual devices cannot be modified after being initialized
+</pre></div></div>
+</div>
 <section id="1.-StarDist">
 <h2>1. StarDist<a class="headerlink" href="#1.-StarDist" title="Permalink to this headline">#</a></h2>
 <p>This tutorial is adapted from the github notebook (<a class="reference external" href="https://github.com/stardist/stardist/blob/master/examples/2D/2_training.ipynb">https://github.com/stardist/stardist/blob/master/examples/2D/2_training.ipynb</a>)</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">env</span> CUDA_VISIBLE_DEVICES=0
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %env CUDA_VISIBLE_DEVICES=0</span>
 <span class="o">%</span><span class="k">env</span> TF_CPP_MIN_LOG_LEVEL=3
 
 <span class="c1">#Built-in</span>
@@ -510,7 +679,7 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">bioimageloader</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">BatchDataloader</span><span class="p">,</span> <span class="n">ConcatDataset</span>
 <span class="kn">from</span> <span class="nn">bioimageloader.transforms</span> <span class="kn">import</span> <span class="n">SqueezeGrayImageHWC</span><span class="p">,</span> <span class="n">HWCToCHW</span>
 <span class="kn">from</span> <span class="nn">bioimageloader.collections</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BBBC020</span><span class="p">,</span> <span class="n">ComputationalPathology</span><span class="p">,</span> <span class="n">S_BSST265</span><span class="p">,</span>
-    <span class="n">DSB2018</span><span class="p">,</span> <span class="n">FRUNet</span><span class="p">,</span> <span class="n">BBBC039</span><span class="p">,</span> <span class="n">BBBC006</span><span class="p">,</span> <span class="n">Cellpose</span><span class="p">,</span> <span class="n">LIVECell</span><span class="p">)</span>
+    <span class="n">DSB2018</span><span class="p">,</span> <span class="n">FRUNet</span><span class="p">,</span> <span class="n">BBBC039</span><span class="p">,</span> <span class="n">BBBC006</span><span class="p">,</span> <span class="n">Cellpose</span><span class="p">,</span> <span class="n">LIVECell</span><span class="p">,</span> <span class="n">TissueNetV1</span><span class="p">)</span>
 
 <span class="c1">#Stardist</span>
 <span class="kn">from</span> <span class="nn">stardist</span> <span class="kn">import</span> <span class="n">fill_label_holes</span><span class="p">,</span> <span class="n">random_label_cmap</span><span class="p">,</span> <span class="n">calculate_extents</span>
@@ -518,9 +687,9 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">stardist.models</span> <span class="kn">import</span> <span class="n">Config2D</span><span class="p">,</span> <span class="n">StarDist2D</span>
 <span class="kn">from</span> <span class="nn">csbdeep.utils</span> <span class="kn">import</span> <span class="n">Path</span><span class="p">,</span> <span class="n">normalize</span>
 
-<span class="c1">#Cellpose imports</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">cellpose</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="c1"># #Cellpose imports</span>
+<span class="c1"># import torch</span>
+<span class="c1"># from cellpose import models</span>
 
 <span class="c1">#Other imports</span>
 <span class="c1">#!pip install matplotlib seaborn pandas tqdm numpy</span>
@@ -534,7 +703,6 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-env: CUDA_VISIBLE_DEVICES=0
 env: TF_CPP_MIN_LOG_LEVEL=3
 </pre></div></div>
 </div>
@@ -544,7 +712,184 @@ env: TF_CPP_MIN_LOG_LEVEL=3
 <p>As each dataset have different numbers of images, we perform data augmentation using <code class="docutils literal notranslate"><span class="pre">albumentations</span></code> library for smaller datasets. We invert the ComPath and LIVECell datasets so they look more like the rest.</p>
 <p>The datasets are then combined using <code class="docutils literal notranslate"><span class="pre">ConcatDataset</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bbbc020</span> <span class="o">=</span> <span class="n">BBBC020</span><span class="p">(</span><span class="s1">'./Data/bbbc/020'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">image_ch</span><span class="o">=</span><span class="p">[</span><span class="s2">"nuclei"</span><span class="p">])</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="n">ComputationalPathology</span><span class="p">(</span><span class="s1">'./Data/ComputationalPathology'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dsb2018</span> <span class="o">=</span> <span class="n">DSB2018</span><span class="p">(</span><span class="s1">'./Data/DSB2018'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sbss</span> <span class="o">=</span> <span class="n">S_BSST265</span><span class="p">(</span><span class="s1">'./Data/BioStudies'</span><span class="p">)</span>
+<span class="n">frunet</span> <span class="o">=</span> <span class="n">FRUNet</span><span class="p">(</span><span class="s1">'./Data/FRU_processing'</span><span class="p">)</span>
+<span class="n">bbbc006</span> <span class="o">=</span> <span class="n">BBBC006</span><span class="p">(</span><span class="s1">'./Data/bbbc/006'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bbbc039</span> <span class="o">=</span> <span class="n">BBBC039</span><span class="p">(</span><span class="s1">'./Data/bbbc/039'</span><span class="p">)</span>
+<span class="n">cellpose</span> <span class="o">=</span> <span class="n">Cellpose</span><span class="p">(</span><span class="s1">'./Data/cellpose'</span><span class="p">,</span> <span class="n">grayscale</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">livecell</span> <span class="o">=</span> <span class="n">LIVECell</span><span class="p">(</span><span class="s1">'./Data/LIVECell'</span><span class="p">,</span> <span class="n">mask_tif</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tissuenet</span> <span class="o">=</span> <span class="n">TissueNetV1</span><span class="p">(</span><span class="s1">'./Data/tissuenet_1.0/'</span><span class="p">,</span> <span class="n">use_unzipped</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">image_ch</span><span class="o">=</span><span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,),</span> <span class="n">anno_ch</span><span class="o">=</span><span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,),</span> <span class="n">uint8</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="n">bbbc020</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">dsb2018</span><span class="p">,</span> <span class="n">sbss</span><span class="p">,</span> <span class="n">frunet</span><span class="p">,</span> <span class="n">bbbc006</span><span class="p">,</span> <span class="n">bbbc039</span><span class="p">,</span> <span class="n">cellpose</span><span class="p">,</span>
+            <span class="n">livecell</span><span class="p">,</span> <span class="n">tissuenet</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">dset</span><span class="o">.</span><span class="n">acronym</span><span class="si">:</span><span class="s1">12s</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dset</span><span class="p">)</span><span class="si">:</span><span class="s1">6d</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BBBC020     :     20
+ComPath     :     30
+DSB2018     :    670
+S_BSST265   :     79
+FRUNet      :     72
+BBBC006     :    768
+BBBC039     :    150
+Cellpose    :    540
+LIVECell    :   3727
+TissueNetV1 :   2601
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">tissuenet</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cv2</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+((512, 512), dtype('float32'), 1.0)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_rgb</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(512, 512, 3)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'image'</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.image.AxesImage at 0x7fc2a809f1c0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_train_models_22_1.png" src="../_images/notebooks_train_models_22_1.png"/>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Transformations</span>
@@ -606,9 +951,20 @@ env: TF_CPP_MIN_LOG_LEVEL=3
                     <span class="n">transforms</span><span class="o">=</span><span class="n">transforms</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
 <span class="n">livecell</span> <span class="o">=</span> <span class="n">LIVECell</span><span class="p">(</span><span class="s1">'./Data/LIVECell'</span><span class="p">,</span> <span class="n">mask_tif</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">transforms</span><span class="o">=</span><span class="n">transforms_livecell</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<span class="n">tissuenet</span> <span class="o">=</span> <span class="n">TissueNetV1</span><span class="p">(</span><span class="s1">'./Data/tissuenet_1.0/'</span><span class="p">,</span> <span class="n">use_unzipped</span><span class="o">==</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">image_ch</span><span class="o">=</span><span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,),</span> <span class="n">anno_ch</span><span class="o">=</span><span class="p">(</span><span class="s1">'nuclei'</span><span class="p">,)</span>
+                        <span class="n">transforms</span><span class="o">=</span><span class="p">)</span>
 
 <span class="n">dset</span> <span class="o">=</span> <span class="n">ConcatDataset</span><span class="p">([</span><span class="n">bbbc020</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">dsb2018</span><span class="p">,</span> <span class="n">sbss</span><span class="p">,</span> <span class="n">frunet</span><span class="p">,</span>
                       <span class="n">bbbc006</span><span class="p">,</span> <span class="n">bbbc039</span><span class="p">,</span> <span class="n">cellpose</span><span class="p">,</span> <span class="n">livecell</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -972,6 +1328,10 @@ Saving to 'thresholds.json'.
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">DL: Training Stardist and Cellpose Models</a><ul>
+<li><a class="reference internal" href="#Changes">Changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#(tmp)-Setup">(tmp) Setup</a><ul>
 <li><a class="reference internal" href="#1.-StarDist">1. StarDist</a><ul>
 <li><a class="reference internal" href="#Loading-datasets">Loading datasets</a></li>
 <li><a class="reference internal" href="#Normalization-and-train/val-split">Normalization and train/val split</a></li>

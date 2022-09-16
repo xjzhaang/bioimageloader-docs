@@ -174,6 +174,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -235,7 +236,7 @@
 <dd><p>Transpose axes from (H, W, C) to (C, H, W)</p>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> returns images in shape of (H, W, C=3)
 regardless of its color mode for easy handling. Some models expect (C, H, W)
-shape of images as input. It converts (C, H, W) to (C, H, W).</p>
+shape of images as input. It converts (H, W, C) to (C, H, W).</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">

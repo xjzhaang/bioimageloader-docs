@@ -173,6 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -228,15 +229,16 @@
           <h1>Source code for bioimageloader.collections._bbbc009</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">albumentations</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tifffile</span>
-
+<span class="kn">from</span> <span class="nn">skimage.util</span> <span class="kn">import</span> <span class="n">img_as_float32</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">MaskDataset</span>
+
 
 <div class="viewcode-block" id="BBBC009"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.BBBC009">[docs]</a><span class="k">class</span> <span class="nc">BBBC009</span><span class="p">(</span><span class="n">MaskDataset</span><span class="p">):</span>
     <span class="sd">"""Human red blood cells</span>
@@ -288,7 +290,7 @@
 <div class="viewcode-block" id="BBBC009.get_image"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.BBBC009.get_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">img</span></div>
+        <span class="k">return</span> <span class="n">img_as_float32</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BBBC009.get_mask"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.BBBC009.get_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
@@ -298,7 +300,6 @@
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">file_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
         <span class="c1"># Important to decorate with `cached_property` in general</span>
-        <span class="c1">#file_list: Union[List[Path], List[List[Path]]]</span>
         <span class="n">root_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
         <span class="n">parent</span> <span class="o">=</span> <span class="s1">'human_rbc_dic_images'</span>
         <span class="n">file_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/*.tif'</span><span class="p">))</span>
@@ -307,7 +308,6 @@
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">anno_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
         <span class="c1"># Important to decorate with `cached_property` in general</span>
-        <span class="c1">#file_list: Union[List[Path], List[List[Path]]]</span>
         <span class="n">root_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
         <span class="n">parent</span> <span class="o">=</span> <span class="s1">'human_rbc_dic_outlines'</span>
         <span class="n">anno_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/*.tif'</span><span class="p">))</span>

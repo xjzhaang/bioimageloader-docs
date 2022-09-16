@@ -173,6 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -242,7 +243,7 @@
 
 <span class="sd">    By default, ``bioimageloader`` returns images in shape of (H, W, C=3)</span>
 <span class="sd">    regardless of its color mode for easy handling. Some models expect (C, H, W)</span>
-<span class="sd">    shape of images as input. It converts (C, H, W) to (C, H, W).</span>
+<span class="sd">    shape of images as input. It converts (H, W, C) to (C, H, W).</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>

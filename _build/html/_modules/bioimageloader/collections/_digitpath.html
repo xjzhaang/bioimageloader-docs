@@ -173,6 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -235,6 +236,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tifffile</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">skimage.util</span> <span class="kn">import</span> <span class="n">img_as_float32</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">MaskDataset</span>
 
@@ -303,7 +305,7 @@
 
 <div class="viewcode-block" id="DigitalPathology.get_image"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.DigitalPathology.get_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">tif</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">tif</span></div>
+        <span class="k">return</span> <span class="n">img_as_float32</span><span class="p">(</span><span class="n">tif</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DigitalPathology.get_mask"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.DigitalPathology.get_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
