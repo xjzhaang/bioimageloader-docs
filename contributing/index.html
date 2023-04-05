@@ -174,6 +174,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -232,22 +233,19 @@
 <p><strong>All development is done on Github</strong>: <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader">https://github.com/LaboratoryOpticsBiosciences/bioimageloader</a></p>
 <ul class="simple">
 <li><p>That being said, you need to use <code class="docutils literal notranslate"><span class="pre">git</span></code> to make changes.</p></li>
-<li><p>If you would like to add a feature, please file an issue first:</p></li>
-</ul>
-<p><a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues">https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues</a></p>
-<ul>
-<li><p>If you find a bug and want to fix it, you can directly make a pull request:</p>
-<blockquote>
-<div><ol class="arabic simple">
+<li><p>If you would like to add a feature, please file an issue first: <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues">https://github.com/LaboratoryOpticsBiosciences/bioimageloader/issues</a></p></li>
+<li><dl class="simple">
+<dt>If you find a bug and want to fix it, you can directly make a pull request:</dt><dd><ol class="arabic simple">
 <li><p>Fork the repository</p></li>
-<li><p>Clone the repository locally</p></li>
+<li><p>Clone the repository locally <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">--recurse-submodules</span> <span class="pre">...</span></code></p></li>
 <li><p>(optional, but recommended) Make a clean virtual environment</p></li>
 <li><p>Install <code class="docutils literal notranslate"><span class="pre">bioimageloader</span></code> in development mode</p></li>
 <li><p>Make changes, test, and commit them</p></li>
 <li><p>(if needed) Recompile and update docs. Follow instruction in <code class="docutils literal notranslate"><span class="pre">docs/README.md</span></code></p></li>
 <li><p>Create a pull request: <a class="reference external" href="https://github.com/LaboratoryOpticsBiosciences/bioimageloader/pulls">https://github.com/LaboratoryOpticsBiosciences/bioimageloader/pulls</a></p></li>
 </ol>
-</div></blockquote>
+</dd>
+</dl>
 </li>
 </ul>
 <section id="test">
@@ -279,7 +277,7 @@ future. Currently, I would like to have some tools to keep codes in consistent s
 <li><p>[pre-commit](<a class="reference external" href="https://pre-commit.com/">https://pre-commit.com/</a>)</p>
 <blockquote>
 <div><p>(recommended) Check hooks listed in <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> every time you make
-a git commit.</p>
+a git commit. Install pre-commit hooks with <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code>.</p>
 </div></blockquote>
 </li>
 <li><p>[mypy](<a class="reference external" href="https://github.com/python/mypy">https://github.com/python/mypy</a>)</p>

@@ -173,6 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -235,6 +236,7 @@
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tifffile</span>
+<span class="kn">from</span> <span class="nn">skimage.util</span> <span class="kn">import</span> <span class="n">img_as_float32</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">..types</span> <span class="kn">import</span> <span class="n">BundledPath</span>
@@ -269,12 +271,7 @@
 <span class="sd">        How to convert to grayscale. If set to 'cv2', it follows opencv</span>
 <span class="sd">        implementation. Else if set to 'equal', it sums up values along channel</span>
 <span class="sd">        axis, then divides it by the number of expected channels.</span>
-<span class="sd">    uint8 : bool, default: True</span>
-<span class="sd">        Whether to convert images to UINT8. It will divide images by a certain</span>
-<span class="sd">        value so that they have a reasonable range of pixel values when cast</span>
-<span class="sd">        into UINT8. If set False, no process will be applied. Read more about</span>
-<span class="sd">        rationales in Notes section.</span>
-<span class="sd">    image_ch : {'DNA', 'actin'}, default: ('DNA', 'actin', 'tublin')</span>
+<span class="sd">    image_ch : {'DNA', 'actin', 'tublin'}, default: ('DNA', 'actin', 'tublin')</span>
 <span class="sd">        Which channel(s) to load as image. Make sure to give it as a Sequence</span>
 <span class="sd">        when choose a single channel.</span>
 
@@ -309,8 +306,6 @@
         <span class="n">grayscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">grayscale_mode</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">'equal'</span><span class="p">,</span>
         <span class="c1"># # specific to this dataset</span>
-        <span class="n">uint8</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">denominator</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">8</span><span class="p">,</span>
         <span class="n">image_ch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'DNA'</span><span class="p">,</span> <span class="s1">'actin'</span><span class="p">,</span> <span class="s1">'tublin'</span><span class="p">),</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
@@ -319,8 +314,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples</span> <span class="o">=</span> <span class="n">num_samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grayscale</span> <span class="o">=</span> <span class="n">grayscale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grayscale_mode</span> <span class="o">=</span> <span class="n">grayscale_mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">uint8</span> <span class="o">=</span> <span class="n">uint8</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">denominator</span> <span class="o">=</span> <span class="n">denominator</span>  <span class="c1"># ***</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">image_ch</span> <span class="o">=</span> <span class="n">image_ch</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">ch</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'DNA'</span><span class="p">,</span> <span class="s1">'actin'</span><span class="p">,</span> <span class="s1">'tublin'</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">image_ch</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Set `image_ch` in ('DNA', 'actin', 'tublin') in sequence"</span><span class="p">)</span>
@@ -329,10 +322,8 @@
         <span class="c1"># 3 channels; DAPI(w1), Tubulin(w2), Actin(w4)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
             <span class="n">img</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">denominator</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">img</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img_as_float32</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_ch</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">def</span> <span class="nf">_map_ch_to_ind</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
                 <span class="k">if</span> <span class="s1">'w1'</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span>
@@ -345,13 +336,9 @@
                 <span class="k">return</span> <span class="mi">0</span>
             <span class="n">order</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">_map_ch_to_ind</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
             <span class="n">img</span> <span class="o">=</span> <span class="n">stack_channels_to_rgb</span><span class="p">(</span><span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">order</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">denominator</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">img</span>
+            <span class="k">return</span> <span class="n">img_as_float32</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">stack_channels_to_rgb</span><span class="p">(</span><span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">denominator</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">img</span></div>
+        <span class="k">return</span> <span class="n">img_as_float32</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">file_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">BundledPath</span><span class="p">]]:</span>

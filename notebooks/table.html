@@ -174,6 +174,7 @@
 <li class="toctree-l2"><a class="reference internal" href="bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -477,6 +478,10 @@ div.rendered_html tbody tr:hover {
 <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script>require=requirejs;</script><section id="DL:-Benchmark-Table">
 <h1>DL: Benchmark Table<a class="headerlink" href="#DL:-Benchmark-Table" title="Permalink to this headline">#</a></h1>
+<ul class="simple">
+<li><p>Date: 2022-05-05</p></li>
+<li><p>Author: Xingjian Zhang (<a class="reference external" href="https://github.com/xjzhaang">https://github.com/xjzhaang</a>)</p></li>
+</ul>
 <p>In this notebook, we build a benchmark table using the built-in models from <a class="reference external" href="https://github.com/stardist/stardist">StarDist</a> and <a class="reference external" href="https://github.com/mouseLand/cellpose">Cellpose</a> as well as our trained models from the previous notebook <strong>DL: Training Stardist and Cellpose Models</strong>.</p>
 <p>The first section shows how to obtain the predictions from our custom trained models. The second section includes the code for building the table, using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> and <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p>
 <section id="Evaluate-a-custom-model">
@@ -776,8 +781,8 @@ total     :       3841
 
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="n">pred_mask</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model_cp</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">input_image</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
-                                               <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                               <span class="n">net_avg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                            <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">net_avg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
             <span class="n">gt_mask_i</span> <span class="o">=</span> <span class="n">gt_mask</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">pred_i</span> <span class="o">=</span> <span class="n">pred_mask</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -1138,7 +1143,12 @@ total     :       3841
 <span class="n">coolwarm</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">"coolwarm_r"</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">mono</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">"light:b"</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s1">'figure.figsize'</span><span class="p">:(</span><span class="mf">11.7</span><span class="p">,</span><span class="mf">8.27</span><span class="p">)})</span>
-<span class="n">plot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">heat</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span> <span class="n">mono</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span> <span class="n">heat_f1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">"Name"</span><span class="p">),</span> <span class="n">yticklabels</span> <span class="o">=</span> <span class="n">table_f1</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'F-1 Score'</span><span class="p">,</span> <span class="s2">"shrink"</span><span class="p">:</span> <span class="mf">.82</span><span class="p">,})</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">heat</span><span class="p">,</span>
+                   <span class="n">cmap</span><span class="o">=</span><span class="n">mono</span><span class="p">,</span>
+                   <span class="n">xticklabels</span><span class="o">=</span><span class="n">heat_f1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">"Name"</span><span class="p">),</span>
+                   <span class="n">yticklabels</span><span class="o">=</span><span class="n">table_f1</span><span class="o">.</span><span class="n">Name</span><span class="p">,</span>
+                   <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'F-1 Score'</span><span class="p">,</span> <span class="s2">"shrink"</span><span class="p">:</span> <span class="mf">.82</span><span class="p">,})</span>
 <span class="n">plot</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">'bold'</span><span class="p">)</span>
 <span class="n">plot</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">(),</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">'bold'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>

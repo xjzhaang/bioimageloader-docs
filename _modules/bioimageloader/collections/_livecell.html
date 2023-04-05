@@ -173,6 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/bioimage_io.html">DL: Deep learning with <em>BioImage.IO</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/benchmark.html">DL: StarDist and Cellpose</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html">DL: Training Stardist and Cellpose Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../notebooks/train_models.html#(tmp)-Setup">(tmp) Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../notebooks/table.html">DL: Benchmark Table</a></li>
 </ul>
 </li>
@@ -226,21 +227,43 @@
         </div>
         <article role="main">
           <h1>Source code for bioimageloader.collections._livecell</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">albumentations</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tifffile</span>
 <span class="kn">from</span> <span class="nn">pycocotools</span> <span class="kn">import</span> <span class="n">coco</span>
+<span class="kn">from</span> <span class="nn">skimage.util</span> <span class="kn">import</span> <span class="n">img_as_float32</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">MaskDataset</span>
 
+
 <div class="viewcode-block" id="LIVECell"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.LIVECell">[docs]</a><span class="k">class</span> <span class="nc">LIVECell</span><span class="p">(</span><span class="n">MaskDataset</span><span class="p">):</span>
-    <span class="sd">"""LIVECEll</span>
-<span class="sd">    A large-scale dataset for label-free live cell segmentation</span>
+    <span class="sd">"""LIVECEll: A large-scale dataset for label-free live cell segmentation</span>
+<span class="sd">    [1]_</span>
+
+<span class="sd">    “LIVECell - A large-scale dataset for label-free live cell segmentation” by</span>
+<span class="sd">    Edlund et. al. 2021 [2]_</span>
+
+<span class="sd">    Light microscopy is a cheap, accessible, non-invasive modality that when</span>
+<span class="sd">    combined with well-established protocols of two-dimensional cell culture</span>
+<span class="sd">    facilitates high-throughput quantitative imaging to study biological</span>
+<span class="sd">    phenomena. Accurate segmentation of individual cells enables exploration of</span>
+<span class="sd">    complex biological questions, but this requires sophisticated imaging</span>
+<span class="sd">    processing pipelines due to the low contrast and high object density. Deep</span>
+<span class="sd">    learning-based methods are considered state-of-the-art for most computer</span>
+<span class="sd">    vision problems but require vast amounts of annotated data, for which there</span>
+<span class="sd">    is no suitable resource available in the field of label-free cellular</span>
+<span class="sd">    imaging. To address this gap we present LIVECell, a high-quality, manually</span>
+<span class="sd">    annotated and expert-validated dataset that is the largest of its kind to</span>
+<span class="sd">    date, consisting of over 1.6 million cells from a diverse set of cell</span>
+<span class="sd">    morphologies and culture densities. To further demonstrate its utility, we</span>
+<span class="sd">    provide convolutional neural network-based models trained and evaluated on</span>
+<span class="sd">    LIVECell.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -256,13 +279,25 @@
 <span class="sd">        dataset. If it is set, it overwrites ``__len__``.</span>
 <span class="sd">    training : bool, default: True</span>
 <span class="sd">        Load training set if True, else load testing one</span>
-<span class="sd">    save_tif : bool, default: False</span>
-<span class="sd">        Save COCO annotations as tif mask images in a new ./root_dir/masks directory.</span>
+<span class="sd">    mask_tif : bool, default: False</span>
+<span class="sd">        Use saved COCO annotations as tif mask images in a new ./root_dir/masks</span>
+<span class="sd">        directory. It will greatly improve loading speed. Available after</span>
+<span class="sd">        calling ``save_coco_to_tif()``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Annotation in MS COCO format [3]_. Parsing it takes time`.</span>
+<span class="sd">    - Currently not supporting dynamically parsing COCO annotation due to slow</span>
+<span class="sd">      speed. Pre-parse masks in .tif format by calling ``save_coco_to_tif()``.</span>
+<span class="sd">    - Validation set is originally separted from training set. Currently they</span>
+<span class="sd">      are combined ``training=True``.</span>
+<span class="sd">    - Single cells subsets are not covered</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 <span class="sd">    .. [1] https://sartorius-research.github.io/LIVECell/</span>
 <span class="sd">    .. [2] https://www.nature.com/articles/s41592-021-01249-6</span>
+<span class="sd">    .. [3] https://cocodataset.org/</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -283,7 +318,7 @@
         <span class="n">num_samples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="c1"># specific to this dataset</span>
         <span class="n">training</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">save_tif</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">mask_tif</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_root_dir</span> <span class="o">=</span> <span class="n">root_dir</span>
@@ -292,62 +327,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_samples</span> <span class="o">=</span> <span class="n">num_samples</span>
         <span class="c1"># specific to this one here</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">training</span> <span class="o">=</span> <span class="n">training</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save_tif</span> <span class="o">=</span> <span class="n">save_tif</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask_tif</span> <span class="o">=</span> <span class="n">mask_tif</span>
 
-        <span class="c1"># Read training/val or test annotations from json</span>
-        <span class="c1"># Save the masks as tif files if save_tif = True</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">Path</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/masks/livecell_train_val_masks"</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">Path</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/masks/livecell_test_masks"</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">except</span>  <span class="ne">FileExistsError</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_tif</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"making instances masks and saving as tif files"</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">COCO</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/livecell_coco_train.json"</span><span class="p">)</span>
-            <span class="n">img_tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">loadImgs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">COCO</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/livecell_coco_val.json"</span><span class="p">)</span>
-            <span class="n">img_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">loadImgs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span> <span class="o">=</span> <span class="n">img_val</span> <span class="o">+</span> <span class="n">img_tr</span>
-            <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">annIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">getAnnIds</span><span class="p">(</span><span class="n">imgIds</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">iscrowd</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-                    <span class="n">anns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">loadAnns</span><span class="p">(</span><span class="n">annIds</span><span class="p">)</span>
-                    <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anns</span><span class="p">)):</span>
-                        <span class="n">mask</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">i</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="n">annIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">getAnnIds</span><span class="p">(</span><span class="n">imgIds</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">iscrowd</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-                    <span class="n">anns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">loadAnns</span><span class="p">(</span><span class="n">annIds</span><span class="p">)</span>
-                    <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anns</span><span class="p">)):</span>
-                        <span class="n">mask</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">i</span>
-                <span class="n">tifffile</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/masks/livecell_train_val_masks/"</span> <span class="o">+</span> <span class="n">img</span><span class="p">[</span><span class="s2">"file_name"</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Done!"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_tif</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"LIVECell dataset does not currently support dynamically "</span>
+                   <span class="s2">"parsing annotation in MS COCO format due to performance "</span>
+                   <span class="s2">"issue. Please create masks in .tif format by calling "</span>
+                   <span class="s2">"`save_coco_to_tif()` and then set `mask_tif=True`"</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_tif</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"making instances masks and saving as tif files"</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">COCO</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/livecell_coco_test.json"</span><span class="p">)</span>
-            <span class="n">img_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">loadImgs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span> <span class="o">=</span> <span class="n">img_te</span>
-            <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span><span class="p">:</span>
-                <span class="n">annIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">getAnnIds</span><span class="p">(</span><span class="n">imgIds</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">iscrowd</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-                <span class="n">anns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">loadAnns</span><span class="p">(</span><span class="n">annIds</span><span class="p">)</span>
-                <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anns</span><span class="p">)):</span>
-                    <span class="n">mask</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">i</span>
-                <span class="n">tifffile</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/masks/livecell_test_masks/"</span> <span class="o">+</span> <span class="n">img</span><span class="p">[</span><span class="s2">"file_name"</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Done!"</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_tif</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/masks/livecell_test_masks"</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s2">"/masks/livecell_train_val_masks"</span><span class="p">)</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"No masks in .tif format. Set save_tif=True"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_tif</span><span class="p">:</span>
+            <span class="c1"># check</span>
+            <span class="n">mask_train_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'masks'</span> <span class="o">/</span> <span class="s1">'livecell_train_val_masks'</span>
+            <span class="n">mask_test_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'masks'</span> <span class="o">/</span> <span class="s1">'livecell_test_masks'</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">mask_train_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">mask_test_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"No masks in .tif format."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">mask_train_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">mask_test_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"No masks in .tif format."</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LIVECell.get_image"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.LIVECell.get_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2RGB</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">img</span></div>
+        <span class="k">return</span> <span class="n">img_as_float32</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="LIVECell.get_mask"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.LIVECell.get_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">tifffile</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
@@ -357,14 +358,77 @@
     <span class="k">def</span> <span class="nf">file_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
         <span class="c1"># Call MaskDataset.root_dir</span>
         <span class="n">root_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
-        <span class="n">parent</span> <span class="o">=</span> <span class="s1">'images/livecell_train_val_images'</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span> <span class="k">else</span> <span class="s1">'images/livecell_test_images'</span>
-        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/*.tif'</span><span class="p">))</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="p">(</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'images'</span> <span class="o">/</span> <span class="s1">'livecell_train_val_images'</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span>
+                  <span class="k">else</span> <span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'images'</span> <span class="o">/</span> <span class="s1">'livecell_test_masks'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'*.tif'</span><span class="p">))</span>
 
     <span class="nd">@cached_property</span>
-    <span class="k">def</span> <span class="nf">anno_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">anno_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
         <span class="n">root_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
-        <span class="n">parent</span> <span class="o">=</span> <span class="s1">'masks/livecell_train_val_masks'</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span> <span class="k">else</span> <span class="s1">'masks/livecell_test_masks'</span>
-        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">root_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/*.tif'</span><span class="p">))</span></div>
+        <span class="c1"># parent = 'masks/livecell_train_val_masks' if self.training else 'masks/livecell_test_masks'</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="p">(</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'masks'</span> <span class="o">/</span> <span class="s1">'livecell_train_val_masks'</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span>
+                  <span class="k">else</span> <span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'masks'</span> <span class="o">/</span> <span class="s1">'livecell_test_masks'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+            <span class="nb">sorted</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'*.tif'</span><span class="p">))</span>
+        <span class="p">))</span>
+
+<div class="viewcode-block" id="LIVECell.save_coco_to_tif"><a class="viewcode-back" href="../../../api/collections.html#bioimageloader.collections.LIVECell.save_coco_to_tif">[docs]</a>    <span class="k">def</span> <span class="nf">save_coco_to_tif</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Save the masks as tif files</span>
+
+<span class="sd">        Read training/val or test annotations from json. Make tif files under</span>
+<span class="sd">        'masks/livecell_train_val_masks' and 'masks/livecell_test_masks'.</span>
+
+<span class="sd">        Initialize a new instance with setting ``mask_tif=True`` to load saved</span>
+<span class="sd">        masks.</span>
+<span class="sd">        """</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"making instances masks and saving as tif files"</span><span class="p">)</span>
+        <span class="c1"># makedirs</span>
+        <span class="n">mask_train_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'masks'</span> <span class="o">/</span> <span class="s1">'livecell_train_val_masks'</span>
+        <span class="n">mask_test_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'masks'</span> <span class="o">/</span> <span class="s1">'livecell_test_masks'</span>
+        <span class="n">mask_train_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">mask_test_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">COCO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>  <span class="o">/</span> <span class="s1">'livecell_coco_train.json'</span><span class="p">)</span>
+        <span class="n">img_tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">loadImgs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">COCO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'livecell_coco_val.json'</span><span class="p">)</span>
+        <span class="n">img_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">loadImgs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span> <span class="o">=</span> <span class="n">img_val</span> <span class="o">+</span> <span class="n">img_tr</span>
+        <span class="c1"># loop</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'training total: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">annIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">getAnnIds</span><span class="p">(</span><span class="n">imgIds</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">iscrowd</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">anns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">loadAnns</span><span class="p">(</span><span class="n">annIds</span><span class="p">)</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anns</span><span class="p">)):</span>
+                    <span class="n">mask</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_tr</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">i</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">annIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">getAnnIds</span><span class="p">(</span><span class="n">imgIds</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">iscrowd</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">anns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">loadAnns</span><span class="p">(</span><span class="n">annIds</span><span class="p">)</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anns</span><span class="p">)):</span>
+                    <span class="n">mask</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_val</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">i</span>
+            <span class="n">tifffile</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">mask_train_dir</span> <span class="o">/</span> <span class="n">img</span><span class="p">[</span><span class="s1">'file_name'</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">' '</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Done!"</span><span class="p">)</span>
+        <span class="c1"># test</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"making instances masks and saving as tif files"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span> <span class="o">=</span> <span class="n">coco</span><span class="o">.</span><span class="n">COCO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">'livecell_coco_test.json'</span><span class="p">)</span>
+        <span class="n">img_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">loadImgs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">getImgIds</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span> <span class="o">=</span> <span class="n">img_te</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'test total: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anno_dictionary</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">annIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">getAnnIds</span><span class="p">(</span><span class="n">imgIds</span><span class="o">=</span><span class="n">img</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">iscrowd</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">anns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">loadAnns</span><span class="p">(</span><span class="n">annIds</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">anns</span><span class="p">)):</span>
+                <span class="n">mask</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coco_te</span><span class="o">.</span><span class="n">annToMask</span><span class="p">(</span><span class="n">anns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">i</span>
+            <span class="n">tifffile</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">mask_test_dir</span> <span class="o">/</span> <span class="n">img</span><span class="p">[</span><span class="s1">'file_name'</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">' '</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Done!"</span><span class="p">)</span></div></div>
 </pre></div>
         </article>
       </div>
